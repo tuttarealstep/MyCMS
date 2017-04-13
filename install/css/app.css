@@ -1,0 +1,24 @@
+body
+{
+    font-family: "Lato", sans-serif;
+    background-color: #519E8A;
+    color: #ffffff;
+}
+
+.well
+{
+    background-color: #476A6F;
+    border: 1px solid #344D50;
+}
+
+.btn-install
+{
+    background-color: transparent;
+    border-color: #C5C9A4;
+    color: #ffffff;
+}
+
+.btn-install:hover
+{
+    background-color: #C5C9A4;
+}
