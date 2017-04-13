@@ -512,6 +512,6 @@ RewriteRule . index.php [L]
 <?php } ?>
 
 <script src="./js/jquery.min.js"></script>
-<script src="./js/bootstrap.js"></script>
+<script src="./js/bootstrap.min.js"></script>
 </body>
 </html>
