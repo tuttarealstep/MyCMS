@@ -2,10 +2,6 @@
 
     namespace MyCMS\App\Utils\Management;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     /**
      * Class MyCMSContainer
      * @package MyCMS\App\Utils\Management

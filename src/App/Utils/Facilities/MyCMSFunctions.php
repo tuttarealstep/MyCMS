@@ -10,10 +10,6 @@
     use RecursiveDirectoryIterator;
     use RecursiveIteratorIterator;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSFunctions
     {
         function remove_space($string)

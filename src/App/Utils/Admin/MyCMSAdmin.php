@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Admin;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSAdmin
     {
         private $container;

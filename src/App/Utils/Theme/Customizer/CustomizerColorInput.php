@@ -1,10 +1,6 @@
 <?php
     namespace MyCMS\App\Utils\Theme\Customizer;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class CustomizerColorInput extends CustomizerItem
     {
         function __construct($id, $subItemId, $values)

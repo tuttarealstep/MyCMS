@@ -15,10 +15,6 @@
     use PDO;
     use PDOException;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSDatabase
     {
         private $pdo;

@@ -9,10 +9,6 @@
 
     use MyCMS\App\Utils\Management\MyCMSContainer;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSThemeCustomizer extends MyCMSContainer
     {
         private $menuList = [];

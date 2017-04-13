@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Facilities;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSThemeFunctions
     {
         private $theme;

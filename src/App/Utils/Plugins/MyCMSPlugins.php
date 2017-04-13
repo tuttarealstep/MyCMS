@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Plugins;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSPlugins
     {
         private static $functionIdCount = 0;

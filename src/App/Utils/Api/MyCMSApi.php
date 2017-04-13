@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Api;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSApi
     {
         //Todo add more api and support for multiple things or remove them.

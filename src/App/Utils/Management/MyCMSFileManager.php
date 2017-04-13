@@ -4,10 +4,6 @@
 
     use ZipArchive;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     /**
      * Class MyCMSFileManager
      *

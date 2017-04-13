@@ -7,12 +7,6 @@
 
 namespace MyCMS\App\Utils\Blog;
 
-use PDO;
-
-if (!defined("MY_CMS_PATH")) {
-    die("NO SCRIPT");
-}
-
 class MyCMSBlog
 {
     private $database, $settings, $container;

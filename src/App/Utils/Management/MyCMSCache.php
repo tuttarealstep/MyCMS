@@ -9,10 +9,6 @@
 
     use DirectoryIterator;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     /**
      * Class MyCMSCache
      * @package MyCMS\App\Utils\Management

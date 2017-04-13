@@ -9,10 +9,6 @@
 
     use MyCMS\App\Utils\Exceptions\MyCMSException;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSUsers
     {
         private $container;

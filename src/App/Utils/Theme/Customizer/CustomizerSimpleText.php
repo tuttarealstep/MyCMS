@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Theme\Customizer;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class CustomizerSimpleText extends CustomizerItem
     {
         function __construct($id, $subItemId, $values)

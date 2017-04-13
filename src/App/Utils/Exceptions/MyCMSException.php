@@ -7,10 +7,6 @@
 
     namespace MyCMS\App\Utils\Exceptions;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSException extends \Exception
     {
         public static $error_page = <<<ERROR

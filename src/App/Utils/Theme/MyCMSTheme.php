@@ -14,10 +14,6 @@
     use Twig_Loader_Filesystem;
     use ZipArchive;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSTheme
     {
         public $extension_array = [".html", ".php"];

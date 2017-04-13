@@ -10,10 +10,6 @@
     use MyCMS\App\Utils\Exceptions\MyCMSException;
     use MyCMS\App\Utils\Theme\MyCMSTheme;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     /**
      * Class MyCMSLanguage
      * @package MyCMS\App\Utils\Languages

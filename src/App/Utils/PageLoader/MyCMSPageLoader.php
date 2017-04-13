@@ -10,10 +10,6 @@
     use Twig_Environment;
     use Twig_Loader_Filesystem;
 
-    if (!defined("MY_CMS_PATH")) {
-        die("NO SCRIPT");
-    }
-
     class MyCMSPageLoader
     {
         private $container;
