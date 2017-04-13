@@ -488,7 +488,7 @@ class MyCMSBlog
         if ($this->settings->get_settings_value('blog_comments_active') == 'true') {
             $data = $this->container['functions']->time_normal_full(time());
             $author = $_SESSION['user']['id'];
-            if (!empty($postid)) {
+            if (!empty($postId)) {
                 if (!empty($comment)) {
                     if ($this->settings->get_settings_value('blog_comments_approve') == 'false') {
                         $this->database->query("INSERT INTO my_blog_post_comments (author,comments,postid,date,enable) VALUES(:autore, :commento, :postid, :data, '1')", array('autore' => $author, 'commento' => $comment, 'postid' => $postId, 'data' => $data));
