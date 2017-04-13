@@ -1,1 +1,149 @@
-<h1>MyCMS</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MyCMS - Home page</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic'
+          rel='stylesheet' type='text/css'>
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+
+
+    <link rel="icon" href="assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar icon-one"></span>
+                <span class="icon-bar icon-two"></span>
+                <span class="icon-bar icon-three"></span>
+            </button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="guides/introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h1 class="home_text" style="font-size: 52px">Hi, I'm MyCMS</h1>
+            <h2 class="home_text second_text">A Great Open Source CMS</h2>
+            <img src="assets/img/my_cms_1.png"
+                 class="screenshot">
+
+        </div>
+    </div>
+</div>
+<div class="jumbotron home_content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <div class="row text-center home_desc">
+                    <div class="col-md-6">
+                        <h3>Templating</h3>
+                        <p>
+                            MyCMS come with 2 templates engine. The latest version supports templates powered by <a
+                                href="http://twig.sensiolabs.org/" target="_blank">Twig</a>, an easy to
+                            understand templating
+                            language written specifically for designers.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Responsive</h3>
+                        <p>
+                            MyADMIN the management panel is responsive, whether on the go on your mobile device, or
+                            at home on your laptop or desktop, to easily manage your website in whatever place you
+                            are.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Content</h3>
+                        <p>
+                            If you don't know how write the code of the page of your website or simply you don't
+                            want write code, you can build your website with an intuitive editor powered by <a
+                                href="https://www.tinymce.com/" target="_blank">tinymce</a>.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Blog</h3>
+                        <p>
+                            Another functionality is the blog creation, if you want have a blog on your website,
+                            MyCMS can help you.<br><br>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>User Management</h3>
+                        <p>
+                            If you are a team and you want use MyCMS, you can easily manage all people.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Developers</h3>
+                        <p>
+                            Are you a developer? You want build your own theme or make your website easily, MyCMS
+                            have a lot of functionality for build from your own pc or online.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <h4>Links</h4>
+    <p><a href="https://github.com/tuttarealstep/MyCMS">GitHub</a></p>
+</div>
+<br>
+
+<script src="assets/js/jquery-3.1.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var _imageSlide;
+
+        var imagesName = ["my_cms_1", "my_cms_2", "my_cms_3", "my_cms_4"];
+        var i = 0;
+
+        function fadeImage()
+        {
+            $(".screenshot").attr("src", "assets/img/" + imagesName[i] + ".png").fadeIn();
+
+            i++;
+
+            if(i >= imagesName.length)
+            {
+                i = 0;
+            }
+        }
+
+        _imageSlide = setInterval( function()
+        {
+            fadeImage();
+        }, 3000 );
+
+    });
+</script>
+
+</body>
+</html>

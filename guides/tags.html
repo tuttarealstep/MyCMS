@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Tags - MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">DEVELOPER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">Tags</h2>
+            <p>MyCMS have a tag system, inside the themes and the administration panel.</p>
+            <p>This system is like the tag system in twig template engine.</p>
+            <p>The tags system is useful for don't write every time something. For example the site url, site name,
+                the
+                theme folder path or what you want.</p>
+            <hr>
+            <h3>The structure of a tag:</h3>
+            <p>In MyCMS for identify the tags we use the <b>"{"</b> open bracket, the <b>"@"</b> symbol, the tag,
+                the
+                <b>"@"</b> symbol and the <b>"}"</b> closing bracket.</p>
+            <p>For example:<br> <b>{@siteNAME@}</b>, <b>{@siteURL@}</b>...</p>
+            <h3>List of all default tags:</h3>
+            <ul>
+                <li><b>{@siteNAME@}</b>: the website name</li>
+                <li><b>{@my_cms_version@}</b>: the current MyCMS version</li>
+                <li><b>{@my_php_version@}</b>: the current php version</li>
+                <li><b>{@siteURL@}</b>: the website url</li>
+                <li><b>{@siteTEMPLATE@}</b>: the current enabled template</li>
+                <li><b>{@MY_ADMIN_TEMPLATE_PATH@}</b>: the path to MyAdmin template folder</li>
+                <li><b>{@siteTIMEZONE@}</b>: the current timezone</li>
+                <li><b>{@siteLANGUAGE@}</b>: the current language enabled</li>
+                <li><b>{@siteDESCRIPTION@}</b>: the website description</li>
+                <li><b>{@templateNAME@}</b>: the template name</li>
+                <li><b>{@templateVERSION@}</b>: the template version</li>
+                <li><b>{@templateAUTHOR@}</b>: the template author</li>
+                <li><b>{@my_cms_welcome_h1@}</b>: The welcome text of MyCMS</li>
+            </ul>
+            <h3>User tags:</h3>
+            <ul>
+                <li><b>{@user_name@}</b>: the user name</li>
+                <li><b>{@user_surname@}</b>: the user surname</li>
+                <li><b>{@user_mail@}</b>: the user email</li>
+                <li><b>{@user_ip@}</b>: the user ip</li>
+                <li><b>{@user_rank@}</b>: the user rank</li>
+                <li><b>{@user_last_access@}</b>: the user last access</li>
+            </ul>
+            <h3>How to add tags</h3>
+            <p>You can also add custom tags in your theme, open the functions.php file and add this.</p>
+            <p><b>"$this->container['theme']->add_tag('tag_name', 'tag_value');"</b> without ", <br>
+                <b>replace</b> <b>"tag_name"</b> with the tag name like "siteNAME", and <b>replace</b>
+                <b>"tag_value"</b> with the value.</p>
+            <p>For example I've added this custom tag: <br>
+                <b>"$this->container['theme']->add_tag('helloTag', 'Hello, I\'m a custom tag!');"</b><br>
+                {@helloTag@} => {@helloTag@}
+            </p>
+            <h3>How I can write tags in my theme?</h3>
+            <p>If you need to write a tag without it becoming replaced with its value, you need write before the tag
+                this: "no_".</p>
+            <p>For example: if you write {@no_helloTag@} become {@helloTag@}.</p>
+            <small>-For write {@no_helloTag@} I've add a custom tag.</small>
+            <hr>
+            <h3>Twig tags support</h3>
+            <p>Every MyCMS tag is a twig variable. <a href="http://twig.sensiolabs.org/doc/templates.html#variables"
+                                                      target="_blank">Twig variables</a></p>
+        </div>
+    </div>
+    <br>
+    <script src="../assets/js/jquery-3.1.0.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

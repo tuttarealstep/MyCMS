@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Post (MyAdmin)- MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">USER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">How make and manage post</h2>
+            <h3 id="post_menu">Post menu</h3>
+            <p>When you click on the post menu in the top left of the topbar, you can view two more options.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="images/myadmin_postmenu.png"/>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li><b><a href="#all_posts">All Posts</a></b>: this option redirect you to a page, for
+                            manage all posts, edit or remove.
+                        </li>
+                        <li><b><a href="#add_new_post">Add new Post</a></b>: this menu is for access rapidly to the
+                            page used to make post.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br><br>
+            <hr>
+            <h3 id="all_posts">All Posts</h3>
+            <p>On this page you can easily remove, edit all posts.<br>
+                On the center you can view a table, this table contain all information about the posts.<br>
+            <h4 id="all_posts_edit"><b>Edit</b></h4>
+            If you click on the <b>Title</b> of a post, you go to the page to edit the post.<br>
+            Else for edit post, you can select only one post and in the <b>menu</b>, under the tables, you need to
+            select edit and next click on <b>do</b>.</p>
+            <hr>
+            <h4 id="all_posts_edit"><b>Remove</b></h4>
+            For delete a post, you can select one or more post and in the <b>menu</b>, under the tables, you need to
+            select delete and next click on <b>do</b>.</p>
+            <img src="images/myadmin_postallpage.png"/>
+            <br><br>
+            <hr>
+            <h3 id="add_new_post">Add new Post</h3>
+            <p>For add a new post, you can click in the <b>All Posts</b> page the button: "Create a new post".<br>
+                This is the add new post page:</p>
+            <img src="images/myadmin_addnewpostpage.png"/>
+            <br><br>
+            <ul>
+                <li><b>Title</b>: the title of the post.</li>
+                <li><b>Textarea</b>: in the big text area you can write your post, for this area we use <a
+                        href="https://www.tinymce.com" target="_blank">TinyMCE</a>.<br> You can format your text
+                    like you want.
+                </li>
+                <li><b>Publication panel</b>: in this panel you can view the permalink of your post.</li>
+                <li><b>Categories panel</b>: in this panel you can select a category for your post. <br> For how
+                    create category click <a href="myadmin_categories">here</a>:
+                </li>
+            </ul>
+            <hr>
+
+            <a class="btn btn-primary" href="myadmin_comments.html">Next Step (MyAdmin Comments)</a>
+        </div>
+    </div>
+</div>
+<br>
+<script src="../assets/js/jquery-3.1.0.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

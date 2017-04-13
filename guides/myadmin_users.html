@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Users (MyAdmin)- MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">USER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">Users</h2>
+            <small>Users can login or register to the website only if the theme permit this.</small>
+            <h3 id="post_menu">Post menu</h3>
+            <p>When you click on the users menu in the top left of the topbar, you can view three more options.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="images/myadmin_usersmenu.png"/>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li><b><a href="#users_permissions">Users Permissions</a></b>: this option redirect you to a
+                            page, for give some permission to the users.
+                        </li>
+                        <li><b><a href="#bans_users">Bans users</a></b>: this menu redirect you to a page for ban
+                            user from the website.
+                        </li>
+                        <li><b><a href="#info_users">Info users</a></b>: this menu redirect you to a page for view
+                            the users info.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br><br>
+            <hr>
+            <h3 id="users_permissions">Users Permissions</h3>
+            <p>On this page you can easily add, remove special permission to any user.<br>
+                Permissions are a type of grade on your website.<br>
+            <ul>
+                <li><b>Administrator</b> (3 Grade), can access everywhere, edit settings etc...</li>
+                <li><b>Moderator / Blogger</b> (2 Grade), can access everywhere, but can only make and edit posts.
+                </li>
+                <li><b>User</b> (1 Grade), can access only on the website and not in MyAdmin.</li>
+            </ul>
+            <p>To add permission to any user, type his email and select the grade on the right panel.<br>
+                <small>User email can be found on users info.</small>
+            </p>
+            <img src="images/mycms_user_permissions.png"/>
+            <br><br>
+            <hr>
+            <h3 id="bans_users">Bans users</h3>
+            <p>On this page you can ban any user, by email or ip.<br>
+                If you ban a user, he can't view the website anymore, if you ban the email, he can recreate another
+                account (only if the theme permit login and registration).<br>
+                <br>
+                If you ban a user by ip, if he try access with this ip he can login in.</p>
+            <p>To ban a user, type on the right panel, his ip or his email and next select how much you want ban
+                him.<br></p>
+            <img src="images/mycms_user_ban.png"/>
+            <br><br>
+            <hr>
+            <h3 id="info_users">Info users</h3>
+            <p>On this page you can retrieve any users information.<br>
+                In the center you can view a tables with all the user information. If you need the user email or the
+                user ip you can easily get them, for ban the user or promote the user.</p>
+            <br><br>
+            <hr>
+            <a class="btn btn-primary" href="myadmin_themes.html">Next Step (MyAdmin Themes)</a>
+        </div>
+    </div>
+</div>
+<br>
+<script src="../assets/js/jquery-3.1.0.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

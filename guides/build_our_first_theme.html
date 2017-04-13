@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Build our first theme - MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">DEVELOPER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">Build our first theme:</h2>
+            <h3>Make "info.json"</h3>
+            <h4>-What is "info.json"</h4>
+            <p>The file info.json is a particular file related to themes. This json file contains all information
+                about the theme: name, author, version...</p>
+            <hr>
+            <p>Make a new folder on your pc and call it like you want.</p>
+            <img src="images/mycms_new_theme.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <p>Next inside the new folder make a new file, call it: "info.json":</p>
+            <img src="images/mycms_infojson.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <p>Edit the file with your favourite editor and copy or write the below things.</p>
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+{
+  "theme_name": "",
+  "theme_author": "",
+  "theme_zip_file_name": "",
+  "my_cms_version": "0.0.6.0",
+  "theme_error_page": "",
+  "theme_maintenance_page": "",
+  "theme_version": "",
+  "theme_languages": ""
+}
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_infojson_content.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <h4><b>What are these things?</b></h4>
+            <ul>
+                <li><b>"theme_name":</b> The theme name</li>
+                <li><b>"theme_author":</b> Author name</li>
+                <li><b>"theme_zip_file_name":</b> The .zip file of the theme who contain our theme files</li>
+                <li><b>"my_cms_version":</b> The supported version of mycms</li>
+                <li><b>"theme_error_page":</b> Name of the error page without extension</li>
+                <li><b>"theme_maintenance_page":</b> Name of the maintenance page without extension</li>
+                <li><b>"theme_version":</b> The theme version</li>
+                <li><b>"theme_languages":</b> All the languages files inside the "languages" folder in our theme,
+                    separated by a comma without extension
+                </li>
+            </ul>
+            <hr>
+            <p>Now edit the info json like this, add author name, theme name, error and maintenance page name...</p>
+            <img src="images/mycms_infojson_content_edit.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <small>I haven't filled "theme_zip_file_name" and "theme_languages" because I insert them later.</small>
+            <br>
+            <h4><b>Make a new folder and call it like "theme_name", but all lowercase and if you have used spaces
+                convert them in underscore.</b></h4>
+            <img src="images/mycms_newthemefolder.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <a class="btn btn-primary" href="structure_of_the_new_theme.html">Next Step - Build our
+                first theme (Structure of the new theme)</a>
+        </div>
+    </div>
+</div>
+<br>
+<script src="../assets/js/jquery-3.1.0.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

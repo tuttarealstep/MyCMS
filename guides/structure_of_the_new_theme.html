@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Build our first theme (Structure of the new theme) - MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">DEVELOPER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">Build our first theme (Structure of the new theme):</h2>
+            <h3>Make all the necessary folders</h3>
+            <p>Make two folder, "inc", "languages".</p>
+            <p>These folders contains the translation of the theme, other info and a function file.</p>
+            <img src="images/mycms_new_theme_folders.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <h4>Open the "inc" folder and make a "info.php" and "functions.php" file.</h4>
+            <p>The info.php file contains name, version, author, cms_version(required version) and a
+                require_twig_engine variable.</p>
+            <p>Open the info.php file and write these things. Fill like info.json. </p>
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+<?php
+$template['name'] = 'new_theme';
+$template['version'] = '0.0.0.1';
+$template['author'] = 'MyCMS';
+$template['cms_version'] = '0.0.6.0';
+$template['require_twig_engine'] = false;
+?>
+
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_new_theme_info_php.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <p><b>"require_twig_engine" is set to false because in this guide we go to build a theme in php
+                language.</b></p>
+            <blockquote>
+                <small>"require_twig_engine" is a variable used in case the constant "ENABLE_TWIG_TEMPLATE_ENGINE"
+                    in the config is true and we don't want disable it in the config, but our theme is a HTML or PHP
+                    theme and the twig engine don't support them.
+                </small>
+            </blockquote>
+            <hr>
+            <p>The functions.php file can contain php functions and route and other things. This file is included
+                before the cms send the response and before any page was loaded, for this you can insert functions
+                inside this file and call them in all the pages.</p>
+            <p>Open the functions.php file and write these things. </p>
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+<?php
+$this->container['router']->map( 'GET', '/', 'pages/index');
+$this->container['router']->map( 'GET', '/index', 'pages/index');
+$this->container['router']->map( 'GET', '/404', '404');
+$this->container['router']->map( 'GET', '/maintenance', 'maintenance');
+
+$this->container['theme']->index_error_style("<br><b>", "</b><br>");
+?>
+
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_new_theme_functions_php.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <blockquote><p>The "map" function inside the "router" class is an altorouter function, for other info
+                view <a href="http://altorouter.com/">http://altorouter.com/</a></p></blockquote>
+            <p>If a user visit our website ex: "http://www.localhost.test", he is redirected to the index page, in
+                the top of his browser he sees: "http://www.localhost.test" but is the same thing as
+                "http://www.localhost.test/index" because we have insert this: "$this->container['router']->map(
+                'GET', '/', 'pages/index');"</p>
+
+            <h3>What is "$this->container['foo']->bar" and what I can do with it?</h3>
+            <p>"$this" in php is a reference to the calling object, the current object in the theme is the
+                "MyCMSTheme" class.<br>
+                <br>In this class there is a variable called "$container", for this we write "$this->container[]",
+                and this variable is an array of objects, all objects inside are the classes loaded before the
+                "MyCMSTheme" class.</p>
+            <hr>
+            <p>With this variable accessible inside the theme, we can do what we want, build a query, get settings
+                from the database, use security functions...</p>
+            <p>For example the "index_error_style" function is a function inside the MyCMSTheme class, this function
+                allow adding a HTML tag before and after the {@INDEX_ERROR@} tag.
+                <br>
+                <small>- For know all default tags see the tag guide.</small>
+            </p>
+
+            <h3>Add a language to the Theme:</h3>
+            <p>You can also don't adding a language, but add is useful if you want make different translations of
+                your theme.</p>
+            <hr>
+            <p>Open now the "languages" folder and make a new file, call it "en_US.php" or any language you
+                want.</p>
+            <img src="images/mycms_language_en_us.png"
+                 class="img-responsive img-thumbnail"/>
+            <br>
+            <p>
+                Now open the file and write this:
+
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+<?php
+$language = ['Lorem ipsum' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'];
+?>
+
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_language_en_us_inside.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <p>You must write this "$language = [];" in any languages file or the translation don't work.</p>
+            <p>Like you can see there is a variable "$language", is an array, and inside we have inserted a key:
+                "Lorem ipsum", and a value: "Lorem ipsum [..]".
+                <br>
+                Now when in our theme we write: <br></p><textarea
+                style="width:250px"><p><?php e('Lorem ipsum');?></p></textarea><br>
+            <p>We view the content of the key "Lorem ipsum".<br>
+                <small>The "e" function is a function inside the MyCMSLanguage class. We can also access to it by
+                    writing this: "$this->container['languages']->e();"
+                </small>
+            </p>
+            <p>Now open the <b>info.json</b> file and write in the "theme_languages" the name of the translation
+                file without extension.</p>
+            <img src="images/mycms_language_infojson.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <h3>Now make the error and the maintenance page</h3>
+            <p>Inside the theme folder make two php file (because in this guide we make a php theme). Call them like
+                the error and maintenance page in the info.json file.</p>
+            <img src="images/mycms_404anderror.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Maintenance</h4>
+                    <textarea style="width: 100%; height: 200px">
+<?php
+define('PAGE_ID', 'maintenance');
+define('PAGE_NAME', 'Maintenance');
+add_meta_tag('maintenance', '<meta http-equiv="refresh" content=60 url="{@siteURL@}">');
+get_file('header');
+?>
+<h1>maintenance</h1>
+                        <?php get_file('footer'); ?>
+
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <h4>404</h4>
+                    <textarea style="width: 100%; height: 200px">
+<?php
+define('PAGE_ID', '404');
+define('PAGE_NAME', '404');
+get_file('header');
+?>
+                        <h2>404</h2>
+    <p><?php e('Lorem ipsum');?></p>
+                        <?php get_file('footer'); ?>
+
+                </textarea>
+                </div>
+            </div>
+            <br>
+            <p>If you use the "get_file" for load header and footer, you need put them on the theme folder and not
+                in a subfolder inside the theme.</p>
+            <small>The "get_file" function is used only for load header, footer,
+                page_loader(page_loader_top,page_loader_bottom). <br>For load any other page in a subfolder or in
+                the main theme folder you can use "get_page". View them inside the MyCMSTheme class.
+            </small>
+
+            <h3>Now make the header and the footer page</h3>
+            <img src="images/mycms_headerandfooter.png"
+                 class="img-responsive img-thumbnail"/>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Header</h4>
+                    <textarea style="width: 100%; height: 200px">
+<?php
+
+if(empty(PAGE_NAME))
+{
+    $page_title = "{@siteNAME@}";
+} else {
+    $page_title = "{@siteNAME@} : ".PAGE_NAME;
+}
+
+?>
+                        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <META name="description" content="{@siteDESCRIPTION@}">
+    <title><?php echo $page_title; ?></title>
+    {@getSTYLE=css@}
+</head>
+
+<body>
+
+header
+
+{@INDEX_ERROR@}
+
+
+</textarea>
+                </div>
+                <div class="col-md-6">
+                    <h4>Footer</h4>
+                    <textarea style="width: 100%; height: 200px">
+footer
+                        <?php get_style_script('script'); ?>
+
+                </textarea>
+                </div>
+            </div>
+            <h3>Now make the last necessary file: "page_loader"</h3>
+            <p>Make a new file and call it "page_loader.php". This file is used as container for the pages builded
+                with MyPage, the page in the administration panel.</p>
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+<?php get_file('header'); ?>
+                             {@page_loader_content@}
+                             <?php get_file('footer'); ?>
+
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_pageloader.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <br>
+            <h3>Make the last file</h3>
+            <p>In the functions.php file we have wrote this: "$this->container['router']->map( 'GET', '/index',
+                'pages/index');". <br>
+                This line mean that if a user make the "/index" request. The cms look in the theme folder then in
+                the pages folder and load the index.php file. </p>
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                         <textarea style="width: 100%; height: 200px">
+<?php
+define('PAGE_ID', 'index');
+define('PAGE_NAME', 'index');
+get_file('header');
+?>
+                             <h2>Index</h2>
+    <p><?php e('Lorem ipsum');?></p>
+                             <?php get_file('footer'); ?>
+                </textarea>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/mycms_indexpage.png"
+                         class="img-responsive img-thumbnail"/>
+                </div>
+            </div>
+            <br>
+            <blockquote>
+                <h3>Screenshot</h3>
+                <small>If you want, you can add a screenshot of your theme.<br> Make a png image in the principal
+                    folder of the theme, call it "screenshot.png" (max Height: 180px, max Width:180px).
+                </small>
+            </blockquote>
+            <a class="btn btn-primary" href="publish_the_theme.html">Next Step - Publish the theme</a>
+        </div>
+    </div>
+</div>
+<br>
+<script src="../assets/js/jquery-3.1.0.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

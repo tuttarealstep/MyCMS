@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Theme Manager (MyAdmin)- MyCMS Guides</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,500italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link rel="icon" href="../assets/img/MyCMS.ico">
+</head>
+<body>
+<nav class="navbar navbar-mycms navbar-fixed-top" role="navigation">
+    <div class="container">         <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false"><span
+                    class="sr-only">Toggle navigation</span> <span class="icon-bar icon-one"></span> <span
+                    class="icon-bar icon-two"></span> <span class="icon-bar icon-three"></span></button>
+            <a class="navbar-brand" href="https://tuttarealstep.github.io/MyCMS/">MyCMS</a></div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="introduction.html">Guides</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center header_row">
+        <h1 class="home_text">USER GUIDES</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 guides_menu_column">
+            <h4 class="guides_menu_title">GETTING STARTED</h4>
+            <ul class="guides_menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="requirements.html">Requirements</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="myadmin.html">MyAdmin</a></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="myadmin_post.html">Post</a></li>
+                        <li><a href="myadmin_comments.html">Comments</a></li>
+                        <li><a href="myadmin_categories.html">Categories</a></li>
+                        <li><a href="myadmin_menu.html">Menu</a></li>
+                        <li><a href="myadmin_my_page.html">My Page</a></li>
+                        <li><a href="myadmin_users.html">Users</a></li>
+                        <li><a href="myadmin_themes.html">Themes</a></li>
+                    </ul>
+                </li>
+                <hr>
+                <li><b>Developer</b></li>
+                <li class="guides_sub_menu">
+                    <ul class="guides_menu">
+                        <li><a href="how_mycms_work.html">How MyCMS Work</a></li>
+                        <li><a href="how_to_make_theme.html">How to make theme</a></li>
+                        <li class="guides_sub_menu">
+                            <ul class="guides_menu">
+                                <li><a href="build_our_first_theme.html">Build our first theme</a></li>
+                                <li><a href="structure_of_the_new_theme.html">Structure of the new theme</a></li>
+                                <li><a href="publish_the_theme.html">Publish the theme</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="edit_theme_code_online.html">Edit themes code online</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="configurationsFile.html">Configuration Files</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h2 class="guides_title">Theme Manager</h2>
+            <p>In this page you can manage all your themes or add a new one.</p>
+            <img src="images/myadmin_theme_manager.png"/>
+            <hr>
+            <h3 id="add_new">Add a new theme</h3>
+            <p>You can view in the right this panel, in the textbox you can paste a theme info.json link (If you
+                want know more about info.json, view in the development guide) and when you click add, mycms
+                download it.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="images/myadmin_add_a_new_theme.png"/>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li><b>Warning</b>: check the source of the url, don't trust any theme from everywhere, but
+                            only from official sources.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <div class="pull-right text-right">
+                <h3 id="themes">Themes</h3>
+                <p>Like you can see in the screen there are three themes. The default theme can't be deleted.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        <li><b>Info</b>: if you click this button you are redirect to the theme info page, where you
+                            can set it, remove it and edit it.
+                        </li>
+                        <li><b>Remove</b>: if you click this button you can rapidly remove the theme without go in
+                            to the theme info page.
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/myadmin_themes.png"/>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <hr>
+            <h3 id="info_theme">Themes info</h3>
+            <p>In the theme info page you can view which files and folders are in the theme. In the right you can
+                view three button and the theme info.</p>
+            <ul>
+                <li><b>Version</b>: the version of the theme.
+                </li>
+                <li><b>Author</b>: who have make this theme.
+                </li>
+                <li><b>Set button</b>: with this button you set the theme.
+                </li>
+                <li><b>Remove button</b>: with this button you can remove the theme (the default theme don't have
+                    this button).
+                </li>
+                <li><b>Edit in code editor button</b>: this button is explained in the development guide.
+                </li>
+                <li><b>Customize</b>: if you click here, you see a new page where you can change the style of the
+                    theme (if the theme support this).
+                </li>
+            </ul>
+            <img src="images/myadmin_info_themes.png"/>
+            <br><br>
+            <hr>
+            <h3 id="customize_page">Customize Page</h3>
+            <ul>
+                <li><b>Close button</b>: on the top left of the screen, if clicked an alert tell you if you want
+                    close.
+                </li>
+                <li><b>Save button</b>: on the top left of the screen, this button save all changes.
+                </li>
+                <li><b>Viewport buttons</b>: these buttons on the bottom left of the screen, permit you to change
+                    the viewport.
+                </li>
+                <li><b>Left menu</b>: in this menu you can change title, description of the website. In this menu
+                    you also find others menus of the theme.
+                </li>
+            </ul>
+            <img src="images/customizePage.png"/>
+            <br><br>
+        </div>
+    </div>
+</div>
+<br>
+<script src="../assets/js/jquery-3.1.0.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+</body>
+</html>

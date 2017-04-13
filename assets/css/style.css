@@ -1,0 +1,191 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #F4F4F9 !important;
+    color: #525255;
+    font-size: 1.6em;
+}
+
+/* Navbar */
+.navbar {
+    position: relative;
+}
+
+.navbar-mycms {
+    background: transparent;
+    border-radius: 0;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-size: 13px;
+    z-index: 1000;
+}
+
+.navbar-mycms .navbar-brand {
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    font-size: 28px;
+    color: #2F4550;
+}
+
+.navbar-mycms .nav li > a {
+    position: relative;
+    color: #2F4550;
+    border-top: 3px solid transparent;
+}
+
+.navbar-mycms .nav > li > a:focus, .navbar-mycms .nav > li > a:hover {
+    background: none;
+    border-top-color: #2D87DF;
+}
+
+.navbar-mycms .navbar-toggle .icon-bar {
+    background: #304D6D;
+}
+
+a, a:focus, a:active {
+    -webkit-transition: color .4s ease;
+    -moz-transition: color .4s ease;
+    -o-transition: color .4s ease;
+    -ms-transition: color .4s ease;
+    transition: color .4s ease;
+}
+
+.navbar-new, .navbar-custom .navbar-brand {
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    -ms-transition: all 0.4s ease-in-out 0s;
+    -o-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.navbar-toggle .icon-bar {
+    transition: all 0.25s;
+}
+
+.navbar-toggle .icon-one {
+    transform: rotate(45deg);
+    transform-origin: 10% 10%;
+}
+
+.navbar-toggle.collapsed .icon-one {
+    transform: rotate(0);
+}
+
+.navbar-toggle .icon-two {
+    opacity: 0;
+}
+
+.navbar-toggle.collapsed .icon-two {
+    opacity: 1;
+}
+
+.navbar-toggle .icon-three {
+    transform: rotate(-45deg);
+    transform-origin: 10% 90%;
+}
+
+.navbar-toggle.collapsed .icon-three {
+    transform: rotate(0);
+}
+
+/* TEXT */
+
+.home_text {
+    font-weight: 300;
+    margin: 50px 0;
+}
+
+.second_text {
+    color: #888888;
+}
+
+/* Homepage */
+.screenshot {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    -webkit-box-shadow: 0 0px 9px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 0px 9px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0px 9px 0px rgba(0, 0, 0, 0.6);
+}
+
+img {
+    max-width: 98%;
+}
+
+.home_content {
+    background-color: #337AB7;
+    border-radius: 0px !important;
+    color: #ffffff;
+}
+
+a {
+    color: #337AB7;
+}
+
+.home_desc > div > p > a {
+    color: #FFEB3B;
+}
+
+.header_row {
+    background-color: #337AB7;
+    color: #ffffff;
+}
+
+/* Guides */
+.guides_menu_title {
+    margin-top: 30px;
+    font-weight: 300;
+}
+
+ul.guides_menu {
+    padding: 0;
+    margin-left: 40px;
+}
+
+ul.guides_menu > li {
+    list-style-type: square;
+    padding: 0;
+    margin: 0;
+    border-right: 3px solid transparent;
+}
+
+ul.guides_menu > li > a {
+    color: #525255;
+    display: block;
+    /*padding: 0 10px;*/
+}
+
+ul.guides_menu > li:hover, ul.guides_menu > li.active {
+    background-color: #e6e6eb;
+    border-right: 3px solid #337AB7;
+}
+
+.guides_menu_column {
+    border-right: 1px solid #9b9b9b;
+}
+
+.guides_title {
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+h4.guides_title {
+    font-weight: bold;
+}
+
+.jumbotron p {
+    font-size: 16px;
+}
+
+li.guides_sub_menu {
+    list-style-type: none !important;
+}
+
+li.guides_sub_menu > ul.guides_menu {
+    margin: 0;
+    padding-left: 20px;
+}
