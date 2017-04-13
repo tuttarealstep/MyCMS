@@ -5,6 +5,8 @@ MyCMS is easy to setup and use for anything. If you don't know PHP or HTML and y
 
 If you are a developer, MyCMS is useful for any project, you can build a simple or advanced website in HTML, PHP or TWIG.
 
+**[Documentation](https://tuttarealstep.github.io/MyCMS/)**
+
 ## Requirements
 * PHP 5.6+
 
@@ -14,13 +16,11 @@ If you are a developer, MyCMS is useful for any project, you can build a simple 
     * xml
     * json
     * zip
-
+    * composer (for install libraries)
+    
 * **Server:**
     * Apache with (.htaccess)
     * Work also with nginx, iis (need to convert .htaccess rules).
-
-* (**Developers**)
-    * composer (for install libraries)
 
 ## What's inside?
 * Templating
