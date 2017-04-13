@@ -52,7 +52,6 @@
             $this->check(C_PATH . "/Ajax/code_editor_new_file.php", 777);
             $this->check(C_PATH . "/Ajax/code_editor_save_file.php", 777);
             $this->check(C_PATH . "/Ajax/code_editor_tree_view.php");
-            $this->check(C_PATH . "/Ajax/theme_manager_file.php");
             $this->check(C_PATH . "/Storage/", 777);
             $this->check(I_PATH . "/Security/MyCMSSecurity.php");
             $this->check(I_PATH . "/Theme/MyCMSTheme.php");

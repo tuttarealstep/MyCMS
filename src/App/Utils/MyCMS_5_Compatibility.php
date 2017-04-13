@@ -396,16 +396,12 @@
 
     function s_crypt($str)
     {
-        global $my_security;
-
-        return $my_security->s_crypt($str);
+        return base64_encode($str);
     }
 
     function s_decrypt($str)
     {
-        global $my_security;
-
-        return $my_security->s_decrypt($str);
+        return base64_decode($str);
     }
 
     function remove_space($string)
