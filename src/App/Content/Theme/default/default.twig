@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <META name="description" content="{{ siteDESCRIPTION }}">
+
+        <title>{% block title %}{% endblock %}</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,300,300italic,700,700italic'
+              rel='stylesheet' type='text/css'>
+
+        {@getSTYLE=css@}
+
+            <style>
+                    body {
+                            background-color: {{ backgroundColor }} !important;
+                            color: {{ bodyColor }} !important;
+                    }
+
+                    .navbar-mycms {
+                            background: {{ navbarBackgroundColor }} !important;
+                    }
+
+                    .navbar-mycms .navbar-brand{
+                            color: {{ navbarLogoColor }} !important;
+                    }
+
+                    .navbar-mycms .nav li > a {
+                            color: {{ navbarMenuTextColor }} !important;
+                    }
+            </style>
+
+        {{ container.theme.get_meta_tag( PAGE_ID ) }}
+    {% endblock %}
+</head>
+<body {% block bodyTag %}{% endblock %}>
+{% block topbar %}
+    {% include "pages/components/topbar.twig" %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+    {% include "pages/components/footer.twig" %}
+    {@getSTYLE=script@}
+    {{ container.plugins.applyEvent('underFooter') }}
+{% endblock %}
+</body>
+</html>

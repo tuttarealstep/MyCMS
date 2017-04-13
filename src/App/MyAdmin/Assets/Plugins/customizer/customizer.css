@@ -1,0 +1,187 @@
+.customizer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+    background-color: #262831;
+    color: #D3D3DC;
+    font-family: "Open Sans", sans-serif;
+}
+
+.left_panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: 20vw;
+    border-right: 1px solid #424242;
+}
+
+.left_panel > .container {
+    width: auto;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.left_panel .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.left_panel_menu_title {
+    border-bottom: 1px solid #424242;
+}
+
+.left_panel_menu .btn {
+    border: 1px solid #424242;
+    border-bottom: 0;
+    border-radius: 0;
+    color: #fff;
+}
+
+.left_panel_menu .btn:hover {
+    background-color: #1a1b1f;
+}
+
+.left_panel_menu_title .btn {
+    border-bottom: 0;
+}
+
+.left_panel_menu_content {
+    /*margin-top: 10px;*/
+    width: 100%;
+}
+
+.info_div {
+    background-color: #1a1b1f;
+    padding: 10px;
+    line-height: 1;
+}
+
+.small_text {
+    font-size: 14px;
+}
+
+.info_div strong {
+    padding-top: 4px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.left_panel_menu_bottom {
+    position: fixed;
+    bottom: 0;
+    height: auto;
+    width: 20vw;
+    border-bottom: 0;
+    border-top: 1px solid #424242;
+}
+
+.left_panel_menu_bottom .btn {
+    bottom: 0;
+    border-top: 0;
+    border-left: 0;
+    margin-left: -4px;
+}
+
+.right_panel {
+    position: fixed;
+    top: 0;
+    left: 20vw;
+    bottom: 0;
+    height: auto;
+    width: 80vw;
+    background-color: #1a1b1f;
+
+    -webkit-transition: all 1s;
+    transition: all 1s;
+}
+
+.right_panel iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.mobileScreen {
+    height: 480px;
+    width: 320px;
+}
+
+.tabletScreen {
+    height: 678px;
+    width: 720px;
+}
+
+.desktopScreen {
+    height: 100%;
+    width: 80vw;
+}
+
+.spaceTop {
+    margin-top: 8px;
+}
+
+.ulCustomMenu, .ulCustomMenuSub {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ulCustomMenuSub {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #262831;
+    top: 34px;
+    left: 0;
+}
+
+.ulCustomMenu > li {
+    border-bottom: 1px solid #424242;
+    line-height: 100%;
+    font-size: 18px;
+    padding: 6px;
+}
+
+.ulCustomMenu > li:hover {
+    background-color: #3c3e46;
+}
+
+.ulCustomMenu > li:first-child {
+    margin-top: -6px;
+}
+
+.ulCustomMenu > li > div > .fa {
+    float: right;
+}
+
+.noLRMargin {
+    border-right: 1px solid #424242;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-bottom: 0;
+    padding-top: 6px;
+    margin-top: 10px;
+}
+
+.subItemDescription {
+    font-size: small;
+    font-style: oblique;
+}
+
+.form-control {
+    margin-top: 6px;
+}
+
+.colorPicker {
+    border: 0;
+    background-color: transparent;
+    width: 100%;
+    height: 4vh;
+}

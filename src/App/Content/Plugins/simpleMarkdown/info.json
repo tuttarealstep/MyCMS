@@ -1,0 +1,9 @@
+{
+  "name": "simpleMarkdown",
+  "description": "Add an alternative to tinymce :D",
+  "url": "",
+  "author": "Stefano Valenzano",
+  "author url": "tuttarealstep.github.io",
+  "version": 1.0,
+  "pluginFile": "simpleMarkdown.php"
+}

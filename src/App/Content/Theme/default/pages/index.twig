@@ -1,0 +1,20 @@
+{% extends "default.twig" %}
+
+{% set title = siteNAME %}
+
+{% block title %}{{ container.languages.e('home_title') }}{% endblock title %}
+
+{% block topbar %}
+    {{ parent() }}
+{% endblock topbar %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="home_text" style="font-size: 52px">{{ container.languages.e('my_cms_welcome_h1') }}</h1>
+                <h3 class="home_text second_text">{{ container.languages.e('my_cms_welcome_description') }}</h3>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

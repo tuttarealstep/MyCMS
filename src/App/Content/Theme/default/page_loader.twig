@@ -1,0 +1,14 @@
+{% extends "default.twig" %}
+
+{% block title %}{{ constant("PAGE_NAME") }}{% endblock title %}
+
+{% block content %}
+    <div class="container"><!-- Heading Row -->
+        <div class="row">
+            <div class="col-md-12">
+                {{ page_loader_content | raw }}
+                <!-- /.col-md-12 --></div>
+            <!-- /.row --></div>
+    </div>
+
+{% endblock content %}

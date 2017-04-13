@@ -1,0 +1,55 @@
+{% extends "default.twig" %}
+
+{% set title = siteNAME %}
+
+{% block title %}{{ container.languages.e('home_title') }}{% endblock title %}
+
+{% block topbar %}
+    {{ parent() }}
+
+    {{ container.users.hide_if_logged() }}
+{% endblock topbar %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default" style="height: 348px;">
+                    <div class="panel-heading"><b><h2>{{ container.languages.e('login_h2_register_title') }}</h2></b>
+                    </div>
+                    <div class="panel-body">
+                        {{ container.languages.e('login_register_description') }}
+                        <a class="btn btn-danger" href="{@siteURL@}/registration" role="button"
+                           style="position:absolute;bottom:35px;left:30px;margin:0;">{{ container.languages.e('login_button_register') }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><b><h2>{{ container.languages.e('login_h2_login_title') }}</h2></b></div>
+                    <div class="panel-body">
+                        {{ container.languages.e('login_login_description') }}
+                        <form role="form" method="post">
+                            <div class="form-group">
+                                <label>{{ container.languages.e('login_login_email') }}</label>
+                                <input type="email" class="form-control" name="mail" id="mail" value=""
+                                       style="width: 260px;" required="required"><br>
+                                <label>{{ container.languages.e('login_login_password') }}</label>
+                                <input type="password" class="form-control" name="password" id="password" value=""
+                                       style="width: 260px;"/>
+                                <br>
+                                <button type="submit" class="btn btn-info pull-right"
+                                        name="login">{{ container.languages.e('login_login_button') }}</button>
+                                <label>
+                                    <input name="remember" type="checkbox"
+                                           value="remember_t"> {{ container.languages.e('login_login_remember') }}
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

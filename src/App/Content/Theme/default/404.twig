@@ -1,0 +1,14 @@
+{% extends "default.twig" %}
+
+{% block title %}{{ container.languages.e('404_error_page_name') }}{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="home_text" style="font-size: 52px">{{ container.languages.e('404_title') }}</h1>
+                <h2 class="home_text second_text">{{ container.languages.e('404_description') }}</h2>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,414 @@
+{% extends "default.twig" %}
+
+
+{% if _GET['id'] %}
+    {% set postID = _GET['id'] %}
+    {% if container.blog.verifyPostId(postID) %}
+        {% set title = container.blog.getInfo('title', postID) ~ " - " ~ siteNAME %}
+        {% set archive = 0 %}
+    {% endif %}
+{% elseif _GET['category'] %}
+    {% set catName = container.security.my_sql_secure(_GET['category']) %}
+    {% set title = catName ~ " - " ~ siteNAME %}
+
+    {% if _GET['maxPosts'] %}
+        {% set max = _GET['maxPosts'] %}
+    {% else %}
+        {% set max = 10 %}
+    {% endif %}
+    {% set next = max + 10 %}
+    {% set archive = 2 %}
+
+{% elseif _GET['author'] %}
+    {% set authorId = container.security.my_sql_secure(_GET['author']) %}
+    {% if container.users.userIdExist(authorId) == true %}
+
+        {% set authorName = container.users.getUserName(authorId) %}
+        {% set title = authorName ~ " - " ~ siteNAME %}
+
+        {% if _GET['maxPosts'] %}
+            {% set max = _GET['maxPosts'] %}
+        {% else %}
+            {% set max = 10 %}
+        {% endif %}
+        {% set next = max + 10 %}
+        {% set archive = 3 %}
+    {% else %}
+        {% set max = 10 %}
+        {% set next = max + 10 %}
+        {% set title = siteNAME %}
+        {% set archive = 1 %}
+        {% set title = siteNAME %}
+        {% set archive = 1 %}
+    {% endif %}
+{% elseif _GET['search'] %}
+    {% set words = container.functions.stringUrlDecode(container.security.my_sql_secure(_GET['search'])) %}
+    {% set title = words ~ " - " ~ siteNAME %}
+
+    {% if _GET['maxPosts'] %}
+        {% set max = _GET['maxPosts'] %}
+    {% else %}
+        {% set max = 10 %}
+    {% endif %}
+    {% set next = max + 10 %}
+    {% set archive = 4 %}
+{% elseif _GET['year'] %}
+    {% set postID = container.blog.getInfo("idFROMpermalink", "/blog/" ~ container.security.my_sql_secure(_GET['year']) ~ "/" ~container.security.my_sql_secure( _GET['month']) ~ "/" ~ container.security.my_sql_secure(_GET['title'])) %}
+    {% set title = container.blog.getInfo('title', postID) ~ " - " ~ siteNAME %}
+    {% set archive = 0 %}
+{% else %}
+    {% if _GET['maxPosts'] %}
+        {% set max = _GET['maxPosts'] %}
+    {% else %}
+        {% set max = 10 %}
+    {% endif %}
+    {% set next = max + 10 %}
+    {% set title = siteNAME %}
+    {% set archive = 1 %}
+{% endif %}
+
+    {% block title %}{{ title  }}{% endblock title %}
+
+
+{% block bodyTag %}
+    {% if archive == 0 %}
+        style="background-color: #fff !important"
+    {% endif %}
+{% endblock bodyTag %}
+
+{% block topbar %}
+    {{ parent() }}
+{% endblock topbar %}
+
+{% block content %}
+    {% if archive == 0 %}
+        <div class="container-fluid archive-0">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <article class="articlePage">
+                        <a class="author-info pull-left"
+                           href="/blog/author/{{ container.blog.getInfo('authorID', postID) }}">{{ container.blog.getInfo('authorName', postID) }}</a>&nbsp;
+                        <h6>{{ container.blog.getInfo('date', postID)|date("d/m/Y") }}</h6>
+                        <hr>
+                        <h1>{{ container.blog.getInfo('title', postID) }}</h1>
+                        <div class="article-content-post-page" style="height: 100%;">
+                            {{ container.blog.getInfo('content', postID) | raw }}
+                        </div>
+                    </article>
+                </div>
+            </div>
+            {% if container.settings.get_settings_value('blog_comments_active') == 'true' and container.users.user_logged_in() %}
+            <div class="row comment-section-post-page">
+                <div class="col-md-6 col-md-offset-3">
+                    <form role="form" method="post" action="">
+                        <div class="form-group">
+                            <input type="hidden" name="post_id" value="<?php echo $blogid;?>"/>
+                            <textarea name="commento"
+                                      placeholder="{{ container.languages.e('blog_post_title_comment') }}"
+                                      style=" width:100%;min-width:100%;max-width:100%;height:100px;min-height:100px;max-height:100px;"
+                                      maxlength="250" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="section-colored text-center">
+                            <button type="submit" name="postCOMMENT"
+                                    class="btn btnBlog btn-block">{{ container.languages.e('blog_post_comment_button_send') }}</button>
+                            <br>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row comment-section-post-page">
+                <div class="col-md-6 col-md-offset-3">
+                    <h4>{{ container.languages.e('blog_post_last_comments') }}
+                        ({{ container.blog.getInfo('commentsNumber', postID) }})</h4>
+                    {% if container.blog.getInfo('commentsNumber', postID) > 0 %}
+                        {% for comment in container.blog.getInfo('comments', postID) %}
+                            <div class="well well-sm">
+                                <h4>{{ container.users.getUserName(comment.author) }}
+                                    <small>{{ comment.date }}</small>
+                                    <br>
+                                    <br>
+                                    <small>{{ comment.comments }}</small>
+                                </h4>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="well well-sm">
+                            <p>{{ container.languages.e('blog_post_0_comments') }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% elseif archive == 1 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% set counter = 0 %}
+                    {% for post in container.blog.getPosts(max) %}
+                        <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
+                            <h1>{{ post.postTITLE }}</h1>
+                            {% if  post.postCONT | length > 255 %}
+                                {{ post.postCONT | striptags [:255] | raw }}...
+                            {% else %}
+                                {{ post.postCONT | raw }}
+                            {% endif %}
+                            <div class="bottomPostInformation">
+                                <div class="row">
+                                    <div class="col-md-12 read-more-button-container">
+                                        <a class="read-more-button"
+                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <p><a class="author-info pull-left"
+                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
+                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        {% set counter = counter + 1 %}
+                    {% endfor %}
+                    <div class="text-center">
+                        {% if counter > 0 %}
+                        <a class="btn btnBlog"
+                           href="/blog/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="textOnBg">{{ container.languages.e('blog-bar_popular_categories') }}</div>
+                    <hr>
+                    <ul class="list-unstyled">
+                        {% for category in container.blog.getCategories() %}
+                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <form method="post" accept-charset="utf-8">
+                        <div class="input-group">
+                            <input id="searchbox" type="text" name="searchform" class="form-control"
+                                   placeholder="{{ container.languages.e('blog-bar_search') }}">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-default" name="search" type="submit">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% elseif archive == 2 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>{{ container.languages.e('blog_all_posts_in_category') }} <b>{{ catName }}</b></h3>
+                    {% set counter = 0 %}
+                    {% for post in container.blog.getPostsFromCategory(max, catName) %}
+                        <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
+                            <h1>{{ post.postTITLE }}</h1>
+                            {% if  post.postCONT | length > 255 %}
+                                {{ post.postCONT | striptags [:255] | raw }}...
+                            {% else %}
+                                {{ post.postCONT | raw }}
+                            {% endif %}
+                            <div class="bottomPostInformation">
+                                <div class="row">
+                                    <div class="col-md-12 read-more-button-container">
+                                        <a class="read-more-button"
+                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <p><a class="author-info pull-left"
+                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
+                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        {% set counter = counter + 1 %}
+                    {% endfor %}
+                    {% if max <= counter %}
+                        <div class="text-center">
+                            <a class="btn btnBlog"
+                               href="/blog/category/{{ catName }}/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="textOnBg">{{ container.languages.e('blog-bar_popular_categories') }}</div>
+                    <hr>
+                    <ul class="list-unstyled">
+                        {% for category in container.blog.getCategories() %}
+                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <form method="post" accept-charset="utf-8">
+                        <div class="input-group">
+                            <input id="searchbox" type="text" name="searchform" class="form-control"
+                                   placeholder="{{ container.languages.e('blog-bar_search') }}">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-default" name="search" type="submit">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    {% elseif archive == 3 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>{{ container.languages.e('blog_all_posts_by_author') }} <b>{{ authorName }}</b></h3>
+                    {% set counter = 0 %}
+                    {% for post in container.blog.getPostsFromAuthorId(max, authorId) %}
+                        <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
+                            <h1>{{ post.postTITLE }}</h1>
+                            {% if  post.postCONT | length > 255 %}
+                                {{ post.postCONT | striptags [:255] | raw }}...
+                            {% else %}
+                                {{ post.postCONT | raw }}
+                            {% endif %}
+                            <div class="bottomPostInformation">
+                                <div class="row">
+                                    <div class="col-md-12 read-more-button-container">
+                                        <a class="read-more-button"
+                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <p><a class="author-info pull-left"
+                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
+                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        {% set counter = counter + 1 %}
+                    {% endfor %}
+                    {% if max <= counter %}
+                        <div class="text-center">
+                            <a class="btn btnBlog"
+                               href="/blog/author/{{ authorId }}/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="textOnBg">{{ container.languages.e('blog-bar_popular_categories') }}</div>
+                    <hr>
+                    <ul class="list-unstyled">
+                        {% for category in container.blog.getCategories() %}
+                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <form method="post" accept-charset="utf-8">
+                        <div class="input-group">
+                            <input id="searchbox" type="text" name="searchform" class="form-control"
+                                   placeholder="{{ container.languages.e('blog-bar_search') }}">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-default" name="search" type="submit">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    {% elseif archive == 4 %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>{{ container.languages.e('blog_you_search') }} <b>{{ words }}</b></h3>
+                    {% set counter = 0 %}
+                    {% for post in container.blog.getPostsFromSearch(max, words) %}
+                        <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
+                            <h1>{{ post.postTITLE }}</h1>
+                            {% if  post.postCONT | length > 255 %}
+                                {{ post.postCONT | striptags [:255] | raw }}...
+                            {% else %}
+                                {{ post.postCONT | raw }}
+                            {% endif %}
+                            <div class="bottomPostInformation">
+                                <div class="row">
+                                    <div class="col-md-12 read-more-button-container">
+                                        <a class="read-more-button"
+                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <p><a class="author-info pull-left"
+                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
+                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        {% set counter = counter + 1 %}
+                    {% endfor %}
+                    {% if max <= counter %}
+                        <div class="text-center">
+                            <a class="btn btnBlog"
+                               href="/blog/search/{{ words }}/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="textOnBg">{{ container.languages.e('blog-bar_popular_categories') }}</div>
+                    <hr>
+                    <ul class="list-unstyled">
+                        {% for category in container.blog.getCategories() %}
+                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <form method="post" accept-charset="utf-8">
+                        <div class="input-group">
+                            <input id="searchbox" type="text" name="searchform" class="form-control"
+                                   placeholder="{{ container.languages.e('blog-bar_search') }}">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-default" name="search" type="submit">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

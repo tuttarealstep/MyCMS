@@ -1,0 +1,270 @@
+/* CODE MIRROR */
+.CodeMirror-fullscreen {
+    position: fixed;
+    top: 25px;
+    left: 200px;
+    right: 0;
+    bottom: 25px;
+    height: auto;
+}
+
+.CodeMirror-gutter-wrapper.CodeMirror-activeline-gutter > .CodeMirror-linenumber {
+    color: #fff;
+}
+
+/* Simple Scrollbar EDIT */
+.CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
+    position: absolute;
+    background: #5E627B;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #5E627B;
+    border-radius: 2px;
+}
+
+.CodeMirror-simplescroll-horizontal, .CodeMirror-simplescroll-vertical {
+    position: absolute;
+    z-index: 6;
+    background: transparent;
+}
+
+.CodeMirror-simplescroll-horizontal {
+    bottom: 0;
+    left: 0;
+    height: 6px;
+}
+
+.CodeMirror-simplescroll-horizontal div {
+    bottom: 0;
+    height: 100%;
+}
+
+.CodeMirror-simplescroll-vertical {
+    right: 0;
+    top: 0;
+    width: 6px;
+}
+
+.CodeMirror-simplescroll-vertical div {
+    right: 0;
+    width: 100%;
+}
+
+.CodeMirror-overlayscroll .CodeMirror-scrollbar-filler, .CodeMirror-overlayscroll .CodeMirror-gutter-filler {
+    display: none;
+}
+
+.CodeMirror-overlayscroll-horizontal div, .CodeMirror-overlayscroll-vertical div {
+    position: absolute;
+    background: #bcd;
+    border-radius: 3px;
+}
+
+.CodeMirror-overlayscroll-horizontal, .CodeMirror-overlayscroll-vertical {
+    position: absolute;
+    z-index: 6;
+}
+
+.CodeMirror-overlayscroll-horizontal {
+    bottom: 0;
+    left: 0;
+    height: 6px;
+}
+
+.CodeMirror-overlayscroll-horizontal div {
+    bottom: 0;
+    height: 100%;
+}
+
+.CodeMirror-overlayscroll-vertical {
+    right: 0;
+    top: 0;
+    width: 6px;
+}
+
+.CodeMirror-overlayscroll-vertical div {
+    right: 0;
+    width: 100%;
+}
+
+.CodeMirror-scrollbar-filler {
+    background-color: transparent;
+}
+
+/* Text editor */
+.my_text_editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+    z-index: 1001;
+    background-color: #262831;
+    color: #D3D3DC;
+    font-family: "Open Sans", sans-serif;
+}
+
+.left_panel {
+    position: fixed;
+    top: 25px;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    width: 200px;
+}
+
+.topbar_panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 25px;
+    width: auto;
+    line-height: 2;
+}
+
+.bottombar_panel {
+    border-top: solid 1px #325D7D;
+    position: fixed;
+    left: 200px;
+    right: 0;
+    bottom: 0;
+    height: 25px;
+    width: auto;
+    line-height: 1.5;
+}
+
+#file_manager {
+    height: 100%;
+    width: 200px;
+    position: relative;
+    margin-left: -16px;
+}
+
+.filetree {
+    list-style: none;
+}
+
+.filetree > li > a {
+    color: #a6bbbb;
+}
+
+.filetree > li > a:hover, .filetree > li > a:focus {
+    text-decoration: none;
+}
+
+/* Icons */
+
+.filetree > li {
+    position: relative;
+}
+
+.filetree > li.file:before {
+    content: "\f15b";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+}
+
+.filetree > li.file.ext_jpg:before {
+    content: "\f1c5";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+}
+
+.filetree > li.file.ext_png:before {
+    content: "\f1c5";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+}
+
+.filetree > li.file.ext_gif:before {
+    content: "\f1c5";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+}
+
+.filetree > li.file.ext_jpeg:before {
+    content: "\f1c5";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+}
+
+.filetree > li.file.ext_php:before {
+    content: "\f1c9";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    color: #b5a6f2;
+}
+
+.filetree > li.file.ext_js:before {
+    content: "\f15b";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    color: #f2976c;
+}
+
+.filetree > li.file.ext_html:before {
+    content: "\f13b";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    color: #da4542;
+}
+
+.filetree > li.file.ext_css:before {
+    content: "\f13c";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    color: #72da67;
+}
+
+.filetree > li.folder.expanded > a:before {
+    content: "\f0d7 \00a0 \f07b";
+    font-family: "FontAwesome", serif;
+    left: -33px;
+    position: absolute;
+    top: 0;
+    color: #bd9662;
+}
+
+.filetree > li.file.ext_twig:before {
+    content: "\f1bb";
+    font-family: "FontAwesome", serif;
+    left: -20px;
+    position: absolute;
+    top: 0;
+    color: #5ba762;
+}
+
+.filetree > li.folder.collapsed > a:before {
+    content: "\f0da \00a0 \f07b";
+    font-family: "FontAwesome", serif;
+    left: -30px;
+    position: absolute;
+    top: 0;
+    color: #bd9662;
+}
+
+.filetree > li:hover {
+    /*background-color: rgba(255, 255, 255, 0.3);*/
+}

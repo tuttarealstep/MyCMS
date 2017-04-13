@@ -1,0 +1,9 @@
+{
+  "name": "Check MyCMS Permission",
+  "description": "Check files and folders permissions for update and other things",
+  "url": "",
+  "author": "MyCMS Team",
+  "author url": "",
+  "version": 1.0,
+  "pluginFile": "checkMyCMSPermissions.php"
+}

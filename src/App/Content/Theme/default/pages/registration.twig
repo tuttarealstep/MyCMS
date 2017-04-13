@@ -1,0 +1,64 @@
+{% extends "default.twig" %}
+
+{% set title = siteNAME %}
+
+{% block title %}{{ container.languages.e('registration_page_title') }}{% endblock title %}
+
+{% block topbar %}
+    {{ parent() }}
+
+    {{ container.users.hide_if_logged() }}
+{% endblock topbar %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form role="form" method="post" action="">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="well well-sm"><strong><span
+                                    class="glyphicon glyphicon-asterisk"></span> {{ container.languages.e('registration_obbligatory') }}
+                        </strong></div>
+                    <div class="form-group" style="color: #ffffff">
+                        <label for="Input"><?php e('registration_name'); ?></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="name" id="name"
+                                   placeholder="{{ container.languages.e('registration_insert') }} {{ container.languages.e('registration_name') }}"
+                                   required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="color: #ffffff">
+                        <label for="Input"><?php e('registration_surname'); ?></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="surname" name="surname"
+                                   placeholder="{{ container.languages.e('registration_insert') }} {{ container.languages.e('registration_surname') }}"
+                                   required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="color: #ffffff">
+                        <label for="Input"><?php e('registration_email'); ?></label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="mail" name="mail"
+                                   placeholder="{{ container.languages.e('registration_insert') }} {{ container.languages.e('registration_email') }}"
+                                   required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="color: #ffffff">
+                        <label for="Input"><?php e('registration_password'); ?></label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="{{ container.languages.e('registration_insert') }} {{ container.languages.e('registration_password') }}">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        </div>
+                    </div>
+                    <input type="submit" name="register" id="submit"
+                           value="{{ container.languages.e('registration_button_register') }}"
+                           class="btn btn-block btn-info pull-right">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
