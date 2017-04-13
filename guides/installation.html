@@ -27,8 +27,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
+                <li><a href="/MyCMS">Home</a></li>
                 <li><a href="introduction.html">Guides</a></li>
+                <li><a href="https://github.com/tuttarealstep/MyCMS">GitHub</a></li>
             </ul>
         </div>
     </div>
@@ -84,7 +85,8 @@
             <h2 class="guides_title">Installation</h2>
             <p>Before install MyCMS, you should check the <a href="requirements.html">Requirements</a></p>
             <h3 id="download">Step 1: Download and Extract</h3>
-            <p>Download and unzip MyCMS from: <a target="_blank" href="https://github.com/tuttarealstep/MyCMS">GitHUB</a></p>
+            <p>Download and unzip MyCMS from: <a target="_blank"
+                                                 href="https://github.com/tuttarealstep/MyCMS">GitHUB</a></p>
             <ul>
                 <li>If you will be uploading MyCMS on a remote webserver, download it with your browser and extract
                     it locally.
@@ -96,14 +98,18 @@
             <br>
             <p>
                 Now you need to use <b>composer</b> for install libraries:<br>
-                Open the terminal and write: <code>composer install</code> in the root folder where is the "composer.json" file.
+                Open the terminal and write: <code>composer install</code> in the root folder where is the
+                "composer.json" file.
                 <br>
-                -<b>Not recommended</b> but if you can't install or use <b>composer</b>, download <a href="../assets/files/vendor.zip" download>this</a> zip file and place the <b>"vendor"</b> folder where is the composer.json file.
+                -<b>Not recommended</b> but if you can't install or use <b>composer</b>, download <a
+                    href="../assets/files/vendor.zip" download>this</a> zip file and place the <b>"vendor"</b> folder
+                where is the composer.json file.
             </p>
             <p><b>After the upload of all things set the permission to write and read, if you use linux type: "chmod
                 755 -R website_root_folder_path". Replace "website_root_folder_path" with the path.<br>
-                <p><b>The installation and configuration folder(inside "src/App") need of the 777 permission for write the configuration file.</b></p>
-                If you use a ftp program or other, check how set the permissions.</B></p>
+            <p><b>The installation and configuration folder(inside "src/App") need of the 777 permission for write the
+                configuration file.</b></p>
+            If you use a ftp program or other, check how set the permissions.</B></p>
             <h3 id="database">Step 2: Create Database</h3>
             <h4>Using phpMyAdmin</h4>
             <p>Open phpMyAdmin on your web server, if you want test it locally, download <a

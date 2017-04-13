@@ -1,9 +1,11 @@
 {
-  "my_cms_core_update":"0.0.6.1",
-  "my_cms_db_update":"0.0.1",
-  "my_cms_changelog_array":[
-    {"0.0.6.2":"TEST Update!"}
+  "my_cms_core_update": "0.0.6.1",
+  "my_cms_db_update": "0.0.1",
+  "my_cms_changelog_array": [
+    {
+      "0.0.6.2": "TEST Update!"
+    }
   ],
-  "my_cms_db_changelog_array":[
+  "my_cms_db_changelog_array": [
   ]
 }

@@ -36,8 +36,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
+                <li><a href="/MyCMS">Home</a></li>
                 <li><a href="guides/introduction.html">Guides</a></li>
+                <li><a href="https://github.com/tuttarealstep/MyCMS">GitHub</a></li>
             </ul>
         </div>
     </div>
@@ -119,28 +120,25 @@
 <script src="assets/js/bootstrap.min.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var _imageSlide;
 
         var imagesName = ["my_cms_1", "my_cms_2", "my_cms_3", "my_cms_4"];
         var i = 0;
 
-        function fadeImage()
-        {
+        function fadeImage() {
             $(".screenshot").attr("src", "assets/img/" + imagesName[i] + ".png").fadeIn();
 
             i++;
 
-            if(i >= imagesName.length)
-            {
+            if (i >= imagesName.length) {
                 i = 0;
             }
         }
 
-        _imageSlide = setInterval( function()
-        {
+        _imageSlide = setInterval(function () {
             fadeImage();
-        }, 3000 );
+        }, 3000);
 
     });
 </script>
