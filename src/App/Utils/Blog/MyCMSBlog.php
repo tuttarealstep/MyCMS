@@ -486,7 +486,7 @@ class MyCMSBlog
     function addcomments($postId, $comment)
     {
         if ($this->settings->get_settings_value('blog_comments_active') == 'true') {
-            $data = time_normal_full(time());
+            $data = $this->container['functions']->time_normal_full(time());
             $author = $_SESSION['user']['id'];
             if (!empty($postid)) {
                 if (!empty($comment)) {
