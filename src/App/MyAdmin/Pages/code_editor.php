@@ -57,7 +57,6 @@
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/css/css.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/htmlembedded/htmlembedded.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/htmlmixed/htmlmixed.js"></script>
-<script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/clike/clike.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/sass/sass.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/mode/twig/twig.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/codemirror-5.16.0/addon/display/fullscreen.js"></script>
