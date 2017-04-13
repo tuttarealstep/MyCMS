@@ -1,0 +1,22 @@
+{
+  "name": "tuttarealstep/MyCMS",
+  "description": "MyCMS is a PHP based CMS, useful for clients and developers.",
+  "minimum-stability": "dev",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Stefano Valenzano",
+      "email": "valenzano.stefano99@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "monolog/monolog": "^1.18",
+    "twig/twig": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "MyCMS\\": "src/"
+    }
+  }
+}
