@@ -16,13 +16,13 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
 
-                {% if container.theme.is_maintenance == false %}
+                {% if container.theme.isMaintenance == false %}
 
                     <!--{{ container.theme.get_menu }}-->
                     {{ container.plugins.applyEvent('getMenu', true) | raw }}
 
                 {% endif %}
-                {% if container.users.user_logged_in() %}
+                {% if container.users.userLoggedIn() %}
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{@user_name@}
@@ -38,9 +38,9 @@
                         </li>
                     </ul>
                 {% else %}
-                        <li><a href="{@siteURL@}/login"><i
-                                        class="fa fa-user"></i> {{ container.languages.e('header_login/registration_button') }}
-                            </a></li>
+                    <li><a href="{@siteURL@}/login"><i
+                                    class="fa fa-user"></i> {{ container.languages.e('header_login/registration_button') }}
+                        </a></li>
                 {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->

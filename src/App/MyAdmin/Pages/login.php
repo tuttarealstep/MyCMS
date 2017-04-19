@@ -1,30 +1,30 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_logged();
+hideIfStaffLogged();
 
-    define('PAGE_ID', 'admin_login');
-    define('PAGE_NAME', ea('page_login_page_name', '1'));
+define('PAGE_ID', 'admin_login');
+define('PAGE_NAME', ea('page_login_page_name', '1'));
 
-    get_file_admin('header');
+getFileAdmin('header');
 ?>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
             <?php
-                if (defined("INDEX_ERROR")) {
-                    ?>
-                    <div class="login-panel panel"
-                         style="margin-bottom: -20%; padding: 8px; border-bottom: 3px solid #b71c1c;">
-                        <div class="panel-body login-panel-body">
-                            <?php echo INDEX_ERROR; ?>
-                        </div>
+            if (defined("INDEX_ERROR")) {
+                ?>
+                <div class="login-panel panel"
+                     style="margin-bottom: -20%; padding: 8px; border-bottom: 3px solid #b71c1c;">
+                    <div class="panel-body login-panel-body">
+                        <?php echo INDEX_ERROR; ?>
                     </div>
-                    <?php
-                }
+                </div>
+                <?php
+            }
             ?>
             <div class="login-panel panel">
                 <div class="panel-heading">
@@ -59,6 +59,6 @@
     </div>
 </div>
 
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 </body>
 </html>

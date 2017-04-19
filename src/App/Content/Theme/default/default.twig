@@ -15,26 +15,26 @@
 
         {@getSTYLE=css@}
 
-            <style>
-                    body {
-                            background-color: {{ backgroundColor }} !important;
-                            color: {{ bodyColor }} !important;
-                    }
+        <style>
+            body {
+                background-color: {{ backgroundColor }} !important;
+                color: {{ bodyColor }} !important;
+            }
 
-                    .navbar-mycms {
-                            background: {{ navbarBackgroundColor }} !important;
-                    }
+            .navbar-mycms {
+                background: {{ navbarBackgroundColor }} !important;
+            }
 
-                    .navbar-mycms .navbar-brand{
-                            color: {{ navbarLogoColor }} !important;
-                    }
+            .navbar-mycms .navbar-brand {
+                color: {{ navbarLogoColor }} !important;
+            }
 
-                    .navbar-mycms .nav li > a {
-                            color: {{ navbarMenuTextColor }} !important;
-                    }
-            </style>
+            .navbar-mycms .nav li > a {
+                color: {{ navbarMenuTextColor }} !important;
+            }
+        </style>
 
-        {{ container.theme.get_meta_tag( PAGE_ID ) }}
+        {{ container.theme.getMetaTag( PAGE_ID ) }}
     {% endblock %}
 </head>
 <body {% block bodyTag %}{% endblock %}>

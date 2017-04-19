@@ -1,17 +1,17 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    define('PAGE_ID', 'admin_home');
-    define('PAGE_NAME', ea('page_home_page_name', '1'));
+define('PAGE_ID', 'admin_home');
+define('PAGE_NAME', ea('page_home_page_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    global $my_db, $my_theme;
+global $my_db, $my_theme;
 
 ?>
 <div class="container">
@@ -83,23 +83,23 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <?php
-                        $info = $my_theme->there_is_new_update(false);
-                        if ($info[0] == true) {
-                            switch ($info[1]) {
-                                case 'all_update':
-                                    $update_text = ea('page_home_general_info_update_all', true);
-                                    break;
-                                case 'core_update':
-                                    $update_text = ea('page_home_general_info_core_update', true);
-                                    break;
-                                case 'db_update':
-                                    $update_text = ea('page_home_general_info_db_update', true);
-                                    break;
-                            }
-                            echo '<div class="alert alert-danger"><span class="badge" style="background-color: #E53935">!</span> <b>' . $update_text . '</b> <a href="{@siteURL@}/my-admin/update" class="btn btn-info" style="float: right; margin-top: -6px;">' . ea('page_home_general_info_button_update', true) . '</a></div>';
-                        } else {
-                            echo ea('page_home_no_notifications', true);
+                    $info = $my_theme->thereIsNewUpdate(false);
+                    if ($info[0] == true) {
+                        switch ($info[1]) {
+                            case 'all_update':
+                                $update_text = ea('page_home_general_info_update_all', true);
+                                break;
+                            case 'core_update':
+                                $update_text = ea('page_home_general_info_core_update', true);
+                                break;
+                            case 'db_update':
+                                $update_text = ea('page_home_general_info_db_update', true);
+                                break;
                         }
+                        echo '<div class="alert alert-danger"><span class="badge" style="background-color: #E53935">!</span> <b>' . $update_text . '</b> <a href="{@siteURL@}/my-admin/update" class="btn btn-info" style="float: right; margin-top: -6px;">' . ea('page_home_general_info_button_update', true) . '</a></div>';
+                    } else {
+                        echo ea('page_home_no_notifications', true);
+                    }
                     ?>
                 </div>
                 <!-- /.panel-body -->
@@ -119,7 +119,7 @@
 </div>
 <!-- /#wrapper -->
 
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 
 </body>
 

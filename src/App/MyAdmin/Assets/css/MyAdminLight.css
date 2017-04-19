@@ -135,8 +135,7 @@ body {
     border-radius: 4px;
 }
 
-.navbar-default
-{
+.navbar-default {
     background-color: transparent;
     border-color: transparent;
 }
@@ -174,12 +173,10 @@ body {
     font-size: 14px;
 }
 
-.nav_topbar_menu > li > a:hover
-{
+.nav_topbar_menu > li > a:hover {
     color: #424242;
     text-decoration: underline;
 }
-
 
 .nav_topbar_menu > li > a > i {
     width: 60px;
@@ -315,13 +312,11 @@ a, a:focus, a:active {
 
 /* Table */
 
-.table-responsive
-{
+.table-responsive {
     overflow: hidden;
 }
 
-.dataTables_filter
-{
+.dataTables_filter {
     float: right;
 }
 
@@ -329,57 +324,47 @@ a, a:focus, a:active {
     background-color: rgb(255, 255, 255);
 }
 
-.h1PagesTitle
-{
+.h1PagesTitle {
     text-transform: uppercase;
     font-weight: 300;
 }
 
 /* TEST */
-.b_panel
-{
+.b_panel {
     -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
     border: 1px solid #DBDBDB;
     border-radius: 4px;
 }
 
-.btn-primary
-{
+.btn-primary {
     background-color: #FF5964;
     border: none;
 }
 
-.btn-primary:hover
-{
+.btn-primary:hover {
     background-color: #FF5964;
 }
 
-.label
-{
+.label {
     background-color: #1EA896 !important;
 }
 
-a, .pagination>li>a
-{
+a, .pagination > li > a {
     color: #424242;
 }
 
-a:hover, .pagination>li>a:hover
-{
+a:hover, .pagination > li > a:hover {
     color: #FF5964;
     text-decoration: none;
 }
 
-
-.pagination > .active > a, .pagination > .active > a:hover
-{
+.pagination > .active > a, .pagination > .active > a:hover {
     background-color: #FF5964;
     border-color: transparent;
 }
 
-.btn, .btn:hover, .btn:focus, .btn:active, .btn:active:focus
-{
+.btn, .btn:hover, .btn:focus, .btn:active, .btn:active:focus {
     color: #fff;
     background-color: #ff5964;
     font-weight: 400;

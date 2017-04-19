@@ -1,21 +1,21 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    define('PAGE_ID', 'admin_settings_style');
-    define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_style', '1'));
+define('PAGE_ID', 'admin_settings_style');
+define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_style', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $language_language = get_settings_value('site_language');
-    $settings_style_template_cms = get_settings_value('site_template');
-    $settings_style_template_language = get_settings_value('site_template_language');
+$language_language = getSettingsValue('site_language');
+$settings_style_template_cms = getSettingsValue('site_template');
+$settings_style_template_language = getSettingsValue('site_template_language');
 
-    global $my_db;
+global $my_db;
 
 ?>
 <div class="container">
@@ -33,16 +33,16 @@
                     <label><?php ea('page_settings_my_admin_language'); ?></label>
                     <select name="settings_style_language" id="settings_style_language" class="form-control">
                         <?php
-                            $lang = $my_db->query("SELECT * FROM my_language");
-                            $i = 0;
-                            foreach ($lang as $language) {
-                                $i++;
-                                ?>
-                                <option <?php if ($language_language == $language['language_language']) {
-                                    echo 'selected=""';
-                                } ?> value="<?php echo $language['language_language']; ?>"><?php echo $language['language_name']; ?></option>
-                                <?php
-                            }
+                        $lang = $my_db->query("SELECT * FROM my_language");
+                        $i = 0;
+                        foreach ($lang as $language) {
+                            $i++;
+                            ?>
+                            <option <?php if ($language_language == $language['language_language']) {
+                                echo 'selected=""';
+                            } ?> value="<?php echo $language['language_language']; ?>"><?php echo $language['language_name']; ?></option>
+                            <?php
+                        }
                         ?>
                     </select>
                 </div>
@@ -50,16 +50,16 @@
                     <label><?php ea('page_settings_style_template'); ?></label>
                     <select name="settings_style_template" id="settings_style_template" class="form-control">
                         <?php
-                            $temp = $my_db->query("SELECT * FROM my_style");
-                            $i = 0;
-                            foreach ($temp as $template) {
-                                $i++;
-                                ?>
-                                <option <?php if ($settings_style_template_cms == $template['style_path_name']) {
-                                    echo 'selected=""';
-                                } ?> value="<?php echo $template['style_path_name']; ?>"><?php echo $template['style_name']; ?></option>
-                                <?php
-                            }
+                        $temp = $my_db->query("SELECT * FROM my_style");
+                        $i = 0;
+                        foreach ($temp as $template) {
+                            $i++;
+                            ?>
+                            <option <?php if ($settings_style_template_cms == $template['style_path_name']) {
+                                echo 'selected=""';
+                            } ?> value="<?php echo $template['style_path_name']; ?>"><?php echo $template['style_name']; ?></option>
+                            <?php
+                        }
                         ?>
                     </select>
                 </div>
@@ -70,15 +70,15 @@
                     <select name="settings_style_template_language" id="settings_style_template_language"
                             class="form-control">
                         <?php
-                            $temp = $my_db->row("SELECT * FROM my_style WHERE style_path_name = :style_path_name", ['style_path_name' => $settings_style_template_cms]);
-                            $language = explode(',', $temp['style_languages']);
-                            for ($i = 0; $i < count($language); $i++) {
-                                ?>
-                                <option <?php if ($settings_style_template_language == $language[ $i ]) {
-                                    echo 'selected=""';
-                                } ?> value="<?php echo $language[ $i ]; ?>"><?php echo $language[ $i ]; ?></option>
-                                <?php
-                            }
+                        $temp = $my_db->row("SELECT * FROM my_style WHERE style_path_name = :style_path_name", ['style_path_name' => $settings_style_template_cms]);
+                        $language = explode(',', $temp['style_languages']);
+                        for ($i = 0; $i < count($language); $i++) {
+                            ?>
+                            <option <?php if ($settings_style_template_language == $language[ $i ]) {
+                                echo 'selected=""';
+                            } ?> value="<?php echo $language[ $i ]; ?>"><?php echo $language[ $i ]; ?></option>
+                            <?php
+                        }
                         ?>
                     </select>
                 </div>
@@ -94,7 +94,7 @@
 </div>
 <!-- /#wrapper -->
 
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 
 </body>
 

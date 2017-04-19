@@ -1,454 +1,452 @@
 <?php
-    /**
-     * User: tuttarealstep
-     * Date: 10/04/16
-     * Time: 13.14
-     *
-     * Support for old MyCMS themes global functions.
-     */
+/**
+ * User: tuttarealstep
+ * Date: 10/04/16
+ * Time: 13.14
+ *
+ * Support for old MyCMS themes global functions.
+ */
 
-    /* Set globals */
+/* Set globals */
 
-    $GLOBALS['my_blog'] = $App->container['blog'];
-    $GLOBALS['my_db'] = $App->container['database'];
-    $GLOBALS['my_users'] = $App->container['users'];
-    $GLOBALS['my_language'] = $App->container['languages'];
-    $GLOBALS['my_theme'] = $App->container['theme'];
-    $GLOBALS['my_settings'] = $App->container['settings'];
-    $GLOBALS['my_security'] = $App->container['security'];
-    $GLOBALS['my_functions'] = $App->container['functions'];
+$GLOBALS['my_blog'] = $App->container['blog'];
+$GLOBALS['my_db'] = $App->container['database'];
+$GLOBALS['my_users'] = $App->container['users'];
+$GLOBALS['my_language'] = $App->container['languages'];
+$GLOBALS['my_theme'] = $App->container['theme'];
+$GLOBALS['my_settings'] = $App->container['settings'];
+$GLOBALS['my_security'] = $App->container['security'];
+$GLOBALS['my_functions'] = $App->container['functions'];
 
-    function e($string, $display = '0')
-    {
-        global $my_language;
+function e($string, $display = '0')
+{
+    global $my_language;
 
-        return $my_language->e($string, $display);
-    }
+    return $my_language->e($string, $display);
+}
 
-    function ea($string, $display = '0')
-    {
-        global $my_language;
+function ea($string, $display = '0')
+{
+    global $my_language;
 
-        return $my_language->ea($string, $display);
-    }
+    return $my_language->ea($string, $display);
+}
 
-    function set_TAG($page)
-    {
+function setTag($page)
+{
 
-        global $my_theme;
+    global $my_theme;
 
-        return $my_theme->set_TAG($page);
+    return $my_theme->setTag($page);
 
-    }
+}
 
-    function add_tag($tag, $value)
-    {
+function addTag($tag, $value)
+{
 
-        global $my_theme;
-        $my_theme->add_tag($tag, $value);
+    global $my_theme;
+    $my_theme->addTag($tag, $value);
 
-    }
+}
 
 //No robots
-    function no_robots()
-    {
+function noRobots()
+{
 
-        echo "<meta name='robots' content='noindex,follow' />\n";
+    echo "<meta name='robots' content='noindex,follow' />\n";
 
+}
+
+function getThemePath()
+{
+    global $my_theme;
+    $path = $my_theme->getThemePath();
+
+    return $path;
+}
+
+function addMetaTag($page_name, $tag)
+{
+
+    global $my_theme;
+    $my_theme->addMetaTag($page_name, $tag);
+
+}
+
+function getMetaTag($page_name)
+{
+
+    global $my_theme;
+    $my_theme->getMetaTag($page_name);
+
+}
+
+function addStyleScript($type, $link)
+{
+
+    global $my_theme;
+    $my_theme->addStyleScript($type, $link);
+
+}
+
+function getStyleScript($type, $return = false)
+{
+
+    global $my_theme;
+    if ($return == false) {
+        $my_theme->getStyleScript($type, $return);
+    } else {
+        return $my_theme->getStyleScript($type, $return);
     }
 
-    function get_theme_path()
-    {
-        global $my_theme;
-        $path = $my_theme->get_theme_path();
+    return null;
+}
 
-        return $path;
+function addStyleScriptAdmin($type, $link)
+{
+
+    global $my_theme;
+    $my_theme->addStyleScriptAdmin($type, $link);
+
+}
+
+function getStyleScriptAdmin($type, $return = false)
+{
+
+    global $my_theme;
+    if ($return == false) {
+        $my_theme->getStyleScriptAdmin($type, $return);
+    } else {
+        return $my_theme->getStyleScriptAdmin($type, $return);
     }
 
-    function add_meta_tag($page_name, $tag)
-    {
+    return null;
+}
 
-        global $my_theme;
-        $my_theme->add_meta_tag($page_name, $tag);
+function fixTheme($theme)
+{
 
+    $theme_path = getThemePath();
+
+    if (file_exists($theme_path)) {
+        return $theme;
+    } else {
+        return "default";
     }
 
-    function get_meta_tag($page_name)
-    {
+}
 
-        global $my_theme;
-        $my_theme->get_meta_tag($page_name);
+function addFunctionsTag($start, $end, $function, $param = null)
+{
 
-    }
+    global $my_theme;
+    $my_theme->addFunctionsTag($start, $end, $function, $param);
 
-    function add_style_script($type, $link)
-    {
+}
 
-        global $my_theme;
-        $my_theme->add_style_script($type, $link);
-
-    }
-
-    function get_style_script($type, $return = false)
-    {
-
-        global $my_theme;
-        if ($return == false) {
-            $my_theme->get_style_script($type, $return);
-        } else {
-            return $my_theme->get_style_script($type, $return);
-        }
-
-        return null;
-    }
-
-    function add_style_script_admin($type, $link)
-    {
-
-        global $my_theme;
-        $my_theme->add_style_script_admin($type, $link);
-
-    }
-
-    function get_style_script_admin($type, $return = false)
-    {
-
-        global $my_theme;
-        if ($return == false) {
-            $my_theme->get_style_script_admin($type, $return);
-        } else {
-            return $my_theme->get_style_script_admin($type, $return);
-        }
-
-        return null;
-    }
-
-    function fix_theme($theme)
-    {
-
-        $theme_path = get_theme_path();
-
-        if (file_exists($theme_path)) {
-            return $theme;
-        } else {
-            return "default";
-        }
-
-    }
-
-    function add_functions_tag($start, $end, $function, $param = null)
-    {
-
-        global $my_theme;
-        $my_theme->add_functions_tag($start, $end, $function, $param);
-
-    }
-
-    function require_page($bool, $page)
-    {
-        if ($bool == true) {
-            if ($page == PAGE_ID) {
-
-            } else {
-                header('Location: ' . HOST . '');
-                exit;
-            }
-        }
-    }
-
-    function get_file($page, $name = null, $page_loader = false)
-    {
-
-        global $my_theme;
-
-        if (empty($name)) {
-            $name = '';
-        }
-
-        $my_theme->get_file($page, $name, $page_loader);
-
-    }
-
-    function get_page($page, $name = null)
-    {
-
-        global $my_theme;
-
-        if (empty($name)) {
-            $name = '';
-        }
-
-        $my_theme->get_page($page, $name);
-
-    }
-
-    function get_file_admin($page, $name = null, $page_loader = false)
-    {
-
-        global $my_theme;
-
-        if (empty($name)) {
-            $name = '';
-        }
-
-        $my_theme->get_file_admin($page, $name, $page_loader);
-
-    }
-
-    function get_page_admin($page, $name = null)
-    {
-
-        global $my_theme;
-
-        if (empty($name)) {
-            $name = '';
-        }
-
-        $my_theme->get_page_admin($page, $name);
-
-    }
-
-    function get_settings_id($name)
-    {
-
-        global $my_settings;
-
-        return $my_settings->get_settings_id($name);
-
-    }
-
-    function get_settings_name($id)
-    {
-
-        global $my_settings;
-
-        return $my_settings->get_settings_name($id);
-    }
-
-    function get_settings_value($setting_name = "")
-    {
-        global $my_settings;
-
-        return $my_settings->get_settings_value($setting_name);
-    }
-
-    function user_logged_in()
-    {
-
-        if (isset($_SESSION['user']['id'])):
-            return true;
-        else:
-            return false;
-        endif;
-
-    }
-
-    function user_not_logged_in()
-    {
-
-        if (isset($_SESSION['user']['id'])):
-            return false;
-        else:
-            return true;
-        endif;
-
-    }
-
-    function staff_logged_in()
-    {
-
-        if (isset($_SESSION['staff']['id'])):
-
-            return true;
-
-        else:
-
-            return false;
-
-        endif;
-
-    }
-
-    function hide_if_logged()
-    {
-        if (user_logged_in()) {
-            header("location: " . HOST . "");
+function requirePage($bool, $page)
+{
+    if ($bool == true) {
+        if ($page != PAGE_ID) {
+            header('Location: ' . HOST . '');
             exit;
         }
+    }
+}
 
+function getFile($page, $name = null, $page_loader = false)
+{
+
+    global $my_theme;
+
+    if (empty($name)) {
+        $name = '';
     }
 
-    function hide_if_not_logged()
-    {
-        if (!user_logged_in()) {
-            header("location: " . HOST . "");
-            exit;
-        }
+    $my_theme->getFile($page, $name, $page_loader);
 
+}
+
+function getPage($page, $name = null)
+{
+
+    global $my_theme;
+
+    if (empty($name)) {
+        $name = '';
     }
 
-    function hide_if_staff_logged()
-    {
-        if (staff_logged_in()) {
-            header("location: " . HOST . "");
-            exit;
-        }
+    $my_theme->getPage($page, $name);
 
+}
+
+function getFileAdmin($page, $name = null, $page_loader = false)
+{
+
+    global $my_theme;
+
+    if (empty($name)) {
+        $name = '';
     }
 
-    function hide_if_staff_not_logged()
-    {
-        if (!staff_logged_in()) {
-            header("location: " . HOST . "");
-            exit;
-        }
+    $my_theme->getFileAdmin($page, $name, $page_loader);
 
+}
+
+function getPageAdmin($page, $name = null)
+{
+
+    global $my_theme;
+
+    if (empty($name)) {
+        $name = '';
     }
 
-    function isStaff()
-    {
-        global $my_users;
-        if (user_logged_in()) {
-            if ($my_users->getInfo($_SESSION['user']['id'], 'rank') >= 2) {
-                return true;
-            } else {
-                return false;
-            }
+    $my_theme->getPageAdmin($page, $name);
 
-        } else {
-            return false;
-        }
-    }
+}
 
-    function isAdmin()
-    {
-        global $my_users;
-        if (staff_logged_in()) {
-            $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-            if ($user_rank >= 3) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+function getSettingsId($name)
+{
+
+    global $my_settings;
+
+    return $my_settings->getSettingsId($name);
+
+}
+
+function getSettingsName($id)
+{
+
+    global $my_settings;
+
+    return $my_settings->getSettingsName($id);
+}
+
+function getSettingsValue($setting_name = "")
+{
+    global $my_settings;
+
+    return $my_settings->getSettingsValue($setting_name);
+}
+
+function userLoggedIn()
+{
+
+    if (isset($_SESSION['user']['id'])):
+        return true;
+    else:
+        return false;
+    endif;
+
+}
+
+function userNotLoggedIn()
+{
+
+    if (isset($_SESSION['user']['id'])):
+        return false;
+    else:
+        return true;
+    endif;
+
+}
+
+function staffLoggedIn()
+{
+
+    if (isset($_SESSION['staff']['id'])):
+
+        return true;
+
+    else:
 
         return false;
+
+    endif;
+
+}
+
+function hideIfLogged()
+{
+    if (userLoggedIn()) {
+        header("location: " . HOST . "");
+        exit;
     }
 
-    function my_sql_secure($string)
-    {
-        global $my_security;
+}
 
-        return $my_security->my_sql_secure($string);
+function hideIfNotLogged()
+{
+    if (!userLoggedIn()) {
+        header("location: " . HOST . "");
+        exit;
     }
 
-    function my_generate_random($length)
-    {
-        global $my_security;
+}
 
-        return $my_security->my_generate_random($length);
+function hideIfStaffLogged()
+{
+    if (staffLoggedIn()) {
+        header("location: " . HOST . "");
+        exit;
     }
 
-    function crypt_md5($value, $time = 1)
-    {
-        global $my_security;
+}
 
-        return $my_security->crypt_md5($value, $time);
+function hideIfStaffNotLogged()
+{
+    if (!staffLoggedIn()) {
+        header("location: " . HOST . "");
+        exit;
     }
 
-    function my_hash($value)
-    {
-        global $my_security;
+}
 
-        return $my_security->my_generate_random($value);
+function isStaff()
+{
+    global $my_users;
+    if (userLoggedIn()) {
+        if ($my_users->getInfo($_SESSION['user']['id'], 'rank') >= 2) {
+            return true;
+        } else {
+            return false;
+        }
+
+    } else {
+        return false;
+    }
+}
+
+function isAdmin()
+{
+    global $my_users;
+    if (staffLoggedIn()) {
+        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+        if ($user_rank >= 3) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    function my_control_https()
-    {
-        global $my_security;
+    return false;
+}
 
-        return $my_security->my_control_https();
-    }
+function mySqlSecure($string)
+{
+    global $my_security;
 
-    function my_cms_xml_command($command)
-    {
-        global $my_security;
+    return $my_security->mySqlSecure($string);
+}
 
-        return $my_security->my_cms_xml_command($command);
-    }
+function myGenerateRandom($length)
+{
+    global $my_security;
+
+    return $my_security->myGenerateRandom($length);
+}
+
+function cryptMd5($value, $time = 1)
+{
+    global $my_security;
+
+    return $my_security->cryptMd5($value, $time);
+}
+
+function myHash($value)
+{
+    global $my_security;
+
+    return $my_security->myGenerateRandom($value);
+}
+
+function myControlHttps()
+{
+    global $my_security;
+
+    return $my_security->myControlHttps();
+}
+
+function myCmsXmlCommand($command)
+{
+    global $my_security;
+
+    return $my_security->myCmsXmlCommand($command);
+}
 
 //THESE FUNCTION WORK ONLY WITH PHP 5.6
-    function my_cms_calculate_cost()
-    {
-        global $my_security;
+function myCmsCalculateCost()
+{
+    global $my_security;
 
-        return $my_security->my_cms_calculate_cost();
-    }
-
-
-    function my_cms_security_create_password($password)
-    {
-        global $my_security;
-
-        return $my_security->my_cms_security_create_password($password);
-    }
+    return $my_security->myCmsCalculateCost();
+}
 
 
-    function s_crypt($str)
-    {
-        return base64_encode($str);
-    }
+function myCmsSecurityCreatePassword($password)
+{
+    global $my_security;
 
-    function s_decrypt($str)
-    {
-        return base64_decode($str);
-    }
+    return $my_security->myCmsSecurityCreatePassword($password);
+}
 
-    function remove_space($string)
-    {
-        global $my_functions;
 
-        return $my_functions->remove_space($string);
-    }
+function s_crypt($str)
+{
+    return base64_encode($str);
+}
 
-    function add_space($string)
-    {
-        global $my_functions;
+function s_decrypt($str)
+{
+    return base64_decode($str);
+}
 
-        return $my_functions->add_space($string);
-    }
+function removeSpace($string)
+{
+    global $my_functions;
 
-    function time_normal_full($string)
-    {
-        global $my_functions;
+    return $my_functions->removeSpace($string);
+}
 
-        return $my_functions->time_normal_full($string);
-    }
+function addSpace($string)
+{
+    global $my_functions;
 
-    function time_normal_his($string)
-    {
-        global $my_functions;
+    return $my_functions->addSpace($string);
+}
 
-        return $my_functions->time_normal_his($string);
-    }
+function timeNormalFull($string)
+{
+    global $my_functions;
 
-    function time_normal($string)
-    {
-        global $my_functions;
+    return $my_functions->timeNormalFull($string);
+}
 
-        return $my_functions->time_normal($string);
-    }
+function timeNormalHis($string)
+{
+    global $my_functions;
 
-    function fix_text($string)
-    {
-        global $my_functions;
+    return $my_functions->timeNormalHis($string);
+}
 
-        return $my_functions->fix_text($string);
-    }
+function timeNormal($string)
+{
+    global $my_functions;
 
-    function remove_dir($dir)
-    {
-        global $my_functions;
+    return $my_functions->timeNormal($string);
+}
 
-        return $my_functions->remove_dir($dir);
-    }
+function fixText($string)
+{
+    global $my_functions;
+
+    return $my_functions->fixText($string);
+}
+
+function removeDir($dir)
+{
+    global $my_functions;
+
+    return $my_functions->removeDir($dir);
+}

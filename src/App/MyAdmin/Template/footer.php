@@ -1,11 +1,11 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    get_style_script_admin('script');
+getStyleScriptAdmin('script');
 
-    $this->container['plugins']->applyEvent('adminFooter');
+$this->container['plugins']->applyEvent('adminFooter');
 
 ?>
 <br>

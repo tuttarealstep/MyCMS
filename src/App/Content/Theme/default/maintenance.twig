@@ -2,7 +2,7 @@
 {% extends "default.twig" %}
 
 {% block head %}
-    {{ container.theme.add_meta_tag('maintenance', '<meta http-equiv="refresh" content=60 url="{@siteURL@}">') }}
+    {{ container.theme.addMetaTag('maintenance', '<meta http-equiv="refresh" content=60 url="{@siteURL@}">') }}
     {{ parent() }}
 {% endblock head %}
 

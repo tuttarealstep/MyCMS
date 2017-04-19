@@ -1,15 +1,15 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    define('PAGE_ID', 'admin_settings_general');
-    define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_general', '1'));
+define('PAGE_ID', 'admin_settings_general');
+define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_general', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
 ?>
 <div class="container">
@@ -42,7 +42,7 @@
                     <label><?php ea('page_settings_site_timezone'); ?></label>
                     <select name="settings_site_timezone" id="settings_site_timezone" class="form-control">
                         <option
-                                value="<?php echo get_settings_value('site_timezone'); ?>"><?php echo get_settings_value('site_timezone'); ?></option>
+                                value="<?php echo getSettingsValue('site_timezone'); ?>"><?php echo getSettingsValue('site_timezone'); ?></option>
                         <option value="America/Adak">(GMT-10:00) America/Adak (Hawaii-Aleutian Standard Time)</option>
                         <option value="America/Atka">(GMT-10:00) America/Atka (Hawaii-Aleutian Standard Time)</option>
                         <option value="America/Anchorage">(GMT-9:00) America/Anchorage (Alaska Standard Time)</option>
@@ -558,10 +558,10 @@
                 <div class="form-group">
                     <label><?php ea('page_settings_site_mainteinance'); ?></label>
                     <select name="settings_site_mainteinance" id="settings_site_mainteinance" class="form-control">
-                        <option <?php if (get_settings_value('site_maintenance') == "true") {
+                        <option <?php if (getSettingsValue('site_maintenance') == "true") {
                             echo 'selected=""';
                         } ?> value="true"><?php ea('page_settings_site_mainteinance_on'); ?></option>
-                        <option <?php if (get_settings_value('site_maintenance') == "false") {
+                        <option <?php if (getSettingsValue('site_maintenance') == "false") {
                             echo 'selected=""';
                         } ?> value="false"><?php ea('page_settings_site_mainteinance_off'); ?></option>
                     </select>
@@ -570,10 +570,10 @@
                 <div class="form-group">
                     <label><?php ea('page_settings_site_web_private'); ?></label>
                     <select name="settings_site_private" id="settings_site_private" class="form-control">
-                        <option <?php if (get_settings_value('site_private') == "true") {
+                        <option <?php if (getSettingsValue('site_private') == "true") {
                             echo 'selected=""';
                         } ?> value="true"><?php ea('page_settings_site_web_private_on'); ?></option>
-                        <option <?php if (get_settings_value('site_private') == "false") {
+                        <option <?php if (getSettingsValue('site_private') == "false") {
                             echo 'selected=""';
                         } ?> value="false"><?php ea('page_settings_site_web_private_off'); ?></option>
                     </select>
@@ -582,10 +582,10 @@
                 <div class="form-group">
                     <label><?php ea('page_settings_site_use_cache'); ?></label>
                     <select name="settings_site_use_cache" id="settings_site_use_cache" class="form-control">
-                        <option <?php if (get_settings_value('site_use_cache') == "true") {
+                        <option <?php if (getSettingsValue('site_use_cache') == "true") {
                             echo 'selected=""';
                         } ?> value="true"><?php ea('page_settings_site_use_cache_on'); ?></option>
-                        <option <?php if (get_settings_value('site_use_cache') == "false") {
+                        <option <?php if (getSettingsValue('site_use_cache') == "false") {
                             echo 'selected=""';
                         } ?> value="false"><?php ea('page_settings_site_use_cache_off'); ?></option>
                     </select>
@@ -605,7 +605,7 @@
 </div>
 <!-- /#wrapper -->
 
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 
 </body>
 

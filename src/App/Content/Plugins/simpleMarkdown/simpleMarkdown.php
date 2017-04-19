@@ -39,16 +39,16 @@ class simpleMarkdown
         $this->container['plugins']->addEvent('myPageNewEditBeforeFooter', [$this, 'setPagesJsInit']);
         $this->container['plugins']->addEvent('postsNewEditBeforeFooter', [$this, 'setPostsJsInit']);
 
-        $this->container['plugins']->addEvent('parseMyPageContent', function ($content)
-        {
+        $this->container['plugins']->addEvent('parseMyPageContent', function ($content) {
             $Parsedown = new Parsedown();
+
             return $Parsedown->text($content);
 
         });
 
-        $this->container['plugins']->addEvent('parsePostContent', function ($content)
-        {
+        $this->container['plugins']->addEvent('parsePostContent', function ($content) {
             $Parsedown = new Parsedown();
+
             return $Parsedown->text($content);
 
         });
@@ -78,13 +78,11 @@ class simpleMarkdown
             var mcVisible = true;
             var simplemde = null;
 
-            function switchToMDE()
-            {
-                if(mcVisible)
-                {
+            function switchToMDE() {
+                if (mcVisible) {
                     mcVisible = false;
                     tinyMCE.execCommand("mceRemoveEditor", true, tinymce.editors[0].id);
-                    simplemde = new SimpleMDE({ element: document.getElementById("pages_content"), forceSync: true});
+                    simplemde = new SimpleMDE({element: document.getElementById("pages_content"), forceSync: true});
                     simplemde.value(toMarkdown(document.getElementById("pages_content").value));
 
                 } else {
@@ -98,10 +96,10 @@ class simpleMarkdown
 
 
                     /* var element = document.createElement("textarea");
-                    element.id = "pages_content";
-                    element.name = "pages_content";
-                    element.style.height = "300px";
-                    document.getElementById("textareaContent").appendChild(element);*/
+                     element.id = "pages_content";
+                     element.name = "pages_content";
+                     element.style.height = "300px";
+                     document.getElementById("textareaContent").appendChild(element);*/
 
                     tinymce.init({
                         selector: "textarea",
@@ -128,13 +126,11 @@ class simpleMarkdown
             var mcVisible = true;
             var simplemde = null;
 
-            function switchToMDE()
-            {
-                if(mcVisible)
-                {
+            function switchToMDE() {
+                if (mcVisible) {
                     mcVisible = false;
                     tinyMCE.execCommand("mceRemoveEditor", true, tinymce.editors[0].id);
-                    simplemde = new SimpleMDE({ element: document.getElementById("posts_content"), forceSync: true});
+                    simplemde = new SimpleMDE({element: document.getElementById("posts_content"), forceSync: true});
                     simplemde.value(toMarkdown(document.getElementById("posts_content").value));
 
                 } else {

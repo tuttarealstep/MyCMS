@@ -1,96 +1,96 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
 //LINGUA : ITALIANA
-    $language = array(
+$language = [
 
-        'Lorem ipsum'                      => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    'Lorem ipsum'                      => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 
-        //NEW HOME
-        'comment'                          => 'Commento',
-        'comments'                         => 'Commenti',
-        'read_more'                        => 'Leggi di pi&ugrave;...',
-        'show_more'                        => 'Mostra pi&ugrave; post',
-        'blog_post_last_comments'          => 'Tutti i commenti:',
+    //NEW HOME
+    'comment'                          => 'Commento',
+    'comments'                         => 'Commenti',
+    'read_more'                        => 'Leggi di pi&ugrave;...',
+    'show_more'                        => 'Mostra pi&ugrave; post',
+    'blog_post_last_comments'          => 'Tutti i commenti:',
 
-        //PAGE NAME
-        '404_error_page_name'              => 'Errore 404',
-        'maintenance_page_name'            => 'Pausa Manutenzione!',
-        //Page ELEMENT
-        //Error
-        'error_email_password'             => "L' E-mail o la password sono errati.",
-        'error_name'                       => "Nome troppo corto, o troppo lungo",
-        'error_surname'                    => "Cognome troppo corto, o troppo lungo",
-        'error_email'                      => "Email non valida",
-        'error_password'                   => "Password troppo corta",
-        'error_email_in_use'               => "Questo indirizzo email risulta gi&agrave; registrato ad un altro utente",
-        //header
-        'header_login/registration_button' => 'Login/Registrazione',
-        'header_logout_a'                  => 'Esci',
-        'header_admin_a'                   => 'Pannello Admin',
-        //footer
-        'footer_powered'                   => 'Sito basato su',
-        //404
-        '404_title'                        => 'Errore 404',
-        '404_description'                  => 'La pagina che cerchi potrebbe non essere più disponibile!',
-        //maintenance
-        'maintenance_title'                => 'Siamo in Manutenzione',
-        'maintenance_title_description'    => 'Il sito tornerà presto disponibile!',
-        //HOME -MYCMS
-        'home_title'                       => 'Home',
-        'my_cms_welcome_h1'                => 'Grazie per aver usato MyCMS!',
-        'my_cms_welcome_description'       => 'Grazie per aver scaricato MyCMS, questo è il tuo sito web, potrai modifcarlo velocemente e a tuo piacimento grazie a bootstrap e alle funzioni di MyCMS.',
-        //blog
-        'blog_page_name'                   => 'Blog',
-        'blog_archive_page_name'           => 'Archivio articoli',
-        'blog_title_archive'               => 'Qui ci sono tutti gli articoli:',
-        'blog_a_no_posts'                  => 'Non ci sono articoli',
-        'blog_created_by'                  => 'Creato da:',
-        'blog_category'                    => 'Categoria:',
-        'blog_posted'                      => 'Postato il',
-        'blog_post_title_comment'          => 'Lascia un Commento (Max 250):',
-        'blog_post_comment_button_send'    => 'Invia',
-        'blog_post_last_25_comments'       => 'Gli ultimi 25 commenti:',
-        'blog_post_0_comments'             => 'Nessun commento',
-        'blog_all_posts_in_category'       => 'Tutti gli articoli postati nella categoria:',
-        'blog_you_search'                  => 'Hai cercato:',
-        'blog_all_posts_by_author'         => 'Tutti gli articoli postati da:',
-        'blog_next_page'                   => 'Pagina successiva',
-        'blog_back_page'                   => 'Pagina precedente',
-        'blog_read_more'                   => 'Leggi di pi&ugrave;',
-        //blog-bar
-        'blog-bar_search'                  => 'Cerca nel Blog',
-        'blog-bar_popular_categories'      => 'Categorie Popolari',
-        //login
-        'login_page_title'                 => 'Login',
-        'login_h2_register_title'          => 'Nuovo Utente?',
-        'login_register_description'       => 'Registrati sul nostro sito, completamente gratis, potrai commentare e accedere ad are private del sito.',
-        'login_button_register'            => 'Registrati',
-        'login_h2_login_title'             => 'Utente Registrato',
-        'login_login_description'          => 'Sei già registrato? Accedi!',
-        'login_login_email'                => 'Indirizzo Email *',
-        'login_login_password'             => 'Password *',
-        'login_login_button'               => 'Accedi',
-        'login_login_remember'             => 'Ricordami',
-        //registration
-        'registration_page_title'          => 'Registrazione',
-        'registration_obbligatory'         => 'Campi Obbligatori',
-        'registration_name'                => 'Nome',
-        'registration_surname'             => 'Cognome',
-        'registration_email'               => 'Email',
-        'registration_password'            => 'Password',
-        'registration_info'                => 'Informativa ex articolo 13 D. Lgs. 196/2003',
-        'registration_info_description'    => "
+    //PAGE NAME
+    '404_error_page_name'              => 'Errore 404',
+    'maintenance_page_name'            => 'Pausa Manutenzione!',
+    //Page ELEMENT
+    //Error
+    'error_email_password'             => "L' E-mail o la password sono errati.",
+    'error_name'                       => "Nome troppo corto, o troppo lungo",
+    'error_surname'                    => "Cognome troppo corto, o troppo lungo",
+    'error_email'                      => "Email non valida",
+    'error_password'                   => "Password troppo corta",
+    'error_email_in_use'               => "Questo indirizzo email risulta gi&agrave; registrato ad un altro utente",
+    //header
+    'header_login/registration_button' => 'Login/Registrazione',
+    'header_logout_a'                  => 'Esci',
+    'header_admin_a'                   => 'Pannello Admin',
+    //footer
+    'footer_powered'                   => 'Sito basato su',
+    //404
+    '404_title'                        => 'Errore 404',
+    '404_description'                  => 'La pagina che cerchi potrebbe non essere più disponibile!',
+    //maintenance
+    'maintenance_title'                => 'Siamo in Manutenzione',
+    'maintenance_title_description'    => 'Il sito tornerà presto disponibile!',
+    //HOME -MYCMS
+    'home_title'                       => 'Home',
+    'my_cms_welcome_h1'                => 'Grazie per aver usato MyCMS!',
+    'my_cms_welcome_description'       => 'Grazie per aver scaricato MyCMS, questo è il tuo sito web, potrai modifcarlo velocemente e a tuo piacimento grazie a bootstrap e alle funzioni di MyCMS.',
+    //blog
+    'blog_page_name'                   => 'Blog',
+    'blog_archive_page_name'           => 'Archivio articoli',
+    'blog_title_archive'               => 'Qui ci sono tutti gli articoli:',
+    'blog_a_no_posts'                  => 'Non ci sono articoli',
+    'blog_created_by'                  => 'Creato da:',
+    'blog_category'                    => 'Categoria:',
+    'blog_posted'                      => 'Postato il',
+    'blog_post_title_comment'          => 'Lascia un Commento (Max 250):',
+    'blog_post_comment_button_send'    => 'Invia',
+    'blog_post_last_25_comments'       => 'Gli ultimi 25 commenti:',
+    'blog_post_0_comments'             => 'Nessun commento',
+    'blog_all_posts_in_category'       => 'Tutti gli articoli postati nella categoria:',
+    'blog_you_search'                  => 'Hai cercato:',
+    'blog_all_posts_by_author'         => 'Tutti gli articoli postati da:',
+    'blog_next_page'                   => 'Pagina successiva',
+    'blog_back_page'                   => 'Pagina precedente',
+    'blog_read_more'                   => 'Leggi di pi&ugrave;',
+    //blog-bar
+    'blog-bar_search'                  => 'Cerca nel Blog',
+    'blog-bar_popular_categories'      => 'Categorie Popolari',
+    //login
+    'login_page_title'                 => 'Login',
+    'login_h2_register_title'          => 'Nuovo Utente?',
+    'login_register_description'       => 'Registrati sul nostro sito, completamente gratis, potrai commentare e accedere ad are private del sito.',
+    'login_button_register'            => 'Registrati',
+    'login_h2_login_title'             => 'Utente Registrato',
+    'login_login_description'          => 'Sei già registrato? Accedi!',
+    'login_login_email'                => 'Indirizzo Email *',
+    'login_login_password'             => 'Password *',
+    'login_login_button'               => 'Accedi',
+    'login_login_remember'             => 'Ricordami',
+    //registration
+    'registration_page_title'          => 'Registrazione',
+    'registration_obbligatory'         => 'Campi Obbligatori',
+    'registration_name'                => 'Nome',
+    'registration_surname'             => 'Cognome',
+    'registration_email'               => 'Email',
+    'registration_password'            => 'Password',
+    'registration_info'                => 'Informativa ex articolo 13 D. Lgs. 196/2003',
+    'registration_info_description'    => "
                 Informato/a in base all'art.13 del D.Lgs. 196/2003, ai sensi dell'art.23:<bR />
                 *Inviando questo modulo esprimo il consenso al trattamento dei miei dati personali al fine di consentire che venga fornito il servizio.",
-        'registration_insert'              => 'Inserisci',
-        'registration_button_register'     => 'Registrati',
+    'registration_insert'              => 'Inserisci',
+    'registration_button_register'     => 'Registrati',
 
-        //PRIVACY & INFO
+    //PRIVACY & INFO
 
-        'site_privacy_info'                   => "In questa pagina si descrivono le modalità di gestione del sito in riferimento al trattamento dei dati personali degli utenti che lo consultano. La presente pagina contiene, dunque, l’informativa resa ai sensi dell’art. 13 del D. Lgs. 196/2003 – Codice in materia di protezione dei dati personali - a coloro che interagiscono con i servizi web di questo sito.
+    'site_privacy_info'                   => "In questa pagina si descrivono le modalità di gestione del sito in riferimento al trattamento dei dati personali degli utenti che lo consultano. La presente pagina contiene, dunque, l’informativa resa ai sensi dell’art. 13 del D. Lgs. 196/2003 – Codice in materia di protezione dei dati personali - a coloro che interagiscono con i servizi web di questo sito.
 La semplice consultazione di questo sito, così come la registrazione nello stesso, infatti, potranno comportare la registrazione, l’utilizzo, la cancellazione e, più genericamente, il trattamento di dati personali relativi ad utenti identificati o identificabili.
 
 CONFERIMENTO DEI DATI E CONSENSO AL TRATTAMENTO
@@ -125,11 +125,11 @@ In questo sito l'uso di Cookies è strettamente limitato alla trasmissione di id
 DIRITTI DEGLI INTERESSATI
 Ai sensi dell'art. 7 del Codice della Privacy, i soggetti cui si riferiscono i dati personali hanno il diritto, in qualunque momento, di: ottenere la conferma dell’esistenza dei medesimi dati e di conoscerne il contenuto e l’origine, conoscere le finalità e le modalità del trattamento, conoscere gli estremi del Titolare e dell’eventuale Responsabile, conoscere i soggetti o le categorie di soggetti cui i dati possono essere comunicati, verificare l’esattezza dei dati, chiederne l’integrazione, l’aggiornamento o la rettificazione, la cancellazione, la trasformazione in forma anonima o il blocco dei dati trattati in violazione di legge, chiedere l’attestazione del fatto che le operazioni di cui ai sopra sono state portate a conoscenza, anche per quanto riguarda il loro contenuto, di coloro ai quali i dati sono stati comunicati o diffusi. Inoltre, i soggetti cui i dati si riferiscono possono, per motivi legittimi, opporsi, in tutto o in parte al trattamento dei dati che li riguardano, nonché, in particolare, al trattamento dei dati personali previsto ai fini di informazione commerciale o di invio di materiale pubblicitario o di vendita diretta ovvero per il compimento di ricerche di mercato o di comunicazione commerciale.",
 
-        //EU COOKIES POLICY
-        'eu_cookie_policy_message'            => "In questo si utilizzano i Cookies per per consentire l\’esplorazione sicura ed efficiente del sito. Utilizzando questo sito accetti l\'uso dei cookies.",
-        'eu_cookie_policy_close_message'      => 'Chiudi',
-        'eu_cookie_policy_learn_more_message' => 'Leggi di più',
+    //EU COOKIES POLICY
+    'eu_cookie_policy_message'            => "In questo si utilizzano i Cookies per per consentire l\’esplorazione sicura ed efficiente del sito. Utilizzando questo sito accetti l\'uso dei cookies.",
+    'eu_cookie_policy_close_message'      => 'Chiudi',
+    'eu_cookie_policy_learn_more_message' => 'Leggi di più',
 
-        'customizer_theme_colors' => 'Colori',
+    'customizer_theme_colors' => 'Colori',
 
-    );
+];

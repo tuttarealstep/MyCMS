@@ -1,71 +1,68 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
 
-
-hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3)
-{
+if ($user_rank < 3) {
     header('Location: ' . HOST . '/my-admin/home');
     exit();
 }
 
-    global $my_db, $my_users, $my_blog, $my_theme;
+global $my_db, $my_users, $my_blog, $my_theme;
 
-    define('PAGE_ID', 'admin_pages_new');
-    define('PAGE_NAME', ea('page_pages_new', '1'));
+define('PAGE_ID', 'admin_pages_new');
+define('PAGE_NAME', ea('page_pages_new', '1'));
 
-    add_style_script_admin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
-    get_file_admin('header');
+getFileAdmin('header');
 
-    get_page_admin('topbar');
+getPageAdmin('topbar');
 $this->container['plugins']->applyEvent('myPageNewAfterTopBar');
 $this->container['plugins']->applyEvent('myPageNewEditAfterTopBar');
 
-$this->container['plugins']->addEvent('parseMyPageContent', function ($content)
-{
+$this->container['plugins']->addEvent('parseMyPageContent', function ($content) {
     return $content;
 });
 
-    if (isset($_POST['pages_new_create'])) {
-        if (!empty($_POST['pages_title'])) {
-            $pages_title = add_space(addslashes($_POST['pages_title']));
+if (isset($_POST['pages_new_create'])) {
+    if (!empty($_POST['pages_title'])) {
+        $pages_title = addSpace(addslashes($_POST['pages_title']));
 
-            $pages_content = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
+        $pages_content = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
 
-            $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
+        $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
 
-            $pages_menu_id = my_generate_random(5) . $pages_title;
+        $pages_menu_id = myGenerateRandom(5) . $pages_title;
 
-            $pageUrlFromTitle = preg_replace('/[^\p{L}\p{N}\s]/u', '', $pages_title);
+        $pageUrlFromTitle = preg_replace('/[^\p{L}\p{N}\s]/u', '', $pages_title);
 
-            $page_url = "{@siteURL@}/" . $this->container["security"]->my_sql_secure($pageUrlFromTitle);
-
-
-            $find_url = $my_db->single("SELECT COUNT(*) FROM my_page WHERE pageURL = :simulate_url", array("simulate_url" => $page_url));
-            if ($find_url > 0) {
-                $page_url = "{@siteURL@}/" . my_generate_random(5) . $this->container["security"]->my_sql_secure($pageUrlFromTitle);
-            } else {
-            }
+        $page_url = "{@siteURL@}/" . $this->container["security"]->mySqlSecure($pageUrlFromTitle);
 
 
-            $my_db->query("INSERT INTO my_page (pageTITLE,pageURL,pagePUBLIC,pageHTML, pageID_MENU) VALUES ('$pages_title', '$page_url', '$pagePUBLIC', '$pages_content', '$pages_menu_id')");
-            $info = '<div class="row"><div class="alert alert-success">' . ea('page_pages_new_success_created', '1') . ' <a href="' . $page_url . '">' . ea('page_pages_new_success_show', '1') . '</a></div>';
-
+        $find_url = $my_db->single("SELECT COUNT(*) FROM my_page WHERE pageURL = :simulate_url", ["simulate_url" => $page_url]);
+        if ($find_url > 0) {
+            $page_url = "{@siteURL@}/" . myGenerateRandom(5) . $this->container["security"]->mySqlSecure($pageUrlFromTitle);
         } else {
-            $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
-            $pagePUBLICLabel = ($pagePUBLIC == "1") ? ea('page_pages_status_publish', '1') : ea('page_pages_status_draft', '1');
-
-            $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
-            define("INDEX_ERROR", ea('page_pages_new_error_title', '1'));
-
         }
+
+
+        $my_db->query("INSERT INTO my_page (pageTITLE,pageURL,pagePUBLIC,pageHTML, pageID_MENU) VALUES ('$pages_title', '$page_url', '$pagePUBLIC', '$pages_content', '$pages_menu_id')");
+        $info = '<div class="row"><div class="alert alert-success">' . ea('page_pages_new_success_created', '1') . ' <a href="' . $page_url . '">' . ea('page_pages_new_success_show', '1') . '</a></div>';
+
+    } else {
+        $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
+        $pagePUBLICLabel = ($pagePUBLIC == "1") ? ea('page_pages_status_publish', '1') : ea('page_pages_status_draft', '1');
+
+        $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
+        define("INDEX_ERROR", ea('page_pages_new_error_title', '1'));
+
     }
-    get_style_script_admin('script');
+}
+getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -134,7 +131,7 @@ if (defined("INDEX_ERROR")) {
                         <br/>
                         <div class="form-group" id="textareaContent">
                             <textarea name="pages_content" id="pages_content"
-                                      style="height:300px;"><?php echo $my_theme->no_tags((isset($pages['content'])) ? $pages['content'] : ""); ?></textarea>
+                                      style="height:300px;"><?php echo $my_theme->noTags((isset($pages['content'])) ? $pages['content'] : ""); ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -170,7 +167,8 @@ if (defined("INDEX_ERROR")) {
                                                     } else {
                                                         ea('page_pages_status_publish');
                                                     } ?></span>
-                                                <a href="#pagePUBLIC" id="editPagePUBLICButton" style="display: inline;">
+                                                <a href="#pagePUBLIC" id="editPagePUBLICButton"
+                                                   style="display: inline;">
                                                     <span aria-hidden="true">- <?php ea('page_pages_new_label_edit_status'); ?></span></a>
                                             </div>
                                         </div>
@@ -178,7 +176,8 @@ if (defined("INDEX_ERROR")) {
                                         <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="pagePUBLICEdit"
                                              style="display: block;">
                                             <div class="form-group">
-                                                <select name="pagePUBLICselect" id="pagePUBLICselect" class="form-control"
+                                                <select name="pagePUBLICselect" id="pagePUBLICselect"
+                                                        class="form-control"
                                                         style="display: inline-block; width: auto">
                                                     <option selected="selected"
                                                             value="1"><?php ea('page_pages_status_publish'); ?></option>

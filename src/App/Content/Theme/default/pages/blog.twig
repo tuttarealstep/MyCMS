@@ -8,7 +8,7 @@
         {% set archive = 0 %}
     {% endif %}
 {% elseif _GET['category'] %}
-    {% set catName = container.security.my_sql_secure(_GET['category']) %}
+    {% set catName = container.security.mySqlSecure(_GET['category']) %}
     {% set title = catName ~ " - " ~ siteNAME %}
 
     {% if _GET['maxPosts'] %}
@@ -20,7 +20,7 @@
     {% set archive = 2 %}
 
 {% elseif _GET['author'] %}
-    {% set authorId = container.security.my_sql_secure(_GET['author']) %}
+    {% set authorId = container.security.mySqlSecure(_GET['author']) %}
     {% if container.users.userIdExist(authorId) == true %}
 
         {% set authorName = container.users.getUserName(authorId) %}
@@ -42,7 +42,7 @@
         {% set archive = 1 %}
     {% endif %}
 {% elseif _GET['search'] %}
-    {% set words = container.functions.stringUrlDecode(container.security.my_sql_secure(_GET['search'])) %}
+    {% set words = container.functions.stringUrlDecode(container.security.mySqlSecure(_GET['search'])) %}
     {% set title = words ~ " - " ~ siteNAME %}
 
     {% if _GET['maxPosts'] %}
@@ -53,7 +53,7 @@
     {% set next = max + 10 %}
     {% set archive = 4 %}
 {% elseif _GET['year'] %}
-    {% set postID = container.blog.getInfo("idFROMpermalink", "/blog/" ~ container.security.my_sql_secure(_GET['year']) ~ "/" ~container.security.my_sql_secure( _GET['month']) ~ "/" ~ container.security.my_sql_secure(_GET['title'])) %}
+    {% set postID = container.blog.getInfo("idFROMpermalink", "/blog/" ~ container.security.mySqlSecure(_GET['year']) ~ "/" ~container.security.mySqlSecure( _GET['month']) ~ "/" ~ container.security.mySqlSecure(_GET['title'])) %}
     {% set title = container.blog.getInfo('title', postID) ~ " - " ~ siteNAME %}
     {% set archive = 0 %}
 {% else %}
@@ -67,7 +67,7 @@
     {% set archive = 1 %}
 {% endif %}
 
-    {% block title %}{{ title  }}{% endblock title %}
+    {% block title %}{{ title }}{% endblock title %}
 
 
 {% block bodyTag %}
@@ -97,25 +97,25 @@
                     </article>
                 </div>
             </div>
-            {% if container.settings.get_settings_value('blog_comments_active') == 'true' and container.users.user_logged_in() %}
-            <div class="row comment-section-post-page">
-                <div class="col-md-6 col-md-offset-3">
-                    <form role="form" method="post" action="">
-                        <div class="form-group">
-                            <input type="hidden" name="post_id" value="{{ postID }}"/>
-                            <textarea name="commento"
-                                      placeholder="{{ container.languages.e('blog_post_title_comment') }}"
-                                      style=" width:100%;min-width:100%;max-width:100%;height:100px;min-height:100px;max-height:100px;"
-                                      maxlength="250" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="section-colored text-center">
-                            <button type="submit" name="postCOMMENT"
-                                    class="btn btnBlog btn-block">{{ container.languages.e('blog_post_comment_button_send') }}</button>
-                            <br>
-                        </div>
-                    </form>
+            {% if container.settings.getSettingsValue('blog_comments_active') == 'true' and container.users.userLoggedIn() %}
+                <div class="row comment-section-post-page">
+                    <div class="col-md-6 col-md-offset-3">
+                        <form role="form" method="post" action="">
+                            <div class="form-group">
+                                <input type="hidden" name="post_id" value="{{ postID }}"/>
+                                <textarea name="commento"
+                                          placeholder="{{ container.languages.e('blog_post_title_comment') }}"
+                                          style=" width:100%;min-width:100%;max-width:100%;height:100px;min-height:100px;max-height:100px;"
+                                          maxlength="250" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="section-colored text-center">
+                                <button type="submit" name="postCOMMENT"
+                                        class="btn btnBlog btn-block">{{ container.languages.e('blog_post_comment_button_send') }}</button>
+                                <br>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
             {% endif %}
             <div class="row comment-section-post-page">
                 <div class="col-md-6 col-md-offset-3">
@@ -177,8 +177,8 @@
                     {% endfor %}
                     <div class="text-center">
                         {% if counter > 0 %}
-                        <a class="btn btnBlog"
-                           href="/blog/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
+                            <a class="btn btnBlog"
+                               href="/blog/max/{{ next }}#last">{{ container.languages.e('show_more') }}</a>
                         {% endif %}
                     </div>
                 </div>

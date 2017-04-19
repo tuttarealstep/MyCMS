@@ -95,19 +95,19 @@ $(document).ready(function () {
 
     });
 
-    $("#changeLayout1").click(function() {
+    $("#changeLayout1").click(function () {
         var rel = $(this).attr("rel");
         $('body').hide().fadeIn(1000);
         $('#adminStyle').remove();
-        $('head').append('<link rel="stylesheet" href="'+rel+'" id="adminStyle" type="text/css" />');
+        $('head').append('<link rel="stylesheet" href="' + rel + '" id="adminStyle" type="text/css" />');
         sendAjax("m=changeAdminColor&color=default", null);
     });
 
-    $("#changeLayout2").click(function() {
-            var rel = $(this).attr("rel");
-            $('body').hide().fadeIn(1000);
-            $('#adminStyle').remove();
-            $('head').append('<link rel="stylesheet" href="'+rel+'" id="adminStyle" type="text/css" />');
+    $("#changeLayout2").click(function () {
+        var rel = $(this).attr("rel");
+        $('body').hide().fadeIn(1000);
+        $('#adminStyle').remove();
+        $('head').append('<link rel="stylesheet" href="' + rel + '" id="adminStyle" type="text/css" />');
         sendAjax("m=changeAdminColor&color=Light", null);
     });
 

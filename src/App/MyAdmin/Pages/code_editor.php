@@ -1,33 +1,32 @@
 <?php
-    /**
-     * User: tuttarealstep
-     * Date: 30/06/16
-     * Time: 22.31
-     */
+/**
+ * User: tuttarealstep
+ * Date: 30/06/16
+ * Time: 22.31
+ */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank < 3)
-    {
-        header('Location: ' . HOST . '/my-admin/home');
-        exit();
+$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
+if ($user_rank < 3) {
+    header('Location: ' . HOST . '/my-admin/home');
+    exit();
+}
+
+global $my_date, $my_db, $my_users, $my_blog, $my_theme;
+define('PAGE_ID', 'admin_code_editor');
+define('PAGE_NAME', ea('page_admin_code_editor_page_name', '1'));
+
+getFileAdmin('header');
+getPageAdmin('topbar');
+
+if (isset($_GET['theme'])) {
+    if ($this->container['theme']->themeExist($_GET['theme'])) {
+        $theme = $_GET['theme'];
+    } else {
+        $theme = "";
     }
-
-    global $my_date, $my_db, $my_users, $my_blog, $my_theme;
-    define('PAGE_ID', 'admin_code_editor');
-    define('PAGE_NAME', ea('page_admin_code_editor_page_name', '1'));
-
-    get_file_admin('header');
-    get_page_admin('topbar');
-
-    if (isset($_GET['theme'])) {
-        if ($this->container['theme']->theme_exist($_GET['theme'])) {
-            $theme = $_GET['theme'];
-        } else {
-            $theme = "";
-        }
-    }
+}
 ?>
 <script>
     var theme_var = "<?php echo $theme; ?>";
@@ -159,7 +158,7 @@
 <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 
 <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/base64.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/perfect-scrollbar.jquery.min.js"></script>

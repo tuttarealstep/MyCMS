@@ -1,112 +1,111 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    global $my_db, $my_users, $my_blog;
-    hide_if_staff_not_logged();
+global $my_db, $my_users, $my_blog;
+hideIfStaffNotLogged();
 
-    define('PAGE_ID', 'admin_posts_edit');
-    define('PAGE_NAME', ea('admin_posts_edit', '1'));
+define('PAGE_ID', 'admin_posts_edit');
+define('PAGE_NAME', ea('admin_posts_edit', '1'));
 
-    add_style_script_admin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $this->container['plugins']->applyEvent('postsEditAfterTopBar');
-    $this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
+$this->container['plugins']->applyEvent('postsEditAfterTopBar');
+$this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
 
-    $this->container['plugins']->addEvent('parsePostContent', function ($content)
-    {
-        return $content;
-    });
+$this->container['plugins']->addEvent('parsePostContent', function ($content) {
+    return $content;
+});
 
-    $info = "";
-    if (isset($_GET['id'])) {
+$info = "";
+if (isset($_GET['id'])) {
 
-        if (is_numeric($_GET['id'])) {
-            if ($my_db->single("SELECT count(*) FROM my_blog WHERE postID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
-                $postid = my_sql_secure($_GET['id']);
+    if (is_numeric($_GET['id'])) {
+        if ($my_db->single("SELECT count(*) FROM my_blog WHERE postID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
+            $postid = mySqlSecure($_GET['id']);
 
-                $posts['title'] = $my_blog->gets('title', $postid);
-                $posts['content'] = $my_blog->gets('content', $postid);
-                $posts['permalink'] = $my_blog->gets('permalink', $postid);
-                $posts_category = $my_blog->gets('category', $postid);
-                $postSTATUS = $my_blog->getInfo('postSTATUS', $postid);
-                $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
+            $posts['title'] = $my_blog->gets('title', $postid);
+            $posts['content'] = $my_blog->gets('content', $postid);
+            $posts['permalink'] = $my_blog->gets('permalink', $postid);
+            $posts_category = $my_blog->gets('category', $postid);
+            $postSTATUS = $my_blog->getInfo('postSTATUS', $postid);
+            $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
 
-            }
-        } else {
-            header('Location: ' . HOST . '/my-admin/home');
-            exit();
         }
-
     } else {
-
         header('Location: ' . HOST . '/my-admin/home');
         exit();
-
     }
 
+} else {
 
-    if (isset($_POST['posts_new_edit_button'])) {
-        if (!empty($_POST['posts_title'])) {
-            if (!empty($_POST['posts_content'])) {
-                $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-                if ($user_rank >= 2) {
-                    $posts_title = addslashes($_POST['posts_title']);
-                    $posts_content = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
-                    $date = date('d/m/Y H.i.s', time());
-                    $postSTATUS = addslashes($_POST['postSTATUS']);
-                    $category = addslashes($_POST['category']);
-                    //$author = $my_users->getInfo($_SESSION['staff']['id'], 'name').'_'.$my_users->getInfo($_SESSION['staff']['id'], 'surname');
-                    $author = $_SESSION['staff']['id'];
-                    //$permalink = $_POST['permalink'];
-                    $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . fix_text(add_space($posts_title));
-                    $finder = $my_blog->permalinkfinder($permalink);
-                    if ($finder == true) {
+    header('Location: ' . HOST . '/my-admin/home');
+    exit();
 
-                        $i = 1;
-                        while ($my_blog->permalinkfinder($permalink . '_' . $i) == true):
+}
 
-                            $i++;
 
-                        endwhile;
+if (isset($_POST['posts_new_edit_button'])) {
+    if (!empty($_POST['posts_title'])) {
+        if (!empty($_POST['posts_content'])) {
+            $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+            if ($user_rank >= 2) {
+                $posts_title = addslashes($_POST['posts_title']);
+                $posts_content = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
+                $date = date('d/m/Y H.i.s', time());
+                $postSTATUS = addslashes($_POST['postSTATUS']);
+                $category = addslashes($_POST['category']);
+                //$author = $my_users->getInfo($_SESSION['staff']['id'], 'name').'_'.$my_users->getInfo($_SESSION['staff']['id'], 'surname');
+                $author = $_SESSION['staff']['id'];
+                //$permalink = $_POST['permalink'];
+                $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . fixText(addSpace($posts_title));
+                $finder = $my_blog->permalinkFinder($permalink);
+                if ($finder == true) {
 
-                        $permalink = $permalink . '_' . $i;
+                    $i = 1;
+                    while ($my_blog->permalinkFinder($permalink . '_' . $i) == true):
 
-                    }
+                        $i++;
 
-                    $my_db->query("UPDATE my_blog SET postTITLE = '$posts_title', postCONT = '$posts_content', postCATEGORY = '$category', postPOSTED = '1', postPERMALINK = '$permalink', postSTATUS = '$postSTATUS' WHERE postID = '" . $postid . "'");;
+                    endwhile;
 
-                    $info = '<div class="row"><div class="alert alert-success">' . ea('page_posts_edit_new_success_posted', '1') . ' <a href="' . $permalink . '">' . ea('page_posts_edit_new_success_show', '1') . '</a></div>';
+                    $permalink = $permalink . '_' . $i;
 
-                    $posts['title'] = $_POST['posts_title'];
-                    $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
-                    $posts_category = $_POST['category'];
                 }
-            } else {
-                define("INDEX_ERROR", ea('page_posts_edit_new_error_content', '1'));
+
+                $my_db->query("UPDATE my_blog SET postTITLE = '$posts_title', postCONT = '$posts_content', postCATEGORY = '$category', postPOSTED = '1', postPERMALINK = '$permalink', postSTATUS = '$postSTATUS' WHERE postID = '" . $postid . "'");;
+
+                $info = '<div class="row"><div class="alert alert-success">' . ea('page_posts_edit_new_success_posted', '1') . ' <a href="' . $permalink . '">' . ea('page_posts_edit_new_success_show', '1') . '</a></div>';
+
                 $posts['title'] = $_POST['posts_title'];
                 $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
                 $posts_category = $_POST['category'];
-                $postSTATUS = addslashes($_POST['postSTATUS']);
-                $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
-
-
             }
         } else {
+            define("INDEX_ERROR", ea('page_posts_edit_new_error_content', '1'));
+            $posts['title'] = $_POST['posts_title'];
             $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
             $posts_category = $_POST['category'];
-            define("INDEX_ERROR", ea('page_posts_edit_new_error_title', '1'));
             $postSTATUS = addslashes($_POST['postSTATUS']);
             $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
 
 
         }
+    } else {
+        $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
+        $posts_category = $_POST['category'];
+        define("INDEX_ERROR", ea('page_posts_edit_new_error_title', '1'));
+        $postSTATUS = addslashes($_POST['postSTATUS']);
+        $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
+
+
     }
-    get_style_script_admin('script');
+}
+getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -135,17 +134,17 @@
     }
 </style>
 <?php
-    if (defined("INDEX_ERROR")) {
-        ?>
-        <div class="container">
-            <div class="panel" style="padding: 8px; border-bottom: 3px solid #b71c1c; margin-top: 2%">
-                <div class="panel-body login-panel-body">
-                    <?php echo INDEX_ERROR; ?>
-                </div>
+if (defined("INDEX_ERROR")) {
+    ?>
+    <div class="container">
+        <div class="panel" style="padding: 8px; border-bottom: 3px solid #b71c1c; margin-top: 2%">
+            <div class="panel-body login-panel-body">
+                <?php echo INDEX_ERROR; ?>
             </div>
         </div>
-        <?php
-    }
+    </div>
+    <?php
+}
 ?>
 <div class="container">
     <div class="row">
@@ -163,24 +162,25 @@
             <div class="col-lg-8 col-md-8">
                 <div class="panel b_panel">
                     <div class="panel-body b_panel-body panel-body-padding">
-                <div class="form-group">
-                    {@noTAGS_start@}
-                    <input placeholder="<?php ea('page_posts_edit_new_title'); ?>" type="text" name="posts_title" id="title" class="form-control b_form-control" maxlength="100"
-                           value="<?php echo $posts['title']; ?>">
-                    {@noTAGS_end@}
-                </div>
-                <br/>
-                <div class="addons-menu">
-                    <?php $this->container['plugins']->applyEvent('blogAddonsMenu'); ?>
-                </div>
-                <br/>
-                <div class="form-group">
-                    {@noTAGS_start@}
-                    <textarea name="posts_content"
-                              style="height:300px;"><?php echo $posts['content']; ?></textarea>
-                    {@noTAGS_end@}
-                </div>
-            </div>
+                        <div class="form-group">
+                            {@noTAGS_start@}
+                            <input placeholder="<?php ea('page_posts_edit_new_title'); ?>" type="text"
+                                   name="posts_title" id="title" class="form-control b_form-control" maxlength="100"
+                                   value="<?php echo $posts['title']; ?>">
+                            {@noTAGS_end@}
+                        </div>
+                        <br/>
+                        <div class="addons-menu">
+                            <?php $this->container['plugins']->applyEvent('blogAddonsMenu'); ?>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            {@noTAGS_start@}
+                            <textarea name="posts_content"
+                                      style="height:300px;"><?php echo $posts['content']; ?></textarea>
+                            {@noTAGS_end@}
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.col-lg-8 -->
@@ -196,56 +196,59 @@
                         <div id="collapseOne" class="panel-collapse collapse in" style="">
                             <div class="panel-body b_panel-body">
                                 <div class="panel-body-padding">
-                                <span class="label label-danger"><?php ea('page_posts_edit_new_permalink'); ?></span><br/>
-                                <p id="msg" style="word-wrap: break-word; ">
-                                    {@siteURL@}/blog/<?php echo date('Y', time()); ?>/<?php echo date('m', time()); ?>
-                                    /<?php echo $posts['title']; ?></p>
-                                <small>*<?php ea('page_posts_edit_new_permalink_info'); ?></small>
+                                    <span class="label label-danger"><?php ea('page_posts_edit_new_permalink'); ?></span><br/>
+                                    <p id="msg" style="word-wrap: break-word; ">
+                                        {@siteURL@}/blog/<?php echo date('Y', time()); ?>
+                                        /<?php echo date('m', time()); ?>
+                                        /<?php echo $posts['title']; ?></p>
+                                    <small>*<?php ea('page_posts_edit_new_permalink_info'); ?></small>
 
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                            <label><?php ea('page_posts_new_status_label'); ?></label>
-                                            <input type="hidden" name="postSTATUS" id="postSTATUS"
-                                                   value="<?php if (isset($postSTATUS)) {
-                                                       echo $postSTATUS;
-                                                   } else {
-                                                       echo 'published';
-                                                   } ?>">
-                                            <span id="postSTATUSLabel"
-                                                  class="text-capitalize"><?php if (isset($postSTATUS)) {
-                                                    echo $postSTATUSLabel;
-                                                } else {
-                                                    ea('page_posts_new_label_published');
-                                                } ?></span>
-                                            <a href="#postSTATUS" id="editPostStatusButton" style="display: inline;">
-                                                <span aria-hidden="true">- <?php ea('page_posts_new_label_edit_status'); ?></span></a>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label><?php ea('page_posts_new_status_label'); ?></label>
+                                                <input type="hidden" name="postSTATUS" id="postSTATUS"
+                                                       value="<?php if (isset($postSTATUS)) {
+                                                           echo $postSTATUS;
+                                                       } else {
+                                                           echo 'published';
+                                                       } ?>">
+                                                <span id="postSTATUSLabel"
+                                                      class="text-capitalize"><?php if (isset($postSTATUS)) {
+                                                        echo $postSTATUSLabel;
+                                                    } else {
+                                                        ea('page_posts_new_label_published');
+                                                    } ?></span>
+                                                <a href="#postSTATUS" id="editPostStatusButton"
+                                                   style="display: inline;">
+                                                    <span aria-hidden="true">- <?php ea('page_posts_new_label_edit_status'); ?></span></a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="postStatusEdit"
+                                             style="display: block;">
+                                            <div class="form-group">
+                                                <select name="postSTATUSselect" id="postSTATUSselect"
+                                                        class="form-control"
+                                                        style="display: inline-block; width: auto">
+                                                    <option selected="selected"
+                                                            value="publish"><?php ea('page_posts_new_label_published'); ?></option>
+                                                    <option value="pending"><?php ea('page_posts_new_label_pending_review'); ?></option>
+                                                    <option value="draft"><?php ea('page_posts_new_label_draft'); ?></option>
+                                                </select>
+                                                <a href="#postSTATUSselect" class="btn btn-default"
+                                                   id="okPostStatusButton"><?php ea('page_posts_new_label_ok'); ?></a>
+                                                <a href="#postSTATUSselect"
+                                                   id="cancelPostStatusButton"> <?php ea('page_posts_new_label_cancel'); ?></a>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="postStatusEdit"
-                                         style="display: block;">
-                                        <div class="form-group">
-                                            <select name="postSTATUSselect" id="postSTATUSselect" class="form-control"
-                                                    style="display: inline-block; width: auto">
-                                                <option selected="selected"
-                                                        value="publish"><?php ea('page_posts_new_label_published'); ?></option>
-                                                <option value="pending"><?php ea('page_posts_new_label_pending_review'); ?></option>
-                                                <option value="draft"><?php ea('page_posts_new_label_draft'); ?></option>
-                                            </select>
-                                            <a href="#postSTATUSselect" class="btn btn-default"
-                                               id="okPostStatusButton"><?php ea('page_posts_new_label_ok'); ?></a>
-                                            <a href="#postSTATUSselect"
-                                               id="cancelPostStatusButton"> <?php ea('page_posts_new_label_cancel'); ?></a>
-                                        </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
-                            <button type="submit" name="posts_new_edit_button"
-                                    class="btn btn-primary b_btn btn-block"><?php ea('page_posts_edit_new_publish_button'); ?></button>
+                        <button type="submit" name="posts_new_edit_button"
+                                class="btn btn-primary b_btn btn-block"><?php ea('page_posts_edit_new_publish_button'); ?></button>
 
                     </div>
                 </div>
@@ -262,16 +265,16 @@
                                 <span class="label label-warning"><?php ea('page_posts_edit_new_select_category'); ?></span><br/><br/>
                                 <select name="category" id="categorySelect" class="form-control b_form-control">
                                     <?php
-                                        $cat = $my_db->query("SELECT * FROM my_blog_category");
-                                        $i = 0;
-                                        foreach ($cat as $category) {
-                                            $i++;
-                                            ?>
-                                            <option <?php if ($posts_category == $category['catNAME']) {
-                                                echo 'selected=""';
-                                            } ?> value="<?php echo $category['catNAME']; ?>"><?php echo $category['catNAME']; ?></option>
-                                            <?php
-                                        }
+                                    $cat = $my_db->query("SELECT * FROM my_blog_category");
+                                    $i = 0;
+                                    foreach ($cat as $category) {
+                                        $i++;
+                                        ?>
+                                        <option <?php if ($posts_category == $category['catNAME']) {
+                                            echo 'selected=""';
+                                        } ?> value="<?php echo $category['catNAME']; ?>"><?php echo $category['catNAME']; ?></option>
+                                        <?php
+                                    }
                                     ?>
                                 </select>
                                 <br>
@@ -282,7 +285,8 @@
                                         <hr>
                                         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">
                                             <input class="form-control b_form-control" type="text" aria-required="true"
-                                                   name="newCategoryName" id="newCategoryName" style="margin-bottom: 10px"
+                                                   name="newCategoryName" id="newCategoryName"
+                                                   style="margin-bottom: 10px"
                                                    placeholder="<?php ea('page_posts_category_new_placeholder'); ?>">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">

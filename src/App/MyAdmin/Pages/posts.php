@@ -1,40 +1,40 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
-    hide_if_staff_not_logged();
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
+hideIfStaffNotLogged();
 
-    global $my_date, $my_db, $my_users, $my_blog;
-    define('PAGE_ID', 'admin_posts');
-    define('PAGE_NAME', ea('page_posts_name', '1'));
+global $my_date, $my_db, $my_users, $my_blog;
+define('PAGE_ID', 'admin_posts');
+define('PAGE_NAME', ea('page_posts_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $info = "";
+$info = "";
 
-    if (isset($_POST['execute'])) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 2) {
-            if ($_POST['ifchecked'] == 'delete') {
-                if (!empty($_POST['check_list'])) {
-                    foreach ($_POST['check_list'] as $select) {
-                        $my_db->query('DELETE FROM my_blog WHERE postID = :select', array('select' => $select));
-                        $info = '<div class="row"><div class="alert alert-success">' . ea('page_posts_delete_successfull', '1') . '</div>';
-                    }
-                } else {
-                    $info = '<div class="row"><div class="alert alert-danger">' . ea('page_posts_delete_empty_checklist', '1') . '</div>';
+if (isset($_POST['execute'])) {
+    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($user_rank >= 2) {
+        if ($_POST['ifchecked'] == 'delete') {
+            if (!empty($_POST['check_list'])) {
+                foreach ($_POST['check_list'] as $select) {
+                    $my_db->query('DELETE FROM my_blog WHERE postID = :select', ['select' => $select]);
+                    $info = '<div class="row"><div class="alert alert-success">' . ea('page_posts_delete_successfull', '1') . '</div>';
                 }
-            } elseif ($_POST['ifchecked'] == 'edit') {
-                if (!empty($_POST['check_list'])) {
-                    foreach ($_POST['check_list'] as $select) {
-                        header('Location: ' . HOST . '/my-admin/posts_edit/' . $select . '');
-                        exit();
-                    }
+            } else {
+                $info = '<div class="row"><div class="alert alert-danger">' . ea('page_posts_delete_empty_checklist', '1') . '</div>';
+            }
+        } elseif ($_POST['ifchecked'] == 'edit') {
+            if (!empty($_POST['check_list'])) {
+                foreach ($_POST['check_list'] as $select) {
+                    header('Location: ' . HOST . '/my-admin/posts_edit/' . $select . '');
+                    exit();
                 }
             }
         }
     }
+}
 ?>
 <div class="container">
     <div class="row">
@@ -43,7 +43,7 @@
                 echo '<br>' . $info . '<br>';
             } ?>
             <h1 class="h1PagesTitle"><?php ea('page_posts_header'); ?> <a href="{@siteURL@}/my-admin/posts_new"
-                                                     class="btn btn-primary pull-right"><?php ea('page_posts_header_create_new'); ?></a>
+                                                                          class="btn btn-primary pull-right"><?php ea('page_posts_header_create_new'); ?></a>
             </h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -66,25 +66,25 @@
                         </thead>
                         <tbody>
                         <?php
-                            global $my_db;
-                            $post = $my_db->query("SELECT * FROM my_blog WHERE postPOSTED = '1' ORDER BY postDATE");
-                            $i = 0;
-                            foreach ($post as $postinfo) {
-                                $i++;
-                                ?>
-                                <tr>
-                                    <td>
-                                        <a href="{@siteURL@}/my-admin/posts_edit/<?php echo $postinfo['postID']; ?>"><?php echo $postinfo['postTITLE']; ?></a>
-                                    </td>
-                                    <td><?php echo $this->container['blog']->getInfo("authorName", $postinfo['postAUTHOR']); ?></td>
-                                    <td><?php echo $postinfo['postCATEGORY']; ?></td>
-                                    <td><?php echo $postinfo['postDATE']; ?></td>
-                                    <td><?php echo ($postinfo['postSTATUS'] == "publish") ? ea('page_posts_new_label_published', '1') : (($postinfo['postSTATUS'] == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1')); ?></td>
-                                    <td><input type="checkbox" name="check_list[]"
-                                               value="<?php echo $postinfo['postID']; ?>"></td>
-                                </tr>
-                                <?php
-                            }
+                        global $my_db;
+                        $post = $my_db->query("SELECT * FROM my_blog WHERE postPOSTED = '1' ORDER BY postDATE");
+                        $i = 0;
+                        foreach ($post as $postinfo) {
+                            $i++;
+                            ?>
+                            <tr>
+                                <td>
+                                    <a href="{@siteURL@}/my-admin/posts_edit/<?php echo $postinfo['postID']; ?>"><?php echo $postinfo['postTITLE']; ?></a>
+                                </td>
+                                <td><?php echo $this->container['blog']->getInfo("authorName", $postinfo['postAUTHOR']); ?></td>
+                                <td><?php echo $postinfo['postCATEGORY']; ?></td>
+                                <td><?php echo $postinfo['postDATE']; ?></td>
+                                <td><?php echo ($postinfo['postSTATUS'] == "publish") ? ea('page_posts_new_label_published', '1') : (($postinfo['postSTATUS'] == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1')); ?></td>
+                                <td><input type="checkbox" name="check_list[]"
+                                           value="<?php echo $postinfo['postID']; ?>"></td>
+                            </tr>
+                            <?php
+                        }
                         ?>
                         </tbody>
                     </table>
@@ -112,7 +112,7 @@
 
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 <script>
     $(document).ready(function () {
         var table = $('#tables_posts').dataTable({

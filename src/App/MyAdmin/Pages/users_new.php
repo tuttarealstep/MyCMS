@@ -5,14 +5,14 @@
  * Time: 11.21
  */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    global $my_db, $my_users, $my_blog;
-    define('PAGE_ID', 'admin_users_new');
-    define('PAGE_NAME', ea('page_users_new_page_name', '1'));
+global $my_db, $my_users, $my_blog;
+define('PAGE_ID', 'admin_users_new');
+define('PAGE_NAME', ea('page_users_new_page_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
 if (isset($_POST['page_new_user_add_new_button'])) {
     // Dati Inviati dal modulo
@@ -21,17 +21,15 @@ if (isset($_POST['page_new_user_add_new_button'])) {
     $password = (isset($_POST['password'])) ? trim($_POST['password']) : '';
     $email = htmlentities($_POST['email']);
 
-    if (!get_magic_quotes_gpc())
-    {
+    if (!get_magic_quotes_gpc()) {
         $name = addslashes($name);
         $surname = addslashes($surname);
         $password = addslashes($password);
         $email = addslashes($email);
     }
 
-    $register = $this->container['users']->register($this->container['security']->my_sql_secure($email), $this->container['security']->my_sql_secure($password), $this->container['security']->my_sql_secure($name), $this->container['security']->my_sql_secure($surname));
-    if ($register["register"] == 1)
-    {
+    $register = $this->container['users']->register($this->container['security']->mySqlSecure($email), $this->container['security']->mySqlSecure($password), $this->container['security']->mySqlSecure($name), $this->container['security']->mySqlSecure($surname));
+    if ($register["register"] == 1) {
         unset($name);
         unset($surname);
         unset($password);
@@ -80,19 +78,25 @@ if (isset($new_user_created) && $new_user_created == true) {
                     <label><?php ea('page_new_user_name_label'); ?></label>
                     <input class="form-control b_form-control"
                            placeholder="<?php ea('page_new_user_name_placeholder') ?>" name="name"
-                           type="text" value="<?php if(isset($name)) { echo $name; } ?>" required>
+                           type="text" value="<?php if (isset($name)) {
+                        echo $name;
+                    } ?>" required>
                 </div>
                 <div class="form-group">
                     <label><?php ea('page_new_user_surname_label'); ?></label>
                     <input class="form-control b_form-control"
                            placeholder="<?php ea('page_new_user_surname_placeholder') ?>" name="surname"
-                           type="text" value="<?php if(isset($surname)) { echo $surname; } ?>" required>
+                           type="text" value="<?php if (isset($surname)) {
+                        echo $surname;
+                    } ?>" required>
                 </div>
                 <div class="form-group">
                     <label><?php ea('page_new_user_email_label'); ?></label>
                     <input class="form-control b_form-control"
                            placeholder="<?php ea('page_new_user_email_placeholder') ?>" name="email"
-                           type="email" value="<?php if(isset($email)) { echo $email; } ?>" required>
+                           type="email" value="<?php if (isset($email)) {
+                        echo $email;
+                    } ?>" required>
                 </div>
                 <div class="form-group">
                     <label><?php ea('page_new_user_password_label'); ?></label>
@@ -108,7 +112,7 @@ if (isset($new_user_created) && $new_user_created == true) {
     <!-- /.row -->
 </div>
 <!-- /#page-wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 </body>
 
 </html>

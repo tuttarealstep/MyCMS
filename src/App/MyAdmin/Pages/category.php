@@ -1,52 +1,52 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
-    hide_if_staff_not_logged();
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
+hideIfStaffNotLogged();
 
-    global $my_date, $my_db, $my_blog;
-    define('PAGE_ID', 'admin_category');
-    define('PAGE_NAME', ea('page_category_name', '1'));
+global $my_date, $my_db, $my_blog;
+define('PAGE_ID', 'admin_category');
+define('PAGE_NAME', ea('page_category_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $info = "";
+$info = "";
 
-    if (isset($_POST['execute'])) {
-        if ($_POST['ifchecked'] == 'delete') {
-            if (!empty($_POST['check_list'])) {
-                foreach ($_POST['check_list'] as $select) {
-                    $my_db->query('DELETE FROM my_blog_category WHERE catID = :select', array('select' => $select));
-                    $info = '<div class="row"><div class="alert alert-success">' . ea('page_category_delete_successfull', '1') . '</div>';
-                }
-            } else {
-                $info = '<div class="row"><div class="alert alert-danger">' . ea('page_category_delete_empty_checklist', '1') . '</div>';
-            }
-        }
-    }
-    if (isset($_POST['newcategory'])) {
-        if (!empty($_POST['name'])) {
-            $finder = $my_blog->categoryfinder($_POST['name']);
-            if ($finder == true) {
-                $info = '<div class="alert alert-danger">' . ea('page_category_error_category_in_use', '1') . '</div>';
-                $name = '';
-                $description = my_sql_secure($_POST['description']);
-            } else {
-                $name = addslashes($_POST['name']);
-                $description = addslashes($_POST['description']);
-                $my_db->query("INSERT INTO my_blog_category (catNAME,catDESCRIPTION) VALUES (:name, :description)", array('name' => $name, 'description' => $description));
-                $info = '<div class="alert alert-success">' . ea('page_category_addedd_succesful', '1') . '</div>';
-                $name = '';
-                $description = '';
+if (isset($_POST['execute'])) {
+    if ($_POST['ifchecked'] == 'delete') {
+        if (!empty($_POST['check_list'])) {
+            foreach ($_POST['check_list'] as $select) {
+                $my_db->query('DELETE FROM my_blog_category WHERE catID = :select', ['select' => $select]);
+                $info = '<div class="row"><div class="alert alert-success">' . ea('page_category_delete_successfull', '1') . '</div>';
             }
         } else {
-            $info = '<div class="alert alert-danger">' . ea('page_category_delete_empty_name', '1') . '</div>';
-            $name = my_sql_secure($_POST['name']);
-            $description = my_sql_secure($_POST['description']);
-
+            $info = '<div class="row"><div class="alert alert-danger">' . ea('page_category_delete_empty_checklist', '1') . '</div>';
         }
     }
+}
+if (isset($_POST['newcategory'])) {
+    if (!empty($_POST['name'])) {
+        $finder = $my_blog->categoryFinder($_POST['name']);
+        if ($finder == true) {
+            $info = '<div class="alert alert-danger">' . ea('page_category_error_category_in_use', '1') . '</div>';
+            $name = '';
+            $description = mySqlSecure($_POST['description']);
+        } else {
+            $name = addslashes($_POST['name']);
+            $description = addslashes($_POST['description']);
+            $my_db->query("INSERT INTO my_blog_category (catNAME,catDESCRIPTION) VALUES (:name, :description)", ['name' => $name, 'description' => $description]);
+            $info = '<div class="alert alert-success">' . ea('page_category_addedd_succesful', '1') . '</div>';
+            $name = '';
+            $description = '';
+        }
+    } else {
+        $info = '<div class="alert alert-danger">' . ea('page_category_delete_empty_name', '1') . '</div>';
+        $name = mySqlSecure($_POST['name']);
+        $description = mySqlSecure($_POST['description']);
+
+    }
+}
 ?>
 <div class="container">
     <div class="row">
@@ -74,21 +74,21 @@
                         </thead>
                         <tbody>
                         <?php
-                            global $my_db;
-                            $category = $my_db->query("SELECT * FROM my_blog_category");
-                            $i = 0;
-                            foreach ($category as $categoryinfo) {
-                                $i++;
-                                ?>
-                                <tr>
-                                    <td><?php echo $categoryinfo['catNAME']; ?></td>
-                                    <td><?php echo $categoryinfo['catDESCRIPTION']; ?></td>
-                                    <td><?php echo $my_db->single("SELECT COUNT(*) FROM my_blog WHERE postCATEGORY = '" . $categoryinfo['catNAME'] . "'"); ?></td>
-                                    <td><input type="checkbox" name="check_list[]"
-                                               value="<?php echo $categoryinfo['catID']; ?>"></td>
-                                </tr>
-                                <?php
-                            }
+                        global $my_db;
+                        $category = $my_db->query("SELECT * FROM my_blog_category");
+                        $i = 0;
+                        foreach ($category as $categoryinfo) {
+                            $i++;
+                            ?>
+                            <tr>
+                                <td><?php echo $categoryinfo['catNAME']; ?></td>
+                                <td><?php echo $categoryinfo['catDESCRIPTION']; ?></td>
+                                <td><?php echo $my_db->single("SELECT COUNT(*) FROM my_blog WHERE postCATEGORY = '" . $categoryinfo['catNAME'] . "'"); ?></td>
+                                <td><input type="checkbox" name="check_list[]"
+                                           value="<?php echo $categoryinfo['catID']; ?>"></td>
+                            </tr>
+                            <?php
+                        }
                         ?>
                         </tbody>
                     </table>
@@ -149,7 +149,7 @@
 
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 <script>
     $(document).ready(function () {
         $('#tables_posts').dataTable({

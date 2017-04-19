@@ -309,13 +309,11 @@ a, a:focus, a:active {
 
 /* Table */
 
-.table-responsive
-{
+.table-responsive {
     overflow: hidden;
 }
 
-.dataTables_filter
-{
+.dataTables_filter {
     float: right;
 }
 
@@ -323,15 +321,13 @@ a, a:focus, a:active {
     background-color: rgb(255, 255, 255);
 }
 
-.h1PagesTitle
-{
+.h1PagesTitle {
     text-transform: uppercase;
     font-weight: 300;
 }
 
 /* TEST */
-.b_panel_2
-{
+.b_panel_2 {
     -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
     border: 1px solid #DBDBDB;

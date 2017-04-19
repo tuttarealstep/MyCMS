@@ -1,45 +1,45 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
-    hide_if_staff_not_logged();
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
+hideIfStaffNotLogged();
 
-    global $my_date, $my_db, $my_users, $my_blog;
-    define('PAGE_ID', 'admin_ranks');
-    define('PAGE_NAME', ea('page_ranks_page_name', '1'));
+global $my_date, $my_db, $my_users, $my_blog;
+define('PAGE_ID', 'admin_ranks');
+define('PAGE_NAME', ea('page_ranks_page_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $info = "";
+$info = "";
 
-    if (isset($_POST['rankutente'])) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
-            if (!empty($_POST['email_rank'])) {
-                $email_rank = $_POST['email_rank'];
-                if ($my_users->control_mail($email_rank)) {
-                    $rank_id = $_POST['rank_id'];
-                    $my_db->query("UPDATE my_users SET rank = '" . $rank_id . "' WHERE mail = '" . $email_rank . "' LIMIT 1");
-                    $info = '<div class="alert alert-success">' . ea('page_ranks_error_1', '1') . '</div>';
-                    $username_rank = '';
-                    $rank_id = '';
-                } else {
-                    $info = '<div class="alert alert-danger">' . ea('page_ranks_error_2', '1') . '</div>';
-                    $email_rank = $_POST['email_rank'];
-                    $rank_id = $_POST['rank_id'];
-                }
+if (isset($_POST['rankutente'])) {
+    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($user_rank >= 3) {
+        if (!empty($_POST['email_rank'])) {
+            $email_rank = $_POST['email_rank'];
+            if ($my_users->controlMail($email_rank)) {
+                $rank_id = $_POST['rank_id'];
+                $my_db->query("UPDATE my_users SET rank = '" . $rank_id . "' WHERE mail = '" . $email_rank . "' LIMIT 1");
+                $info = '<div class="alert alert-success">' . ea('page_ranks_error_1', '1') . '</div>';
+                $username_rank = '';
+                $rank_id = '';
             } else {
-                $info = '<div class="alert alert-danger">' . ea('page_ranks_error_3', '1') . '</div>';
+                $info = '<div class="alert alert-danger">' . ea('page_ranks_error_2', '1') . '</div>';
                 $email_rank = $_POST['email_rank'];
                 $rank_id = $_POST['rank_id'];
             }
         } else {
-            $info = '<div class="alert alert-danger">' . ea('page_ranks_error_4', '1') . '</div>';
+            $info = '<div class="alert alert-danger">' . ea('page_ranks_error_3', '1') . '</div>';
             $email_rank = $_POST['email_rank'];
             $rank_id = $_POST['rank_id'];
         }
+    } else {
+        $info = '<div class="alert alert-danger">' . ea('page_ranks_error_4', '1') . '</div>';
+        $email_rank = $_POST['email_rank'];
+        $rank_id = $_POST['rank_id'];
     }
+}
 ?>
 <div class="container">
     <div class="row">
@@ -67,29 +67,29 @@
                         </thead>
                         <tbody>
                         <?php
-                            global $my_db;
-                            $ranks = $my_db->query("SELECT * from my_users WHERE rank >= '0' ORDER BY rank DESC");
-                            $i = 0;
-                            foreach ($ranks as $ranksinfo) {
-                                $i++;
+                        global $my_db;
+                        $ranks = $my_db->query("SELECT * from my_users WHERE rank >= '0' ORDER BY rank DESC");
+                        $i = 0;
+                        foreach ($ranks as $ranksinfo) {
+                            $i++;
 
-                                if ($ranksinfo['rank'] == 2) {
-                                    $rank_name = ea('page_ranks_2', '1');
-                                } elseif ($ranksinfo['rank'] == 3) {
-                                    $rank_name = ea('page_ranks_3', '1');
-                                } elseif ($ranksinfo['rank'] == 1) {
-                                    $rank_name = ea('page_ranks_1', '1');
-                                }
-
-                                ?>
-                                <tr>
-                                    <td><?php echo $ranksinfo['name'] . ' ' . $ranksinfo['surname']; ?></td>
-                                    <td><?php echo $ranksinfo['rank']; ?></td>
-                                    <td><?php echo $ranksinfo['mail']; ?></td>
-                                    <td><?php echo $rank_name; ?></td>
-                                </tr>
-                                <?php
+                            if ($ranksinfo['rank'] == 2) {
+                                $rank_name = ea('page_ranks_2', '1');
+                            } elseif ($ranksinfo['rank'] == 3) {
+                                $rank_name = ea('page_ranks_3', '1');
+                            } elseif ($ranksinfo['rank'] == 1) {
+                                $rank_name = ea('page_ranks_1', '1');
                             }
+
+                            ?>
+                            <tr>
+                                <td><?php echo $ranksinfo['name'] . ' ' . $ranksinfo['surname']; ?></td>
+                                <td><?php echo $ranksinfo['rank']; ?></td>
+                                <td><?php echo $ranksinfo['mail']; ?></td>
+                                <td><?php echo $rank_name; ?></td>
+                            </tr>
+                            <?php
+                        }
                         ?>
                         </tbody>
                     </table>
@@ -135,7 +135,7 @@
 
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 <script>
     $(document).ready(function () {
         $('#tables_posts').dataTable({

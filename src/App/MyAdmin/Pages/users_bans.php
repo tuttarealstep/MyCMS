@@ -1,45 +1,45 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
-    hide_if_staff_not_logged();
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
+hideIfStaffNotLogged();
 
-    global $my_db, $my_users, $my_blog;
-    define('PAGE_ID', 'admin_users_bans');
-    define('PAGE_NAME', ea('page_users_bans_page_name', '1'));
+global $my_db, $my_users, $my_blog;
+define('PAGE_ID', 'admin_users_bans');
+define('PAGE_NAME', ea('page_users_bans_page_name', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    $info = "";
+$info = "";
 
-    if (isset($_POST['banuser'])) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 2) {
-            $ban_user_email = $_POST['ban_user_email'];
-            $ban_ip = $_POST['ban_ip'];
-            $expire_date = $_POST['expire_date'];
-            $converted_date = date('Y-m-d H:i:s', $expire_date);
-            if (!empty($ban_user_email)) {
-                if ($my_users->control_mail($ban_user_email)) {
-                    $user_banned_id = $my_users->get_user_id($ban_user_email);
-                    $user_banned_ip = $my_users->getInfo($user_banned_id, "ip");
-                    $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", array("user_ip" => $user_banned_ip, "user_expire_date" => $converted_date));
-                } else {
-                    if (!empty($ban_ip)) {
-                        $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", array("user_ip" => $ban_ip, "user_expire_date" => $converted_date));
-                    }
-                }
+if (isset($_POST['banuser'])) {
+    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($user_rank >= 2) {
+        $ban_user_email = $_POST['ban_user_email'];
+        $ban_ip = $_POST['ban_ip'];
+        $expire_date = $_POST['expire_date'];
+        $converted_date = date('Y-m-d H:i:s', $expire_date);
+        if (!empty($ban_user_email)) {
+            if ($my_users->controlMail($ban_user_email)) {
+                $user_banned_id = $my_users->getUserId($ban_user_email);
+                $user_banned_ip = $my_users->getInfo($user_banned_id, "ip");
+                $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", ["user_ip" => $user_banned_ip, "user_expire_date" => $converted_date]);
             } else {
                 if (!empty($ban_ip)) {
-                    $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", array("user_ip" => $ban_ip, "user_expire_date" => $converted_date));
+                    $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", ["user_ip" => $ban_ip, "user_expire_date" => $converted_date]);
                 }
             }
-
         } else {
-            $info = '<div class="alert alert-danger">' . ea('page_ranks_error_4', '1') . '</div>';
+            if (!empty($ban_ip)) {
+                $my_db->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", ["user_ip" => $ban_ip, "user_expire_date" => $converted_date]);
+            }
         }
+
+    } else {
+        $info = '<div class="alert alert-danger">' . ea('page_ranks_error_4', '1') . '</div>';
     }
+}
 ?>
 <div class="container">
     <div class="row">
@@ -65,21 +65,21 @@
                         </thead>
                         <tbody>
                         <?php
-                            global $my_db;
-                            $bans = $my_db->query("SELECT * from my_users_banned ORDER BY id DESC");
-                            $i = 0;
-                            foreach ($bans as $bans_info) {
-                                $i++;
-                                ?>
-                                <tr>
-                                    <td><?php echo $bans_info['user_ip']; ?> (<a
-                                                href="https://who.is/whois-ip/ip-address/<?php echo $bans_info['user_ip']; ?>">Who
-                                            is?</a>)
-                                    </td>
-                                    <td><?php echo $bans_info['expire_date']; ?></td>
-                                </tr>
-                                <?php
-                            }
+                        global $my_db;
+                        $bans = $my_db->query("SELECT * from my_users_banned ORDER BY id DESC");
+                        $i = 0;
+                        foreach ($bans as $bans_info) {
+                            $i++;
+                            ?>
+                            <tr>
+                                <td><?php echo $bans_info['user_ip']; ?> (<a
+                                            href="https://who.is/whois-ip/ip-address/<?php echo $bans_info['user_ip']; ?>">Who
+                                        is?</a>)
+                                </td>
+                                <td><?php echo $bans_info['expire_date']; ?></td>
+                            </tr>
+                            <?php
+                        }
                         ?>
                         </tbody>
                     </table>
@@ -125,7 +125,7 @@
 
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 <script>
     $(document).ready(function () {
         $('#tables_posts').dataTable({

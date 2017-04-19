@@ -29,9 +29,9 @@ endif;
     <link rel="icon" href="{@siteURL@}/src/App/Utils/MyCMS.ico">
     <title>{@siteNAME@}<?php echo $page_name ?></title>
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-    <?php get_style_script_admin('css'); ?>
+    <?php getStyleScriptAdmin('css'); ?>
     <?php $this->container['plugins']->applyEvent('adminHead'); ?>
-    <?php no_robots(); ?>
+    <?php noRobots(); ?>
 
     <!--[if lt IE 9]>
     <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/js/html5shiv.js"></script>
@@ -39,12 +39,10 @@ endif;
     <![endif]-->
 
     <?php
-    if(isset($_SESSION['staff']['id']))
-    {
+    if (isset($_SESSION['staff']['id'])) {
 
 
-        switch ($this->container['users']->getInfo($_SESSION['staff']['id'], 'adminColor'))
-        {
+        switch ($this->container['users']->getInfo($_SESSION['staff']['id'], 'adminColor')) {
             default:
             case 'default':
 

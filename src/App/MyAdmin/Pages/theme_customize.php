@@ -1,35 +1,34 @@
 <?php
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    $_SESSION["customizer"] = true;
-    $_SESSION['customizerLastAction'] = time();
+$_SESSION["customizer"] = true;
+$_SESSION['customizerLastAction'] = time();
 
-    global $my_date, $my_db, $my_users, $my_blog, $my_theme;
+global $my_date, $my_db, $my_users, $my_blog, $my_theme;
 
-    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank < 3)
-    {
-        header('Location: ' . HOST . '/my-admin/home');
-        exit();
-    }
+$user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+if ($user_rank < 3) {
+    header('Location: ' . HOST . '/my-admin/home');
+    exit();
+}
 
-    define('PAGE_ID', 'admin_theme_customize');
-    define('PAGE_NAME', ea('page_admin_theme_customize_page_name', '1'));
-    define('NO_VIEWPORT', true);
+define('PAGE_ID', 'admin_theme_customize');
+define('PAGE_NAME', ea('page_admin_theme_customize_page_name', '1'));
+define('NO_VIEWPORT', true);
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
-    if (isset($_GET['theme']) && !empty($_GET['theme'])) {
-        if ($this->container['theme']->theme_exist($_GET['theme'])) {
-            $theme = $_GET['theme'];
-        } else {
-            $theme = "default";
-        }
+if (isset($_GET['theme']) && !empty($_GET['theme'])) {
+    if ($this->container['theme']->themeExist($_GET['theme'])) {
+        $theme = $_GET['theme'];
     } else {
         $theme = "default";
     }
+} else {
+    $theme = "default";
+}
 ?>
 <script>
     var theme_var = "<?php echo $theme; ?>";
@@ -76,7 +75,7 @@
             </div>
         </div>
 
-        <?php get_file_admin('footer'); ?>
+        <?php getFileAdmin('footer'); ?>
         <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/base64.js"></script>
         <?php $this->container['plugins']->applyEvent('customizerJsMenu'); ?>
         <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/customizer/customizer.js"></script>

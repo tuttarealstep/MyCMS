@@ -1,15 +1,15 @@
 <?php
-    /**
-     * User: tuttarealstep
-     * Date: 09/04/16
-     * Time: 15.38
-     */
+/**
+ * User: tuttarealstep
+ * Date: 09/04/16
+ * Time: 15.38
+ */
 
-    namespace MyCMS\App\Utils\Exceptions;
+namespace MyCMS\App\Utils\Exceptions;
 
-    class MyCMSException extends \Exception
-    {
-        public static $error_page = <<<ERROR
+class MyCMSException extends \Exception
+{
+    public static $error_page = <<<ERROR
 <html>
     <head>
         <title>MyCMS Error</title>
@@ -60,24 +60,24 @@
 </html>
 ERROR;
 
-        public function __construct($message, $title = null, $code = null, $previous = null)
-        {
+    public function __construct($message, $title = null, $code = null, $previous = null)
+    {
 
-            $error_page = self::$error_page;
-            $message = nl2br($message);
+        $error_page = self::$error_page;
+        $message = nl2br($message);
 
-            if ($title == null) {
-                $page = str_replace('{@error_title@}', 'Fatal Error', $error_page);
-            } else {
-                $page = str_replace('{@error_title@}', $title, $error_page);
-            }
-
-            $page = str_replace('{@error_message@}', $message, $page);
-
-            echo $page;
+        if ($title == null) {
+            $page = str_replace('{@error_title@}', 'Fatal Error', $error_page);
+        } else {
+            $page = str_replace('{@error_title@}', $title, $error_page);
         }
 
-        public static function nullHandler(\Exception $e)
-        {
-        }
+        $page = str_replace('{@error_message@}', $message, $page);
+
+        echo $page;
     }
+
+    public static function nullHandler(\Exception $e)
+    {
+    }
+}

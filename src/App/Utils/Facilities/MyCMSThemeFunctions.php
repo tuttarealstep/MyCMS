@@ -1,24 +1,24 @@
 <?php
-    /**
-     * User: tuttarealstep
-     * Date: 10/04/16
-     * Time: 11.26
-     */
+/**
+ * User: tuttarealstep
+ * Date: 10/04/16
+ * Time: 11.26
+ */
 
-    namespace MyCMS\App\Utils\Facilities;
+namespace MyCMS\App\Utils\Facilities;
 
-    class MyCMSThemeFunctions
+class MyCMSThemeFunctions
+{
+    private $theme;
+
+    function __construct($theme)
     {
-        private $theme;
-
-        function __construct($theme)
-        {
-            $this->theme = $theme;
-        }
-
-        function set_theme_tags()
-        {
-            $this->theme->add_tag('getSTYLE=css', $this->theme->set_TAG($this->theme->get_style_script("css", true)));
-            $this->theme->add_tag('getSTYLE=script', $this->theme->set_TAG($this->theme->get_style_script("script", true)));
-        }
+        $this->theme = $theme;
     }
+
+    function setThemeTags()
+    {
+        $this->theme->addTag('getSTYLE=css', $this->theme->setTag($this->theme->getStyleScript("css", true)));
+        $this->theme->addTag('getSTYLE=script', $this->theme->setTag($this->theme->getStyleScript("script", true)));
+    }
+}

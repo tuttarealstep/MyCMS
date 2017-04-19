@@ -4,15 +4,15 @@
 \*                     */
 
 global $my_db, $my_users, $my_blog;
-hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_posts_new');
 define('PAGE_NAME', ea('page_posts_new', '1'));
 
-add_style_script_admin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
-get_file_admin('header');
-get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
 $this->container['plugins']->applyEvent('postsNewAfterTopBar');
 $this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
@@ -35,13 +35,13 @@ if (isset($_POST['posts_new_create'])) {
             $category = addslashes(isset($_POST['category']) ? $_POST['category'] : "");
             //$author = $my_users->getInfo($_SESSION['staff']['id'], 'name').'_'.$my_users->getInfo($_SESSION['staff']['id'], 'surname');
             $author = $_SESSION['staff']['id'];
-            $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . fix_text(add_space($posts_title));
-            $permalink = add_space($permalink);
-            $finder = $my_blog->permalinkfinder($permalink);
+            $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . fixText(addSpace($posts_title));
+            $permalink = addSpace($permalink);
+            $finder = $my_blog->permalinkFinder($permalink);
             if ($finder == true) {
 
                 $i = 1;
-                while ($my_blog->permalinkfinder($permalink . '_' . $i) == true):
+                while ($my_blog->permalinkFinder($permalink . '_' . $i) == true):
 
                     $i++;
 
@@ -73,7 +73,7 @@ if (isset($_POST['posts_new_create'])) {
         $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
     }
 }
-get_style_script_admin('script');
+getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -131,7 +131,8 @@ if (defined("INDEX_ERROR")) {
                 <div class="panel b_panel">
                     <div class="panel-body b_panel-body panel-body-padding">
                         <div class="form-group">
-                            <input type="text" placeholder="<?php ea('page_posts_new_title'); ?>" name="posts_title" id="title" class="form-control b_form-control" maxlength="100"
+                            <input type="text" placeholder="<?php ea('page_posts_new_title'); ?>" name="posts_title"
+                                   id="title" class="form-control b_form-control" maxlength="100"
                                    value="<?php echo $posts['title']; ?>">
                         </div>
                         <br/>
@@ -140,7 +141,8 @@ if (defined("INDEX_ERROR")) {
                         </div>
                         <br/>
                         <div class="form-group" id="textareaContent">
-                            <textarea name="posts_content" style="height:300px;"><?php echo $posts['content']; ?></textarea>
+                            <textarea name="posts_content"
+                                      style="height:300px;"><?php echo $posts['content']; ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -160,7 +162,8 @@ if (defined("INDEX_ERROR")) {
                                 <div class="panel-body-padding">
                                     <span class="label label-danger"><?php ea('page_posts_new_permalink'); ?></span><br/>
                                     <p id="msg" style="word-wrap: break-word; ">
-                                        {@siteURL@}/blog/<?php echo date('Y', time()); ?>/<?php echo date('m', time()); ?>
+                                        {@siteURL@}/blog/<?php echo date('Y', time()); ?>
+                                        /<?php echo date('m', time()); ?>
                                         /</p>
                                     <small>*<?php ea('page_posts_new_permalink_info'); ?></small>
                                     <hr>
@@ -180,7 +183,8 @@ if (defined("INDEX_ERROR")) {
                                                     } else {
                                                         ea('page_posts_new_label_published');
                                                     } ?></span>
-                                                <a href="#postSTATUS" id="editPostStatusButton" style="display: inline;">
+                                                <a href="#postSTATUS" id="editPostStatusButton"
+                                                   style="display: inline;">
                                                     <span aria-hidden="true">- <?php ea('page_posts_new_label_edit_status'); ?></span></a>
                                             </div>
                                         </div>
@@ -188,7 +192,8 @@ if (defined("INDEX_ERROR")) {
                                         <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="postStatusEdit"
                                              style="display: block;">
                                             <div class="form-group">
-                                                <select name="postSTATUSselect" id="postSTATUSselect" class="form-control"
+                                                <select name="postSTATUSselect" id="postSTATUSselect"
+                                                        class="form-control"
                                                         style="display: inline-block; width: auto">
                                                     <option selected="selected"
                                                             value="publish"><?php ea('page_posts_new_label_published'); ?></option>
@@ -243,8 +248,10 @@ if (defined("INDEX_ERROR")) {
                                         <div class="row">
                                             <hr>
                                             <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">
-                                                <input class="form-control b_form-control" type="text" aria-required="true"
-                                                       name="newCategoryName" id="newCategoryName" style="margin-bottom: 10px"
+                                                <input class="form-control b_form-control" type="text"
+                                                       aria-required="true"
+                                                       name="newCategoryName" id="newCategoryName"
+                                                       style="margin-bottom: 10px"
                                                        placeholder="<?php ea('page_posts_category_new_placeholder'); ?>">
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">

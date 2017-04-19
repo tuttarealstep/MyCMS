@@ -2,14 +2,14 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
 global $my_date, $my_db, $my_users, $my_blog, $my_theme;
 define('PAGE_ID', 'admin_pages');
 define('PAGE_NAME', ea('page_pages_page_name', '1'));
 
-get_file_admin('header');
-get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
 $info = "";
 
@@ -19,7 +19,7 @@ if (isset($_POST['execute'])) {
         if ($_POST['ifchecked'] == 'delete') {
             if (!empty($_POST['check_list'])) {
                 foreach ($_POST['check_list'] as $select) {
-                    $my_db->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', array('select' => $select));
+                    $my_db->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
                     $info = '<div class="row"><div class="alert alert-success">' . ea('page_pages_delete_successfully', '1') . '</div>';
                 }
             } else {
@@ -48,11 +48,12 @@ if (isset($_POST['execute'])) {
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php ea('page_pages_page_name'); ?> <a style="margin-left: 10px" href="{@siteURL@}/my-admin/my_page_import"
-                                                        class="btn btn-primary pull-right"><?php ea('page_pages_header_import'); ?></a>
+            <h1 class="h1PagesTitle"><?php ea('page_pages_page_name'); ?> <a style="margin-left: 10px"
+                                                                             href="{@siteURL@}/my-admin/my_page_import"
+                                                                             class="btn btn-primary pull-right"><?php ea('page_pages_header_import'); ?></a>
 
-            <a href="{@siteURL@}/my-admin/my_page_new"
-               class="btn btn-primary pull-right"><?php ea('page_pages_header_create_new'); ?></a>
+                <a href="{@siteURL@}/my-admin/my_page_new"
+                   class="btn btn-primary pull-right"><?php ea('page_pages_header_create_new'); ?></a>
             </h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -84,7 +85,7 @@ if (isset($_POST['execute'])) {
                             <tr>
                                 <td><?php echo $pageinfo['pageID']; ?></td>
                                 <td>
-                                    <a href="{@siteURL@}/my-admin/page_edit/<?php echo $pageinfo['pageID']; ?>"><?php echo remove_space($pageinfo['pageTITLE']); ?></a>
+                                    <a href="{@siteURL@}/my-admin/page_edit/<?php echo $pageinfo['pageID']; ?>"><?php echo removeSpace($pageinfo['pageTITLE']); ?></a>
                                 </td>
                                 <td><?php echo $pageinfo['pageURL']; ?></td>
                                 <td><?php echo $pageinfo['pageID_MENU']; ?></td>
@@ -122,7 +123,7 @@ if (isset($_POST['execute'])) {
 
 </div>
 <!-- /#wrapper -->
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 <script>
     $(document).ready(function () {
         $('#tables_posts').dataTable({

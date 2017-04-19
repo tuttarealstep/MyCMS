@@ -1,10 +1,10 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    global $my_users;
+global $my_users;
 
-    $my_users->logout_admin();
+$my_users->logoutAdmin();

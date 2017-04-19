@@ -1,15 +1,15 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    define('PAGE_ID', 'admin_xml_command');
-    define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_xml_command', '1'));
+define('PAGE_ID', 'admin_xml_command');
+define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_xml_command', '1'));
 
-    get_file_admin('header');
-    get_page_admin('topbar');
+getFileAdmin('header');
+getPageAdmin('topbar');
 
 
 ?>
@@ -45,7 +45,7 @@
 </div>
 <!-- /#wrapper -->
 
-<?php get_file_admin('footer'); ?>
+<?php getFileAdmin('footer'); ?>
 
 </body>
 

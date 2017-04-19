@@ -1,13 +1,13 @@
 <?php
-    /*                     *\
-    |	MYCMS - TProgram    |
-    \*                     */
+/*                     *\
+|	MYCMS - TProgram    |
+\*                     */
 
-    global $my_theme;
+global $my_theme;
 
-    hide_if_staff_not_logged();
+hideIfStaffNotLogged();
 
-    //define('PAGE_ID', 'admin_topbar');
+//define('PAGE_ID', 'admin_topbar');
 
 ?>
 <body>
