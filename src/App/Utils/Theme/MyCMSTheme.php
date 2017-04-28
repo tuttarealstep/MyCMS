@@ -1591,7 +1591,7 @@ class MyCMSTheme
                                         case 'set -site_name':
                                             $this->consoleAW("Write name for website:\n");
                                             $site_name = htmlentities(fgets(fopen("php://stdin", "r")));
-                                            if ($this->container['settings']->save_settings('site_name', $site_name) == false) {
+                                            if ($this->container['settings']->saveSettings('site_name', $site_name) == false) {
                                                 $this->consoleAW(ea('error_page_settings_general_save', '1'));
                                             } else {
                                                 $this->consoleAW("Site Name changed in $site_name !\n");
@@ -1600,7 +1600,7 @@ class MyCMSTheme
                                         case 'set -site_description':
                                             $this->consoleAW("Write description for website:\n");
                                             $site_description = htmlentities(fgets(fopen("php://stdin", "r")));
-                                            if ($this->container['settings']->save_settings('site_description', $site_description) == false) {
+                                            if ($this->container['settings']->saveSettings('site_description', $site_description) == false) {
                                                 $this->consoleAW(ea('error_page_settings_general_save', '1'));
                                             } else {
                                                 $this->consoleAW("Site Description changed in $site_description !\n");
@@ -1609,21 +1609,21 @@ class MyCMSTheme
                                         case 'set -site_url':
                                             $this->consoleAW("Write url for website (Warning!!!):\n");
                                             $site_url = htmlentities(fgets(fopen("php://stdin", "r")));
-                                            if ($this->container['settings']->save_settings('site_url', $site_url) == false) {
+                                            if ($this->container['settings']->saveSettings('site_url', $site_url) == false) {
                                                 $this->consoleAW(ea('error_page_settings_general_save', '1'));
                                             } else {
                                                 $this->consoleAW("Site Url changed in $site_url !\n");
                                             }
                                             break;
                                         case 'enable -maintenance':
-                                            if ($this->container['settings']->save_settings('site_maintenance', "true") == false) {
+                                            if ($this->container['settings']->saveSettings('site_maintenance', "true") == false) {
                                                 $this->consoleAW(ea('error_page_settings_general_save', '1'));
                                             } else {
                                                 $this->consoleAW("Maintenance enabled!\n");
                                             }
                                             break;
                                         case 'disable -maintenance':
-                                            if ($this->container['settings']->save_settings('site_maintenance', "false") == false) {
+                                            if ($this->container['settings']->saveSettings('site_maintenance', "false") == false) {
                                                 $this->consoleAW(ea('error_page_settings_general_save', '1'));
                                             } else {
                                                 $this->consoleAW("Maintenance disabled!\n");
@@ -1931,9 +1931,9 @@ class MyCMSTheme
 
         $settings = base64_encode(serialize($settings));
 
-        $info = $this->container["settings"]->add_settings_value("theme_settings_$theme", $settings);
+        $info = $this->container["settings"]->addSettingsValue("theme_settings_$theme", $settings);
         if ($info === false) {
-            return $this->container["settings"]->save_settings("theme_settings_$theme", $settings);
+            return $this->container["settings"]->saveSettings("theme_settings_$theme", $settings);
         }
 
         return true;

@@ -29,10 +29,10 @@ if (isset($_GET['remove'])) {
 
                 $site_language = getSettingsValue('site_language');
 
-                if ($this->container['settings']->save_settings('site_template', 'my_cms_default') == false) {
+                if ($this->container['settings']->saveSettings('site_template', 'my_cms_default') == false) {
                     define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
                 };
-                if ($this->container['settings']->save_settings('site_template_language', $site_language) == false) {
+                if ($this->container['settings']->saveSettings('site_template_language', $site_language) == false) {
                     define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
                 };
             }
@@ -60,7 +60,7 @@ if (isset($_POST['set_theme'])) {
             if (isset($_POST['style_path_name'])) {
                 $style_path_name = mySqlSecure($_POST['style_path_name']);
                 if ($this->container['settings']->getSettingsValue("site_template") != $style_path_name) {
-                    if ($this->container['settings']->save_settings('site_template', $style_path_name) == false) {
+                    if ($this->container['settings']->saveSettings('site_template', $style_path_name) == false) {
                         define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
                     };
                 }

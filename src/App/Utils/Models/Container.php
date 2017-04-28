@@ -10,14 +10,13 @@ namespace MyCMS\App\Utils\Models;
 class Container
 {
     /**
-     * @var array
+     * @var array<MyCMSDatabase|MyCMSTheme|MyCMSCache|MyCMSPlugins|MyCMSThemeCustomizer|MyCMSUsers|MyCMSSettings|MyCMSSecurity|MyCMSFunctions|MyCMSLanguages>
      * Variable who contain all loaded classes
      */
     protected $container = [];
 
     /**
      * Return the container variable
-     *
      * @return array
      */
     public function getContainer()

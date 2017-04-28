@@ -56,7 +56,7 @@ class MyCMSSettings
         return false;
     }
 
-    function add_settings_value($settings_name = "", $settings_value = "")
+    function addSettingsValue($settings_name = "", $settings_value = "")
     {
         $settings_name = filter_var($settings_name, FILTER_SANITIZE_STRING);
         $settings_value = filter_var($settings_value, FILTER_SANITIZE_STRING);
@@ -72,7 +72,7 @@ class MyCMSSettings
 
     }
 
-    function save_settings($settings_name = "", $settings_value = "")
+    function saveSettings($settings_name = "", $settings_value = "")
     {
         $settings_name = filter_var($settings_name, FILTER_SANITIZE_STRING);
         $settings_value = filter_var($settings_value, FILTER_SANITIZE_STRING);

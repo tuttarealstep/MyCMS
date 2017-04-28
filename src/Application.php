@@ -34,7 +34,7 @@ class Application
 {
     /**
      * Container variable, the variable who contain all classes
-     * @var
+     * @var array<MyCMSDatabase|MyCMSTheme|MyCMSCache|MyCMSPlugins|MyCMSThemeCustomizer|MyCMSUsers|MyCMSSettings|MyCMSSecurity|MyCMSFunctions>
      */
     public $container;
 
@@ -239,10 +239,10 @@ class Application
                     define('MY_THEME', $_SESSION['customizerThemeSession']['theme']);
                 }
             }
-        }
-
-        if (!defined('MY_THEME')) {
-            define('MY_THEME', $this->container['settings']->getSettingsValue('site_template'));
+        } else {
+            if (!defined('MY_THEME')) {
+                define('MY_THEME', $this->container['settings']->getSettingsValue('site_template'));
+            }
         }
 
         if (!defined("MY_BASE_PATH")) {

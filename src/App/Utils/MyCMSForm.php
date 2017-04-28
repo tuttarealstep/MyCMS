@@ -130,26 +130,26 @@ if (isset($_POST['save_settings_general'])) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_url', '1'));
             endif;
 
-            if ($App->container['settings']->save_settings('site_name', $settings_site_name) == false) {
+            if ($App->container['settings']->saveSettings('site_name', $settings_site_name) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_description', $settings_site_description) == false) {
+            if ($App->container['settings']->saveSettings('site_description', $settings_site_description) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_url', $settings_site_url) == false) {
+            if ($App->container['settings']->saveSettings('site_url', $settings_site_url) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_timezone', $settings_site_timezone) == false) {
+            if ($App->container['settings']->saveSettings('site_timezone', $settings_site_timezone) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_maintenance', $settings_site_mainteinance) == false) {
+            if ($App->container['settings']->saveSettings('site_maintenance', $settings_site_mainteinance) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_use_cache', $settings_site_use_cache) == false) {
+            if ($App->container['settings']->saveSettings('site_use_cache', $settings_site_use_cache) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            $App->container['settings']->add_settings_value('site_private', 'false');
-            if ($App->container['settings']->save_settings('site_private', $settings_site_private) == false) {
+            $App->container['settings']->addSettingsValue('site_private', 'false');
+            if ($App->container['settings']->saveSettings('site_private', $settings_site_private) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
 
@@ -170,13 +170,13 @@ if (isset($_POST['save_settings_blog'])) {
             $settings_blog_comments_active = htmlentities($_POST['settings_blog_comments_active']);
             $settings_blog_comments_approve = htmlentities($_POST['settings_blog_comments_approve']);
 
-            if ($App->container['settings']->save_settings('blog_private', $settings_blog_private) == false) {
+            if ($App->container['settings']->saveSettings('blog_private', $settings_blog_private) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('blog_comments_active', $settings_blog_comments_active) == false) {
+            if ($App->container['settings']->saveSettings('blog_comments_active', $settings_blog_comments_active) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('blog_comments_approve', $settings_blog_comments_approve) == false) {
+            if ($App->container['settings']->saveSettings('blog_comments_approve', $settings_blog_comments_approve) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
 
@@ -202,13 +202,13 @@ if (isset($_POST['save_settings_style'])) {
             $settings_style_template = htmlentities($_POST['settings_style_template']);
             $settings_style_template_language = htmlentities($_POST['settings_style_template_language']);
 
-            if ($App->container['settings']->save_settings('site_language', $settings_style_language) == false) {
+            if ($App->container['settings']->saveSettings('site_language', $settings_style_language) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_template', $settings_style_template) == false) {
+            if ($App->container['settings']->saveSettings('site_template', $settings_style_template) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
-            if ($App->container['settings']->save_settings('site_template_language', $settings_style_template_language) == false) {
+            if ($App->container['settings']->saveSettings('site_template_language', $settings_style_template_language) == false) {
                 define("INDEX_ERROR", $App->container['languages']->ea('error_page_settings_general_save', '1'));
             };
 

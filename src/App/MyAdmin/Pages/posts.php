@@ -76,7 +76,7 @@ if (isset($_POST['execute'])) {
                                 <td>
                                     <a href="{@siteURL@}/my-admin/posts_edit/<?php echo $postinfo['postID']; ?>"><?php echo $postinfo['postTITLE']; ?></a>
                                 </td>
-                                <td><?php echo $this->container['blog']->getInfo("authorName", $postinfo['postAUTHOR']); ?></td>
+                                <td><?php echo $this->container['blog']->getInfo("authorName", $postinfo['postID']); ?></td>
                                 <td><?php echo $postinfo['postCATEGORY']; ?></td>
                                 <td><?php echo $postinfo['postDATE']; ?></td>
                                 <td><?php echo ($postinfo['postSTATUS'] == "publish") ? ea('page_posts_new_label_published', '1') : (($postinfo['postSTATUS'] == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1')); ?></td>

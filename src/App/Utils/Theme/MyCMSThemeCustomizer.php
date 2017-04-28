@@ -9,6 +9,10 @@ namespace MyCMS\App\Utils\Theme;
 
 use MyCMS\App\Utils\Management\MyCMSContainer;
 
+/**
+ * Class MyCMSThemeCustomizer
+ * @package MyCMS\App\Utils\Theme
+ */
 class MyCMSThemeCustomizer extends MyCMSContainer
 {
     public $saveCallBackVector = [];
@@ -49,7 +53,7 @@ class MyCMSThemeCustomizer extends MyCMSContainer
             "value" => "{@siteNAME@}"
         ], function ($value) {
             if (!empty($value)) {
-                $this->container['settings']->save_settings('site_name', htmlentities($value));
+                $this->container['settings']->saveSettings('site_name', htmlentities($value));
             }
         });
 
@@ -58,7 +62,7 @@ class MyCMSThemeCustomizer extends MyCMSContainer
             "value" => "{@siteDESCRIPTION@}"
         ], function ($value) {
             if (!empty($value)) {
-                $this->container['settings']->save_settings('site_description', htmlentities($value));
+                $this->container['settings']->saveSettings('site_description', htmlentities($value));
             }
         });
 
