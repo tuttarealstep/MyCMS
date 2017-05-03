@@ -4,9 +4,9 @@
  * Date: 31/07/2015 Time: 14:15
  */
 
-noRobots();
+$this->noRobots();
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
 if ($user_rank < 3) {
@@ -14,22 +14,19 @@ if ($user_rank < 3) {
     exit();
 }
 
-
-global $my_db, $my_users, $my_theme;
-
-if (!$my_theme->thereIsNewUpdate()) {
+if (!$this->container['theme']->thereIsNewUpdate()) {
     header("location: " . HOST . "/my-admin/home");
 }
 
 
 define('PAGE_ID', 'admin_update_page');
-define('PAGE_NAME', ea('page_update_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_update_page_name', '1'));
 
-getFileAdmin('header');
+$this->getFileAdmin('header');
 
-getStyleScriptAdmin('script');
+$this->getStyleScriptAdmin('script');
 
-$user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+$user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
 if ($user_rank < 3) {
     header("location: " . HOST . "/my-admin/home");
 }
@@ -130,7 +127,7 @@ function removeDir_for_update($dir)
     if (is_dir($dir)) {
         $files = scandir($dir);
         foreach ($files as $file)
-            if ($file != "." && $file != "..") removeDir("$dir/$file");
+            if ($file != "." && $file != "..") $this->container['functions']->removeDir("$dir/$file");
         rmdir($dir);
     }
 }
@@ -152,12 +149,10 @@ function remove_for_update($src = B_PATH_S)
 
 function download_update()
 {
-    global $my_theme;
-
     $filename_cms = '';
     $filename_db = '';
 
-    $info = $my_theme->thereIsNewUpdate(false);
+    $info = $this->container['theme']->thereIsNewUpdate(false);
     if ($info[2] != '' && $info[3] != '') {
         if ($info[1] == 'all_update') {
             $filename_cms = "my_cms_" . $info[2];
@@ -264,7 +259,7 @@ function download_update()
 }
 
 if (isset($_POST['update_button'])) {
-    /* <script>alert("<?php ea('page_update_alert') ?>");</script> */
+    /* <script>alert("<?php $this->container['languages']->ea('page_update_alert') ?>");</script> */
     $download_mode = true;
     back_up_cms_folder(); //Make backup
     download_update(); //download update
@@ -284,17 +279,17 @@ if (isset($_POST['update_button'])) {
                             <img src="{@siteURL@}/src/App/Utils/MyCMS_logo.png" style="height: 60px; width: 150px;"/>
                             <?php if (!$download_mode) { ?>
                                 <a href="{@siteURL@}/my-admin/home"
-                                   style="float: right; margin-top: 26px;"><?php ea('page_update_return_back') ?></a>
+                                   style="float: right; margin-top: 26px;"><?php $this->container['languages']->ea('page_update_return_back') ?></a>
                                 <input name="update_button" type="submit"
                                        style="float: right; margin-top: 20px; margin-right: 20px;" class="btn btn-info"
-                                       value="<?php ea('page_update_update_button') ?>"/>
+                                       value="<?php $this->container['languages']->ea('page_update_update_button') ?>"/>
                             <?php } ?>
                         </div>
                     </form>
                     <?php if ($download_mode){ ?>
                         <div class="row" style="margin-left: 10px; margin-right: 10px; margin-top: 10px;">
                             <div class="col-lg-12">
-                                <?php ea('page_update_info_process') ?>
+                                <?php $this->container['languages']->ea('page_update_info_process') ?>
                             </div>
                         </div>
                     <?php } else { ?>
@@ -303,7 +298,7 @@ if (isset($_POST['update_button'])) {
                                 Update System is in development! (This file need 777 permission)</b></div>
                         <div class="col-lg-6">
                             <?php
-                            $info = $my_theme->thereIsNewUpdate(false);
+                            $info = $this->container['theme']->thereIsNewUpdate(false);
                             if ($info[2] != '' && $info[3] != '') {
                                 if ($info[1] == 'all_update') {
                                     echo "<h2>MyCMS <b>$info[2]</b> Database <b>$info[3]</b></h2>(Database - Core)";
@@ -322,7 +317,7 @@ if (isset($_POST['update_button'])) {
                             ?>
                         </div>
                         <div class="col-lg-6">
-                            <h2><b><?php ea('page_update_changelog') ?></b></h2>
+                            <h2><b><?php $this->container['languages']->ea('page_update_changelog') ?></b></h2>
                             <ul>
                                 <?php
                                 foreach ($info[4] as $info_row) { ?>
@@ -345,6 +340,6 @@ if (isset($_POST['update_button'])) {
 
     </div>
 </div>
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 </body>
 </html>

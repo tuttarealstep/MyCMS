@@ -32,6 +32,5 @@ require realpath(__DIR__) . '/../vendor/autoload.php';
 $app = new Application();
 
 require_once I_PATH . '/MyCMSForm.php';
-require_once I_PATH . '/MyCMS_5_Compatibility.php';
 
 $app->run();

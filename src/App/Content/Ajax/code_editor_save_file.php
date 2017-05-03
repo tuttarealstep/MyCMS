@@ -8,10 +8,9 @@ define('MY_CMS_PATH', true);
 define("LOADER_LOAD_PAGE", false);
 include '../../../../src/Bootstrap.php';
 
-global $my_users, $my_db;
-hideIfStaffNotLogged();
-if (staffLoggedIn()) {
-    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+$app->container['users']->hideIfStaffNotLogged();
+if ($app->container['users']->staffLoggedIn()) {
+    $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
     if ($user_rank < 3) {
         return;
     }

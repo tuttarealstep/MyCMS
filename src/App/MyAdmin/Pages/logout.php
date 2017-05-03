@@ -3,8 +3,5 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-hideIfStaffNotLogged();
-
-global $my_users;
-
-$my_users->logoutAdmin();
+$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->logoutAdmin();

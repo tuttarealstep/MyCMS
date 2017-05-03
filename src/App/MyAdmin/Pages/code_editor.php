@@ -5,7 +5,7 @@
  * Time: 22.31
  */
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
 if ($user_rank < 3) {
@@ -13,12 +13,11 @@ if ($user_rank < 3) {
     exit();
 }
 
-global $my_date, $my_db, $my_users, $my_blog, $my_theme;
 define('PAGE_ID', 'admin_code_editor');
-define('PAGE_NAME', ea('page_admin_code_editor_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_admin_code_editor_page_name', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 if (isset($_GET['theme'])) {
     if ($this->container['theme']->themeExist($_GET['theme'])) {
@@ -30,19 +29,19 @@ if (isset($_GET['theme'])) {
 ?>
 <script>
     var theme_var = "<?php echo $theme; ?>";
-    var _t_theme_not_found = "<?php ea('page_admin_code_editor_theme_not_found'); ?>"
-    var _t_create_new_file = "<?php ea('page_admin_code_editor_create_new_file'); ?>";
-    var _t_file_name = "<?php ea('page_admin_code_editor_t_file_name'); ?>";
-    var _t_file_created = "<?php ea('page_admin_code_editor_t_file_created'); ?>";
-    var _t_file_not_created = "<?php ea('page_admin_code_editor_t_file_not_created'); ?>";
-    var _t_save_file = "<?php ea('page_admin_code_editor_t_save_file'); ?>";
-    var _t_file_saved = "<?php ea('page_admin_code_editor_t_file_saved'); ?>";
-    var _t_line = "<?php ea('page_admin_code_editor_t_line'); ?>";
-    var _t_column = "<?php ea('page_admin_code_editor_t_column'); ?>";
-    var _t_if_you_confirm = "<?php ea('page_admin_code_editor_t_if_you_confirm'); ?>";
-    var _t_file_loaded = "<?php ea('page_admin_code_editor_t_file_loaded'); ?>";
-    var _t_setup_complete = "<?php ea('page_admin_code_editor_t_setup_complete'); ?>";
-    var _t_are_you_sure = "<?php ea('page_admin_code_editor_t_are_you_sure'); ?>";
+    var _t_theme_not_found = "<?php $this->container['languages']->ea('page_admin_code_editor_theme_not_found'); ?>"
+    var _t_create_new_file = "<?php $this->container['languages']->ea('page_admin_code_editor_create_new_file'); ?>";
+    var _t_file_name = "<?php $this->container['languages']->ea('page_admin_code_editor_t_file_name'); ?>";
+    var _t_file_created = "<?php $this->container['languages']->ea('page_admin_code_editor_t_file_created'); ?>";
+    var _t_file_not_created = "<?php $this->container['languages']->ea('page_admin_code_editor_t_file_not_created'); ?>";
+    var _t_save_file = "<?php $this->container['languages']->ea('page_admin_code_editor_t_save_file'); ?>";
+    var _t_file_saved = "<?php $this->container['languages']->ea('page_admin_code_editor_t_file_saved'); ?>";
+    var _t_line = "<?php $this->container['languages']->ea('page_admin_code_editor_t_line'); ?>";
+    var _t_column = "<?php $this->container['languages']->ea('page_admin_code_editor_t_column'); ?>";
+    var _t_if_you_confirm = "<?php $this->container['languages']->ea('page_admin_code_editor_t_if_you_confirm'); ?>";
+    var _t_file_loaded = "<?php $this->container['languages']->ea('page_admin_code_editor_t_file_loaded'); ?>";
+    var _t_setup_complete = "<?php $this->container['languages']->ea('page_admin_code_editor_t_setup_complete'); ?>";
+    var _t_are_you_sure = "<?php $this->container['languages']->ea('page_admin_code_editor_t_are_you_sure'); ?>";
 </script>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic'
       rel='stylesheet' type='text/css'>
@@ -103,18 +102,18 @@ if (isset($_GET['theme'])) {
                                             <li>
                                                 <a href="{@siteURL@}/my-admin/theme_manager"
                                                    onclick="return confirm(_t_are_you_sure)"><i
-                                                            class="fa fa-sign-out fa-fw"></i> <?php ea('page_admin_code_editor_return_back'); ?>
+                                                            class="fa fa-sign-out fa-fw"></i> <?php $this->container['languages']->ea('page_admin_code_editor_return_back'); ?>
                                                 </a>
                                             </li>
                                             <li class="divider"></li>
                                             <li>
                                                 <a onclick="saveCurrentFile()"><i
-                                                            class="fa fa-save fa-fw"></i> <?php ea('page_admin_code_editor_save_current_file'); ?>
+                                                            class="fa fa-save fa-fw"></i> <?php $this->container['languages']->ea('page_admin_code_editor_save_current_file'); ?>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a onclick="newFile()"><i
-                                                            class="fa fa-file fa-fw"></i> <?php ea('page_admin_code_editor_new_file'); ?>
+                                                            class="fa fa-file fa-fw"></i> <?php $this->container['languages']->ea('page_admin_code_editor_new_file'); ?>
                                                 </a>
                                             </li>
                                         </ul>
@@ -158,7 +157,7 @@ if (isset($_GET['theme'])) {
 <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/base64.js"></script>
 <script src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/perfect-scrollbar.jquery.min.js"></script>

@@ -3,8 +3,7 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-global $my_db, $my_users, $my_blog, $my_theme;
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 
 $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
@@ -14,12 +13,12 @@ if ($user_rank < 3) {
 }
 
 define('PAGE_ID', 'admin_pages_edit');
-define('PAGE_NAME', ea('page_pages_edit', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_pages_edit', '1'));
 
-addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+$this->container['theme']->addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 $this->container['plugins']->applyEvent('myPageEditAfterTopBar');
 $this->container['plugins']->applyEvent('myPageNewEditAfterTopBar');
 
@@ -27,13 +26,13 @@ $this->container['plugins']->applyEvent('myPageNewEditAfterTopBar');
 if (isset($_GET['id'])) {
 
     if (is_numeric($_GET['id'])) {
-        if ($my_db->single("SELECT count(*) FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
-            $pageid = mySqlSecure($_GET['id']);
-            $pages['title'] = removeSpace($my_db->single("SELECT pageTITLE FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1"));
-            $pages['content'] = $my_db->single("SELECT pageHTML FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
-            $pages['URL'] = $my_db->single("SELECT pageURL FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
-            $pagePUBLIC = $my_db->single("SELECT pagePUBLIC FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
-            $pagePUBLICLabel = ($pagePUBLIC == "1") ? ea('page_pages_status_publish', '1') : ea('page_pages_status_draft', '1');
+        if ($this->container['database']->single("SELECT count(*) FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
+            $pageid = $this->container['security']->mySqlSecure($_GET['id']);
+            $pages['title'] = $this->container['functions']->removeSpace($this->container['database']->single("SELECT pageTITLE FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1"));
+            $pages['content'] = $this->container['database']->single("SELECT pageHTML FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
+            $pages['URL'] = $this->container['database']->single("SELECT pageURL FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
+            $pagePUBLIC = $this->container['database']->single("SELECT pagePUBLIC FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
+            $pagePUBLICLabel = ($pagePUBLIC == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
 
         }
     } else {
@@ -55,30 +54,30 @@ $this->container['plugins']->addEvent('parseMyPageContent', function ($content) 
 
 if (isset($_POST['pages_new_create'])) {
     if (!empty($_POST['pages_title'])) {
-        $pages_title = addSpace(addslashes($_POST['pages_title']));
+        $pages_title = $this->container['functions']->addSpace(addslashes($_POST['pages_title']));
         $pages_content = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
 
 
         $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
-        $pagePUBLICLabel = ($pagePUBLIC == "1") ? ea('page_pages_status_publish', '1') : ea('page_pages_status_draft', '1');
+        $pagePUBLICLabel = ($pagePUBLIC == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
 
 
-        $pages_menu_id = myGenerateRandom(5) . $pages_title;
+        $pages_menu_id = $this->container['security']->myGenerateRandom(5) . $pages_title;
 
-        $my_db->query("UPDATE my_page SET pageTITLE = '$pages_title', pagePUBLIC = '$pagePUBLIC', pageHTML = '$pages_content'WHERE pageID = '" . $pageid . "'");;
-        $info = '<div class="row"><div class="alert alert-success">' . ea('page_pages_edit_success_created', '1') . ' <a href="' . $pages['URL'] . '">' . ea('page_pages_edit_success_show', '1') . '</a></div>';
+        $this->container['database']->query("UPDATE my_page SET pageTITLE = '$pages_title', pagePUBLIC = '$pagePUBLIC', pageHTML = '$pages_content'WHERE pageID = '" . $pageid . "'");;
+        $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_edit_success_created', '1') . ' <a href="' . $pages['URL'] . '">' . $this->container['languages']->ea('page_pages_edit_success_show', '1') . '</a></div>';
         $pages['title'] = $_POST['pages_title'];
         $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
     } else {
         $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
-        $pagePUBLICLabel = ($pagePUBLIC == "1") ? ea('page_pages_status_publish', '1') : ea('page_pages_status_draft', '1');
+        $pagePUBLICLabel = ($pagePUBLIC == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
 
         $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
-        define("INDEX_ERROR", ea('page_pages_edit_error_title', '1'));
+        define("INDEX_ERROR", $this->container['languages']->ea('page_pages_edit_error_title', '1'));
 
     }
 }
-getStyleScriptAdmin('script');
+$this->getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -125,7 +124,7 @@ if (defined("INDEX_ERROR")) {
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php ea('page_pages_edit_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_pages_edit_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -140,7 +139,7 @@ if (defined("INDEX_ERROR")) {
                             <input type="text" name="pages_title" id="title" class="form-control b_form-control"
                                    maxlength="100"
                                    value="<?php echo $pages['title']; ?>"
-                                   placeholder="<?php ea('page_pages_edit_title'); ?>">
+                                   placeholder="<?php $this->container['languages']->ea('page_pages_edit_title'); ?>">
                             {@noTAGS_end@}
                         </div>
                         <br/>
@@ -151,7 +150,7 @@ if (defined("INDEX_ERROR")) {
                         <div class="form-group">
                             {@noTAGS_start@}
                             <textarea name="pages_content"
-                                      style="height:300px;"><?php echo $my_theme->noTags($pages['content']); ?></textarea>
+                                      style="height:300px;"><?php echo $this->container['theme']->noTags($pages['content']); ?></textarea>
                             {@noTAGS_end@}
                         </div>
                     </div>
@@ -164,17 +163,17 @@ if (defined("INDEX_ERROR")) {
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                   class="accordion-toggle"><?php ea('page_pages_edit_publish'); ?></a>
+                                   class="accordion-toggle"><?php $this->container['languages']->ea('page_pages_edit_publish'); ?></a>
                             </h4>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in" style="">
                             <div class="panel-body">
-                                <?php ea('page_pages_edit_info'); ?>
+                                <?php $this->container['languages']->ea('page_pages_edit_info'); ?>
                                 <hr>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <label><?php ea('page_pages_new_status_label'); ?></label>
+                                            <label><?php $this->container['languages']->ea('page_pages_new_status_label'); ?></label>
                                             <input type="hidden" name="pagePUBLIC" id="pagePUBLIC"
                                                    value="<?php if (isset($pagePUBLIC)) {
                                                        echo $pagePUBLIC;
@@ -185,10 +184,10 @@ if (defined("INDEX_ERROR")) {
                                                   class="text-capitalize"><?php if (isset($pagePUBLIC) && isset($pagePUBLICLabel)) {
                                                     echo $pagePUBLICLabel;
                                                 } else {
-                                                    ea('page_pages_status_publish');
+                                                    $this->container['languages']->ea('page_pages_status_publish');
                                                 } ?></span>
                                             <a href="#pagePUBLIC" id="editPagePUBLICButton" style="display: inline;">
-                                                <span aria-hidden="true">- <?php ea('page_pages_new_label_edit_status'); ?></span></a>
+                                                <span aria-hidden="true">- <?php $this->container['languages']->ea('page_pages_new_label_edit_status'); ?></span></a>
                                         </div>
                                     </div>
 
@@ -198,20 +197,20 @@ if (defined("INDEX_ERROR")) {
                                             <select name="pagePUBLICselect" id="pagePUBLICselect" class="form-control"
                                                     style="display: inline-block; width: auto">
                                                 <option selected="selected"
-                                                        value="1"><?php ea('page_pages_status_publish'); ?></option>
-                                                <option value="0"><?php ea('page_pages_status_draft'); ?></option>
+                                                        value="1"><?php $this->container['languages']->ea('page_pages_status_publish'); ?></option>
+                                                <option value="0"><?php $this->container['languages']->ea('page_pages_status_draft'); ?></option>
                                             </select>
                                             <a href="#pagePUBLICselect" class="btn btn-default"
-                                               id="okPagePUBLICButton"><?php ea('page_pages_new_label_ok'); ?></a>
+                                               id="okPagePUBLICButton"><?php $this->container['languages']->ea('page_pages_new_label_ok'); ?></a>
                                             <a href="#pagePUBLICselect"
-                                               id="cancelPagePUBLICButton"> <?php ea('page_pages_new_label_cancel'); ?></a>
+                                               id="cancelPagePUBLICButton"> <?php $this->container['languages']->ea('page_pages_new_label_cancel'); ?></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <button type="submit" name="pages_new_create"
-                                class="btn btn-primary b_btn btn-block"><?php ea('page_pages_edit_publish_button'); ?></button>
+                                class="btn btn-primary b_btn btn-block"><?php $this->container['languages']->ea('page_pages_edit_publish_button'); ?></button>
                     </div>
                 </div>
             </div>

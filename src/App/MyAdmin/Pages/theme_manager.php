@@ -2,38 +2,36 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'theme_manager');
-define('PAGE_NAME', ea('page_theme_manager', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_theme_manager', '1'));
 
-global $my_theme, $my_db, $my_users, $my_blog;
-
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 $info = "";
 
 if (isset($_GET['remove'])) {
     if (is_numeric($_GET['remove'])) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
         if ($user_rank >= 3) {
-            $info = $my_db->row("SELECT * FROM my_style WHERE style_id = :style_id LIMIT 1", ['style_id' => mySqlSecure($_GET['remove'])]);
+            $info = $this->container['database']->row("SELECT * FROM my_style WHERE style_id = :style_id LIMIT 1", ['style_id' => $this->container['security']->mySqlSecure($_GET['remove'])]);
             $style_path_name = $info['style_path_name'];
 
             if ($info['style_enable_remove'] == '1') {
 
-                removeDir(FILE . '/src/App/Content/Theme/' . $style_path_name);
-                $my_db->query('DELETE FROM my_style WHERE style_id = :style_id LIMIT 1', ['style_id' => mySqlSecure($_GET['remove'])]);
+                $this->container['functions']->removeDir(FILE . '/src/App/Content/Theme/' . $style_path_name);
+                $this->container['database']->query('DELETE FROM my_style WHERE style_id = :style_id LIMIT 1', ['style_id' => $this->container['security']->mySqlSecure($_GET['remove'])]);
 
 
-                $site_language = getSettingsValue('site_language');
+                $site_language = $this->container['settings']->getSettingsValue('site_language');
 
                 if ($this->container['settings']->saveSettings('site_template', 'my_cms_default') == false) {
-                    define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
+                    define("INDEX_ERROR", $this->container['languages']->ea('error_page_settings_general_save', '1'));
                 };
                 if ($this->container['settings']->saveSettings('site_template_language', $site_language) == false) {
-                    define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
+                    define("INDEX_ERROR", $this->container['languages']->ea('error_page_settings_general_save', '1'));
                 };
             }
 
@@ -48,20 +46,20 @@ $info_page = false;
 if (isset($_GET['info'])) {
     if (is_numeric($_GET['info'])) {
         $info_page = true;
-        $info_id = mySqlSecure($_GET['info']);
+        $info_id = $this->container['security']->mySqlSecure($_GET['info']);
     }
 }
 
 if (isset($_POST['set_theme'])) {
 
-    if (staffLoggedIn()) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($this->container['users']->staffLoggedIn()) {
+        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
         if ($user_rank >= 3) {
             if (isset($_POST['style_path_name'])) {
-                $style_path_name = mySqlSecure($_POST['style_path_name']);
+                $style_path_name = $this->container['security']->mySqlSecure($_POST['style_path_name']);
                 if ($this->container['settings']->getSettingsValue("site_template") != $style_path_name) {
                     if ($this->container['settings']->saveSettings('site_template', $style_path_name) == false) {
-                        define("INDEX_ERROR", ea('error_page_settings_general_save', '1'));
+                        define("INDEX_ERROR", $this->container['languages']->ea('error_page_settings_general_save', '1'));
                     };
                 }
             }
@@ -71,12 +69,12 @@ if (isset($_POST['set_theme'])) {
 }
 
 if (isset($_POST['newtheme'])) {
-    if (staffLoggedIn()) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($this->container['users']->staffLoggedIn()) {
+        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
         if ($user_rank >= 3) {
 
             $jsonurl = htmlentities($_POST['jsonurl']);
-            $info = $my_theme->downloadTheme($jsonurl);
+            $info = $this->container['theme']->downloadTheme($jsonurl);
             if ($info == true) {
                 $info = null;
             }
@@ -85,8 +83,8 @@ if (isset($_POST['newtheme'])) {
 }
 
 if (isset($_POST['uploadTheme'])) {
-    if (staffLoggedIn()) {
-        $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+    if ($this->container['users']->staffLoggedIn()) {
+        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
         if ($user_rank >= 3) {
             $info = $this->container['theme']->installTheme($_FILES['themeFile']);
             if ($info == true) {
@@ -95,7 +93,7 @@ if (isset($_POST['uploadTheme'])) {
                 $this->container['functions']->removeDir("." . MY_BASE_PATH . "/tmp/");
             }
         } else {
-            define("INDEX_ERROR", ea('error_admin_permissions', '1'));
+            define("INDEX_ERROR", $this->container['languages']->ea('error_admin_permissions', '1'));
         }
     }
 }
@@ -121,7 +119,7 @@ if (defined("INDEX_ERROR")) {
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php ea('page_theme_manager_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_theme_manager_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -130,9 +128,9 @@ if (defined("INDEX_ERROR")) {
             <?php
             $new_update_new_cms = false;
 
-            $info = $my_db->row("SELECT * FROM my_style WHERE style_id = :style_id LIMIT 1", ['style_id' => $info_id]);
+            $info = $this->container['database']->row("SELECT * FROM my_style WHERE style_id = :style_id LIMIT 1", ['style_id' => $info_id]);
 
-            $info_update = $my_theme->themeUpdate($info['style_version'], $info['style_json_file_url']);
+            $info_update = $this->container['theme']->themeUpdate($info['style_version'], $info['style_json_file_url']);
             if ($info_update[0] == true) {
                 if ($info_update[2] == true) {
                     $new_update = false;//true
@@ -202,16 +200,16 @@ if (defined("INDEX_ERROR")) {
                     <ul class="list-group" id="info-theme">
                         <li class="list-group-item">
                             <span class="badge"><?php echo $info['style_version']; ?></span>
-                            <?php ea('page_theme_manager_version_label'); ?>
+                            <?php $this->container['languages']->ea('page_theme_manager_version_label'); ?>
                         </li>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $info['style_author']; ?></span>
-                            <?php ea('page_theme_manager_author_label'); ?>
+                            <?php $this->container['languages']->ea('page_theme_manager_author_label'); ?>
                         </li>
                     </ul>
                 </div>
                 <?php
-                $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+                $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
                 if ($user_rank >= 3) {
                     ?>
                     <div class="well well-sm" style="height: 52px;" id="info-theme-button">
@@ -220,10 +218,10 @@ if (defined("INDEX_ERROR")) {
                                    value="<?php echo $info['style_path_name']; ?>"/>
                             <?php if ($this->container['settings']->getSettingsValue("site_template") != $info['style_path_name']) { ?>
                                 <button style="float: right" type="submit" name="set_theme"
-                                        class="btn btn-block btn-info"><?php ea('page_theme_manager_set_button'); ?></button>
+                                        class="btn btn-block btn-info"><?php $this->container['languages']->ea('page_theme_manager_set_button'); ?></button>
                             <?php } else { ?>
                                 <button style="float: right" type="submit" name="" class="btn btn-block btn-info"
-                                        disabled=""><?php ea('page_theme_manager_set_button'); ?></button>
+                                        disabled=""><?php $this->container['languages']->ea('page_theme_manager_set_button'); ?></button>
                             <?php } ?>
                         </form>
                     </div>
@@ -232,7 +230,7 @@ if (defined("INDEX_ERROR")) {
                         <div class="well well-sm" style="height: 52px;" id="info-theme-button">
                             <a href="{@siteURL@}/my-admin/theme_manager/remove/<?php echo $info['style_id'] ?>"
                                class="btn btn-sm btn-danger btn-block"
-                               role="button"><?php ea('page_theme_manager_button_remove'); ?></a>
+                               role="button"><?php $this->container['languages']->ea('page_theme_manager_button_remove'); ?></a>
                         </div>
                     <?php } ?>
 
@@ -242,9 +240,9 @@ if (defined("INDEX_ERROR")) {
                             <div class="panel-body-padding">
 
                                 <a class="btn btn-block btn-danger btn-block"
-                                   href="{@siteURL@}/my-admin/theme_customize?theme=<?php echo $info['style_path_name']; ?>"><?php ea('page_theme_manager_customizer'); ?></a>
+                                   href="{@siteURL@}/my-admin/theme_customize?theme=<?php echo $info['style_path_name']; ?>"><?php $this->container['languages']->ea('page_theme_manager_customizer'); ?></a>
                                 <a class="btn btn-block btn-primary btn-block"
-                                   href="{@siteURL@}/my-admin/code_editor?theme=<?php echo $info['style_path_name']; ?>"><?php ea('page_theme_manager_edit_in_code_editor'); ?></a>
+                                   href="{@siteURL@}/my-admin/code_editor?theme=<?php echo $info['style_path_name']; ?>"><?php $this->container['languages']->ea('page_theme_manager_edit_in_code_editor'); ?></a>
 
                             </div>
                         </div>
@@ -270,7 +268,7 @@ if (defined("INDEX_ERROR")) {
             <div class="col-lg-8 col-md-8 col-sm-7 col-xs-12">
                 <?php
                 $row = false;
-                $temp = $my_db->query("SELECT * FROM my_style ORDER BY style_id DESC");
+                $temp = $this->container['database']->query("SELECT * FROM my_style ORDER BY style_id DESC");
                 $i = 0;
                 foreach ($temp as $template) {
 
@@ -302,8 +300,8 @@ if (defined("INDEX_ERROR")) {
                                     <div>
                                         <a href="{@siteURL@}/my-admin/theme_manager/info/<?php echo $template['style_id'] ?>"
                                            class="btn btn-sm btn-primary btn-block"
-                                           role="button"><?php ea('page_theme_manager_button_info'); ?></a>
-                                        <!--<?php if ($template['style_enable_remove'] == '1') { ?> <a href="{@siteURL@}/my-admin/theme_manager/remove/<?php echo $template['style_id'] ?>" class="btn btn-sm btn-danger btn-block" role="button"><?php ea('page_theme_manager_button_remove'); ?></a> <?php } ?>-->
+                                           role="button"><?php $this->container['languages']->ea('page_theme_manager_button_info'); ?></a>
+                                        <!--<?php if ($template['style_enable_remove'] == '1') { ?> <a href="{@siteURL@}/my-admin/theme_manager/remove/<?php echo $template['style_id'] ?>" class="btn btn-sm btn-danger btn-block" role="button"><?php $this->container['languages']->ea('page_theme_manager_button_remove'); ?></a> <?php } ?>-->
                                     </div>
                                 </div>
                             </div>
@@ -325,32 +323,32 @@ if (defined("INDEX_ERROR")) {
             <div class="col-lg-4 col-sm-5 col-md-4 col-xs-12">
                 <div class="panel b_panel">
                     <div class="panel-heading">
-                        <h1 class="panel-title text-center"><?php ea('page_theme_manager_upload_new_theme'); ?></h1>
+                        <h1 class="panel-title text-center"><?php $this->container['languages']->ea('page_theme_manager_upload_new_theme'); ?></h1>
                     </div>
                     <form enctype="multipart/form-data" method="post">
                         <div class="panel-body text-center">
                             <div class="form-group">
-                                <label style="font-weight: normal;"><?php ea('page_theme_manager_placeholder_upload'); ?></label>
+                                <label style="font-weight: normal;"><?php $this->container['languages']->ea('page_theme_manager_placeholder_upload'); ?></label>
                                 <input type="file" id="themeFile" name="themeFile">
                             </div>
                         </div>
                         <button type="submit" name="uploadTheme"
-                                class="btn btn-block btn-primary b_btn b_btn_radius"><?php ea('page_theme_manager_upload_button'); ?></button>
+                                class="btn btn-block btn-primary b_btn b_btn_radius"><?php $this->container['languages']->ea('page_theme_manager_upload_button'); ?></button>
                     </form>
                 </div>
                 <div class="panel b_panel">
                     <div class="panel-heading">
-                        <h1 class="panel-title text-center"><?php ea('page_theme_manager_add_new_theme'); ?></h1>
+                        <h1 class="panel-title text-center"><?php $this->container['languages']->ea('page_theme_manager_add_new_theme'); ?></h1>
                     </div>
                     <form action="" method="post">
                         <div class="panel-body">
                             <input type="text" name="jsonurl" class="form-control b_form-control"
-                                   placeholder="<?php ea('page_theme_manager_labe_json_url'); ?>" maxlength="200">
+                                   placeholder="<?php $this->container['languages']->ea('page_theme_manager_labe_json_url'); ?>" maxlength="200">
                             <br/>
 
                         </div>
                         <button type="submit" name="newtheme"
-                                class="btn btn-block btn-primary b_btn b_btn_radius"><?php ea('page_theme_manager_add_button'); ?></button>
+                                class="btn btn-block btn-primary b_btn b_btn_radius"><?php $this->container['languages']->ea('page_theme_manager_add_button'); ?></button>
                     </form>
                 </div>
             </div>
@@ -362,7 +360,7 @@ if (defined("INDEX_ERROR")) {
 
 </div>
 <!-- /#wrapper -->
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 </body>
 

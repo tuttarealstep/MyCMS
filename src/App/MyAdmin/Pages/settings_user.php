@@ -1,14 +1,14 @@
 <?php
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_settings_user');
-define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_user', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_settings_page_name', '1') . ': ' . $this->container['languages']->ea('page_settings_user', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 
-global $my_db;
+
 ?>
 <?php
 if (defined("INDEX_ERROR")) {
@@ -26,37 +26,37 @@ if (defined("INDEX_ERROR")) {
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php ea('page_settings_user_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_settings_user_header'); ?></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6">
             <form role="form" method="post" action="">
                 <div class="form-group">
-                    <label><?php ea('page_settings_user_change_old_password'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_user_change_old_password'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_settings_user_placeholder_old_password') ?>" name="password"
+                           placeholder="<?php $this->container['languages']->ea('page_settings_user_placeholder_old_password') ?>" name="password"
                            type="password" value="" required>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_settings_user_change_new_password'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_user_change_new_password'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_settings_user_placeholder_new_password') ?>" name="new_password"
+                           placeholder="<?php $this->container['languages']->ea('page_settings_user_placeholder_new_password') ?>" name="new_password"
                            type="password" value="" required>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_settings_user_change_password_repeat'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_user_change_password_repeat'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_settings_user_placeholder_password_repeat') ?>"
+                           placeholder="<?php $this->container['languages']->ea('page_settings_user_placeholder_password_repeat') ?>"
                            name="password_repeat" type="password" value="" required>
                 </div>
                 <input type="submit" class="btn btn-primary btn-block b_btn" name="page_settings_user_save_button"
-                       value="<?php ea('page_settings_user_save_button') ?>"/>
+                       value="<?php $this->container['languages']->ea('page_settings_user_save_button') ?>"/>
             </form>
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-6">
-            <b><?php ea('page_settings_user_change_admin_style'); ?></b>
+            <b><?php $this->container['languages']->ea('page_settings_user_change_admin_style'); ?></b>
 
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -99,7 +99,7 @@ if (defined("INDEX_ERROR")) {
 </div>
 <!-- /#wrapper -->
 
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 </body>
 

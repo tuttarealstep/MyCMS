@@ -3,18 +3,18 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_settings_blog');
-define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_blog', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_settings_page_name', '1') . ': ' . $this->container['languages']->ea('page_settings_blog', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php ea('page_settings_blog_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_settings_blog_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -23,46 +23,46 @@ getPageAdmin('topbar');
         <div class="col-lg-6">
             <form role="form" method="post" action="">
                 <div class="form-group">
-                    <label><?php ea('page_settings_blog_private'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_blog_private'); ?></label>
                     <select name="settings_blog_private" id="settings_blog_private" class="form-control">
-                        <option <?php if (getSettingsValue('blog_private') == 'true') {
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_private') == 'true') {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_blog_private_off'); ?></option>
-                        <option <?php if (getSettingsValue('blog_private') == 'false') {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_blog_private_off'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_private') == 'false') {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_blog_private_on'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_blog_private_on'); ?></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><?php ea('page_settings_blog_comments_active'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_blog_comments_active'); ?></label>
                     <select name="settings_blog_comments_active" id="settings_blog_comments_active"
                             class="form-control">
-                        <option <?php if (getSettingsValue('blog_comments_active') == 'true') {
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_comments_active') == 'true') {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_blog_comments_active_on'); ?></option>
-                        <option <?php if (getSettingsValue('blog_comments_active') == 'false') {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_blog_comments_active_on'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_comments_active') == 'false') {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_blog_comments_active_off'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_blog_comments_active_off'); ?></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><?php ea('page_settings_blog_comments_approve'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_blog_comments_approve'); ?></label>
                     <select name="settings_blog_comments_approve" id="settings_blog_comments_active"
                             class="form-control">
-                        <option <?php if (getSettingsValue('blog_comments_approve') == 'true') {
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_comments_approve') == 'true') {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_blog_comments_approve_on'); ?></option>
-                        <option <?php if (getSettingsValue('blog_comments_approve') == 'false') {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_blog_comments_approve_on'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('blog_comments_approve') == 'false') {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_blog_comments_approve_off'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_blog_comments_approve_off'); ?></option>
                     </select>
                 </div>
 
 
                 <input type="submit" name="save_settings_blog" class="btn btn-success"
-                       value="<?php ea('page_settings_site_button_save'); ?>"/>
+                       value="<?php $this->container['languages']->ea('page_settings_site_button_save'); ?>"/>
 
 
             </form>
@@ -75,7 +75,7 @@ getPageAdmin('topbar');
 </div>
 <!-- /#wrapper -->
 
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 </body>
 

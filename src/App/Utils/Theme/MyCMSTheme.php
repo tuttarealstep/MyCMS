@@ -974,7 +974,7 @@ class MyCMSTheme
         }
     }
 
-    public function getFileAdmin($page, $name = null, $page_loader = true)
+    public function getFileAdmin($page, $name = null, $page_loader = false)
     {
 
         $theme_path = MY_ADMIN_PATH . '/Template';
@@ -1046,7 +1046,7 @@ class MyCMSTheme
         return false;
     }
 
-    public function getPageAdmin($page, $name)
+    public function getPageAdmin($page, $name = '')
     {
 
         $theme_path = MY_ADMIN_PATH . '/Pages';

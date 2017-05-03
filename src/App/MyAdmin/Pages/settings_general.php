@@ -3,19 +3,19 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_settings_general');
-define('PAGE_NAME', ea('page_settings_page_name', '1') . ': ' . ea('page_settings_general', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_settings_page_name', '1') . ': ' . $this->container['languages']->ea('page_settings_general', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php ea('page_settings_page_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_settings_page_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -24,25 +24,25 @@ getPageAdmin('topbar');
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_name'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_name'); ?></label>
                     <input type="text" name="settings_site_name" class="form-control" value="{@siteNAME@}">
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_description'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_description'); ?></label>
                     <input type="text" name="settings_site_description" class="form-control"
                            value="{@siteDESCRIPTION@}">
-                    <p class="help-block"><?php ea('page_settings_site_description_help'); ?></p>
+                    <p class="help-block"><?php $this->container['languages']->ea('page_settings_site_description_help'); ?></p>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_url'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_url'); ?></label>
                     <input type="text" name="settings_site_url" class="form-control" value="{@siteURL@}">
-                    <p class="help-block"><?php ea('page_settings_site_url_help'); ?></p>
+                    <p class="help-block"><?php $this->container['languages']->ea('page_settings_site_url_help'); ?></p>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_timezone'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_timezone'); ?></label>
                     <select name="settings_site_timezone" id="settings_site_timezone" class="form-control">
                         <option
-                                value="<?php echo getSettingsValue('site_timezone'); ?>"><?php echo getSettingsValue('site_timezone'); ?></option>
+                                value="<?php echo $this->container['settings']->getSettingsValue('site_timezone'); ?>"><?php echo $this->container['settings']->getSettingsValue('site_timezone'); ?></option>
                         <option value="America/Adak">(GMT-10:00) America/Adak (Hawaii-Aleutian Standard Time)</option>
                         <option value="America/Atka">(GMT-10:00) America/Atka (Hawaii-Aleutian Standard Time)</option>
                         <option value="America/Anchorage">(GMT-9:00) America/Anchorage (Alaska Standard Time)</option>
@@ -550,51 +550,51 @@ getPageAdmin('topbar');
                         <option value="Asia/Kamchatka">(GMT+12:00) Asia/Kamchatka (Petropavlovsk-Kamchatski Time)
                         </option>
                     </select>
-                    <p class="help-block"><?php ea('page_settings_site_timezone_help'); ?></p>
+                    <p class="help-block"><?php $this->container['languages']->ea('page_settings_site_timezone_help'); ?></p>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_mainteinance'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_mainteinance'); ?></label>
                     <select name="settings_site_mainteinance" id="settings_site_mainteinance" class="form-control">
-                        <option <?php if (getSettingsValue('site_maintenance') == "true") {
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_maintenance') == "true") {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_site_mainteinance_on'); ?></option>
-                        <option <?php if (getSettingsValue('site_maintenance') == "false") {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_site_mainteinance_on'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_maintenance') == "false") {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_site_mainteinance_off'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_site_mainteinance_off'); ?></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_web_private'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_web_private'); ?></label>
                     <select name="settings_site_private" id="settings_site_private" class="form-control">
-                        <option <?php if (getSettingsValue('site_private') == "true") {
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_private') == "true") {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_site_web_private_on'); ?></option>
-                        <option <?php if (getSettingsValue('site_private') == "false") {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_site_web_private_on'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_private') == "false") {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_site_web_private_off'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_site_web_private_off'); ?></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><?php ea('page_settings_site_use_cache'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_settings_site_use_cache'); ?></label>
                     <select name="settings_site_use_cache" id="settings_site_use_cache" class="form-control">
-                        <option <?php if (getSettingsValue('site_use_cache') == "true") {
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_use_cache') == "true") {
                             echo 'selected=""';
-                        } ?> value="true"><?php ea('page_settings_site_use_cache_on'); ?></option>
-                        <option <?php if (getSettingsValue('site_use_cache') == "false") {
+                        } ?> value="true"><?php $this->container['languages']->ea('page_settings_site_use_cache_on'); ?></option>
+                        <option <?php if ($this->container['settings']->getSettingsValue('site_use_cache') == "false") {
                             echo 'selected=""';
-                        } ?> value="false"><?php ea('page_settings_site_use_cache_off'); ?></option>
+                        } ?> value="false"><?php $this->container['languages']->ea('page_settings_site_use_cache_off'); ?></option>
                     </select>
                 </div>
                 <input type="submit" name="clear_all_caches_settings_general" class="btn btn-block btn-danger"
-                       value="<?php ea('page_settings_site_button_clear_all_caches'); ?>"/>
+                       value="<?php $this->container['languages']->ea('page_settings_site_button_clear_all_caches'); ?>"/>
 
                 <input type="submit" name="save_settings_general" class="btn btn-block btn-success"
-                       value="<?php ea('page_settings_site_button_save'); ?>"/>
+                       value="<?php $this->container['languages']->ea('page_settings_site_button_save'); ?>"/>
             </div>
         </div>
     </form>
@@ -605,7 +605,7 @@ getPageAdmin('topbar');
 </div>
 <!-- /#wrapper -->
 
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 </body>
 

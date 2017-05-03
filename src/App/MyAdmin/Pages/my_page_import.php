@@ -1,5 +1,5 @@
 <?php
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 $user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
 if ($user_rank < 3) {
@@ -7,22 +7,19 @@ if ($user_rank < 3) {
     exit();
 }
 
-global $my_db, $my_users, $my_blog, $my_theme;
-
-
 define('PAGE_ID', 'admin_pages_edit');
-define('PAGE_NAME', ea('page_pages_import_title', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_pages_import_title', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 
-getStyleScriptAdmin('script');
+$this->getStyleScriptAdmin('script');
 ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php ea('page_pages_import_title_head'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_pages_import_title_head'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -36,7 +33,7 @@ getStyleScriptAdmin('script');
                     </div>
                 </div>
                 <input type="submit" name="import_page_json" class="btn btn-success btn-block"
-                       value="<?php ea('page_pages_import_button'); ?>"/>
+                       value="<?php $this->container['languages']->ea('page_pages_import_button'); ?>"/>
             </form>
         </div>
     </div>
@@ -47,7 +44,7 @@ getStyleScriptAdmin('script');
 </div>
 <!-- /#wrapper -->
 
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 
 </body>
 

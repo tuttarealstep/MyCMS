@@ -5,14 +5,13 @@
  * Time: 11.21
  */
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
-global $my_db, $my_users, $my_blog;
 define('PAGE_ID', 'admin_users_new');
-define('PAGE_NAME', ea('page_users_new_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_users_new_page_name', '1'));
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 if (isset($_POST['page_new_user_add_new_button'])) {
     // Dati Inviati dal modulo
@@ -68,51 +67,51 @@ if (isset($new_user_created) && $new_user_created == true) {
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php ea('page_users_new_title'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_users_new_title'); ?></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-6">
             <form role="form" method="post" action="">
                 <div class="form-group">
-                    <label><?php ea('page_new_user_name_label'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_new_user_name_label'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_new_user_name_placeholder') ?>" name="name"
+                           placeholder="<?php $this->container['languages']->ea('page_new_user_name_placeholder') ?>" name="name"
                            type="text" value="<?php if (isset($name)) {
                         echo $name;
                     } ?>" required>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_new_user_surname_label'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_new_user_surname_label'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_new_user_surname_placeholder') ?>" name="surname"
+                           placeholder="<?php $this->container['languages']->ea('page_new_user_surname_placeholder') ?>" name="surname"
                            type="text" value="<?php if (isset($surname)) {
                         echo $surname;
                     } ?>" required>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_new_user_email_label'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_new_user_email_label'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_new_user_email_placeholder') ?>" name="email"
+                           placeholder="<?php $this->container['languages']->ea('page_new_user_email_placeholder') ?>" name="email"
                            type="email" value="<?php if (isset($email)) {
                         echo $email;
                     } ?>" required>
                 </div>
                 <div class="form-group">
-                    <label><?php ea('page_new_user_password_label'); ?></label>
+                    <label><?php $this->container['languages']->ea('page_new_user_password_label'); ?></label>
                     <input class="form-control b_form-control"
-                           placeholder="<?php ea('page_new_user_password_placeholder') ?>" name="password"
+                           placeholder="<?php $this->container['languages']->ea('page_new_user_password_placeholder') ?>" name="password"
                            type="password" value="" required>
                 </div>
                 <input type="submit" class="btn btn-primary btn-block b_btn" name="page_new_user_add_new_button"
-                       value="<?php ea('page_new_user_add_new_button') ?>"/>
+                       value="<?php $this->container['languages']->ea('page_new_user_add_new_button') ?>"/>
             </form>
         </div>
     </div>
     <!-- /.row -->
 </div>
 <!-- /#page-wrapper -->
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 </body>
 
 </html>

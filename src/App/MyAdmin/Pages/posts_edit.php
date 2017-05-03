@@ -3,16 +3,15 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-global $my_db, $my_users, $my_blog;
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_posts_edit');
-define('PAGE_NAME', ea('admin_posts_edit', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('admin_posts_edit', '1'));
 
-addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+$this->container['theme']->addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 $this->container['plugins']->applyEvent('postsEditAfterTopBar');
 $this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
@@ -25,15 +24,15 @@ $info = "";
 if (isset($_GET['id'])) {
 
     if (is_numeric($_GET['id'])) {
-        if ($my_db->single("SELECT count(*) FROM my_blog WHERE postID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
-            $postid = mySqlSecure($_GET['id']);
+        if ($this->container['database']->single("SELECT count(*) FROM my_blog WHERE postID = '" . $_GET['id'] . "' LIMIT 1") > 0) {
+            $postid = $this->container['security']->mySqlSecure($_GET['id']);
 
-            $posts['title'] = $my_blog->gets('title', $postid);
-            $posts['content'] = $my_blog->gets('content', $postid);
-            $posts['permalink'] = $my_blog->gets('permalink', $postid);
-            $posts_category = $my_blog->gets('category', $postid);
-            $postSTATUS = $my_blog->getInfo('postSTATUS', $postid);
-            $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
+            $posts['title'] = $this->container['blog']->gets('title', $postid);
+            $posts['content'] = $this->container['blog']->gets('content', $postid);
+            $posts['permalink'] = $this->container['blog']->gets('permalink', $postid);
+            $posts_category = $this->container['blog']->gets('category', $postid);
+            $postSTATUS = $this->container['blog']->getInfo('postSTATUS', $postid);
+            $postSTATUSLabel = ($postSTATUS == "publish") ? $this->container['languages']->ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? $this->container['languages']->ea('page_posts_new_label_pending_review', '1') : $this->container['languages']->ea('page_posts_new_label_draft', '1'));
 
         }
     } else {
@@ -52,22 +51,22 @@ if (isset($_GET['id'])) {
 if (isset($_POST['posts_new_edit_button'])) {
     if (!empty($_POST['posts_title'])) {
         if (!empty($_POST['posts_content'])) {
-            $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+            $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
             if ($user_rank >= 2) {
                 $posts_title = addslashes($_POST['posts_title']);
                 $posts_content = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
                 $date = date('d/m/Y H.i.s', time());
                 $postSTATUS = addslashes($_POST['postSTATUS']);
                 $category = addslashes($_POST['category']);
-                //$author = $my_users->getInfo($_SESSION['staff']['id'], 'name').'_'.$my_users->getInfo($_SESSION['staff']['id'], 'surname');
+                //$author = $this->container['users']->getInfo($_SESSION['staff']['id'], 'name').'_'.$this->container['users']->getInfo($_SESSION['staff']['id'], 'surname');
                 $author = $_SESSION['staff']['id'];
                 //$permalink = $_POST['permalink'];
-                $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . fixText(addSpace($posts_title));
-                $finder = $my_blog->permalinkFinder($permalink);
+                $permalink = '/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . $this->container['functions']->fixText($this->container['functions']->addSpace($posts_title));
+                $finder = $this->container['blog']->permalinkFinder($permalink);
                 if ($finder == true) {
 
                     $i = 1;
-                    while ($my_blog->permalinkFinder($permalink . '_' . $i) == true):
+                    while ($this->container['blog']->permalinkFinder($permalink . '_' . $i) == true):
 
                         $i++;
 
@@ -77,35 +76,35 @@ if (isset($_POST['posts_new_edit_button'])) {
 
                 }
 
-                $my_db->query("UPDATE my_blog SET postTITLE = '$posts_title', postCONT = '$posts_content', postCATEGORY = '$category', postPOSTED = '1', postPERMALINK = '$permalink', postSTATUS = '$postSTATUS' WHERE postID = '" . $postid . "'");;
+                $this->container['database']->query("UPDATE my_blog SET postTITLE = '$posts_title', postCONT = '$posts_content', postCATEGORY = '$category', postPOSTED = '1', postPERMALINK = '$permalink', postSTATUS = '$postSTATUS' WHERE postID = '" . $postid . "'");;
 
-                $info = '<div class="row"><div class="alert alert-success">' . ea('page_posts_edit_new_success_posted', '1') . ' <a href="' . $permalink . '">' . ea('page_posts_edit_new_success_show', '1') . '</a></div>';
+                $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_posts_edit_new_success_posted', '1') . ' <a href="' . $permalink . '">' . $this->container['languages']->ea('page_posts_edit_new_success_show', '1') . '</a></div>';
 
                 $posts['title'] = $_POST['posts_title'];
                 $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
                 $posts_category = $_POST['category'];
             }
         } else {
-            define("INDEX_ERROR", ea('page_posts_edit_new_error_content', '1'));
+            define("INDEX_ERROR", $this->container['languages']->ea('page_posts_edit_new_error_content', '1'));
             $posts['title'] = $_POST['posts_title'];
             $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
             $posts_category = $_POST['category'];
             $postSTATUS = addslashes($_POST['postSTATUS']);
-            $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
+            $postSTATUSLabel = ($postSTATUS == "publish") ? $this->container['languages']->ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? $this->container['languages']->ea('page_posts_new_label_pending_review', '1') : $this->container['languages']->ea('page_posts_new_label_draft', '1'));
 
 
         }
     } else {
         $posts['content'] = $this->container['plugins']->applyEvent('parsePostContent', $_POST['posts_content']);
         $posts_category = $_POST['category'];
-        define("INDEX_ERROR", ea('page_posts_edit_new_error_title', '1'));
+        define("INDEX_ERROR", $this->container['languages']->ea('page_posts_edit_new_error_title', '1'));
         $postSTATUS = addslashes($_POST['postSTATUS']);
-        $postSTATUSLabel = ($postSTATUS == "publish") ? ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? ea('page_posts_new_label_pending_review', '1') : ea('page_posts_new_label_draft', '1'));
+        $postSTATUSLabel = ($postSTATUS == "publish") ? $this->container['languages']->ea('page_posts_new_label_published', '1') : (($postSTATUS == "pending") ? $this->container['languages']->ea('page_posts_new_label_pending_review', '1') : $this->container['languages']->ea('page_posts_new_label_draft', '1'));
 
 
     }
 }
-getStyleScriptAdmin('script');
+$this->getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -152,7 +151,7 @@ if (defined("INDEX_ERROR")) {
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php ea('page_posts_edit_new_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_posts_edit_new_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -164,7 +163,7 @@ if (defined("INDEX_ERROR")) {
                     <div class="panel-body b_panel-body panel-body-padding">
                         <div class="form-group">
                             {@noTAGS_start@}
-                            <input placeholder="<?php ea('page_posts_edit_new_title'); ?>" type="text"
+                            <input placeholder="<?php $this->container['languages']->ea('page_posts_edit_new_title'); ?>" type="text"
                                    name="posts_title" id="title" class="form-control b_form-control" maxlength="100"
                                    value="<?php echo $posts['title']; ?>">
                             {@noTAGS_end@}
@@ -190,24 +189,24 @@ if (defined("INDEX_ERROR")) {
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                   class="accordion-toggle"><?php ea('page_posts_edit_new_publish'); ?></a>
+                                   class="accordion-toggle"><?php $this->container['languages']->ea('page_posts_edit_new_publish'); ?></a>
                             </h4>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in" style="">
                             <div class="panel-body b_panel-body">
                                 <div class="panel-body-padding">
-                                    <span class="label label-danger"><?php ea('page_posts_edit_new_permalink'); ?></span><br/>
+                                    <span class="label label-danger"><?php $this->container['languages']->ea('page_posts_edit_new_permalink'); ?></span><br/>
                                     <p id="msg" style="word-wrap: break-word; ">
                                         {@siteURL@}/blog/<?php echo date('Y', time()); ?>
                                         /<?php echo date('m', time()); ?>
                                         /<?php echo $posts['title']; ?></p>
-                                    <small>*<?php ea('page_posts_edit_new_permalink_info'); ?></small>
+                                    <small>*<?php $this->container['languages']->ea('page_posts_edit_new_permalink_info'); ?></small>
 
                                     <hr>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
-                                                <label><?php ea('page_posts_new_status_label'); ?></label>
+                                                <label><?php $this->container['languages']->ea('page_posts_new_status_label'); ?></label>
                                                 <input type="hidden" name="postSTATUS" id="postSTATUS"
                                                        value="<?php if (isset($postSTATUS)) {
                                                            echo $postSTATUS;
@@ -218,11 +217,11 @@ if (defined("INDEX_ERROR")) {
                                                       class="text-capitalize"><?php if (isset($postSTATUS)) {
                                                         echo $postSTATUSLabel;
                                                     } else {
-                                                        ea('page_posts_new_label_published');
+                                                        $this->container['languages']->ea('page_posts_new_label_published');
                                                     } ?></span>
                                                 <a href="#postSTATUS" id="editPostStatusButton"
                                                    style="display: inline;">
-                                                    <span aria-hidden="true">- <?php ea('page_posts_new_label_edit_status'); ?></span></a>
+                                                    <span aria-hidden="true">- <?php $this->container['languages']->ea('page_posts_new_label_edit_status'); ?></span></a>
                                             </div>
                                         </div>
 
@@ -233,14 +232,14 @@ if (defined("INDEX_ERROR")) {
                                                         class="form-control"
                                                         style="display: inline-block; width: auto">
                                                     <option selected="selected"
-                                                            value="publish"><?php ea('page_posts_new_label_published'); ?></option>
-                                                    <option value="pending"><?php ea('page_posts_new_label_pending_review'); ?></option>
-                                                    <option value="draft"><?php ea('page_posts_new_label_draft'); ?></option>
+                                                            value="publish"><?php $this->container['languages']->ea('page_posts_new_label_published'); ?></option>
+                                                    <option value="pending"><?php $this->container['languages']->ea('page_posts_new_label_pending_review'); ?></option>
+                                                    <option value="draft"><?php $this->container['languages']->ea('page_posts_new_label_draft'); ?></option>
                                                 </select>
                                                 <a href="#postSTATUSselect" class="btn btn-default"
-                                                   id="okPostStatusButton"><?php ea('page_posts_new_label_ok'); ?></a>
+                                                   id="okPostStatusButton"><?php $this->container['languages']->ea('page_posts_new_label_ok'); ?></a>
                                                 <a href="#postSTATUSselect"
-                                                   id="cancelPostStatusButton"> <?php ea('page_posts_new_label_cancel'); ?></a>
+                                                   id="cancelPostStatusButton"> <?php $this->container['languages']->ea('page_posts_new_label_cancel'); ?></a>
                                             </div>
                                         </div>
                                     </div>
@@ -248,7 +247,7 @@ if (defined("INDEX_ERROR")) {
                             </div>
                         </div>
                         <button type="submit" name="posts_new_edit_button"
-                                class="btn btn-primary b_btn btn-block"><?php ea('page_posts_edit_new_publish_button'); ?></button>
+                                class="btn btn-primary b_btn btn-block"><?php $this->container['languages']->ea('page_posts_edit_new_publish_button'); ?></button>
 
                     </div>
                 </div>
@@ -257,15 +256,15 @@ if (defined("INDEX_ERROR")) {
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                                   class="accordion-toggle"><?php ea('page_posts_edit_new_category'); ?></a>
+                                   class="accordion-toggle"><?php $this->container['languages']->ea('page_posts_edit_new_category'); ?></a>
                             </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse in" style="">
                             <div class="panel-body">
-                                <span class="label label-warning"><?php ea('page_posts_edit_new_select_category'); ?></span><br/><br/>
+                                <span class="label label-warning"><?php $this->container['languages']->ea('page_posts_edit_new_select_category'); ?></span><br/><br/>
                                 <select name="category" id="categorySelect" class="form-control b_form-control">
                                     <?php
-                                    $cat = $my_db->query("SELECT * FROM my_blog_category");
+                                    $cat = $this->container['database']->query("SELECT * FROM my_blog_category");
                                     $i = 0;
                                     foreach ($cat as $category) {
                                         $i++;
@@ -279,7 +278,7 @@ if (defined("INDEX_ERROR")) {
                                 </select>
                                 <br>
                                 <a href="#category-add"
-                                   id="category-add-button"><?php ea('page_posts_new_category_button'); ?></a>
+                                   id="category-add-button"><?php $this->container['languages']->ea('page_posts_new_category_button'); ?></a>
                                 <div id="category-add" class="hidden">
                                     <div class="row">
                                         <hr>
@@ -287,11 +286,11 @@ if (defined("INDEX_ERROR")) {
                                             <input class="form-control b_form-control" type="text" aria-required="true"
                                                    name="newCategoryName" id="newCategoryName"
                                                    style="margin-bottom: 10px"
-                                                   placeholder="<?php ea('page_posts_category_new_placeholder'); ?>">
+                                                   placeholder="<?php $this->container['languages']->ea('page_posts_category_new_placeholder'); ?>">
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">
                                             <a class="btn btn-primary b_btn btn-block" name="addNewCategoryName"
-                                               id="addNewCategoryName"><?php ea('page_posts_category_new_button'); ?></a>
+                                               id="addNewCategoryName"><?php $this->container['languages']->ea('page_posts_category_new_button'); ?></a>
                                         </div>
                                     </div>
                                 </div>

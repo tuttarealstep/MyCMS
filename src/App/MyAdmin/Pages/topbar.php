@@ -3,9 +3,9 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-global $my_theme;
 
-hideIfStaffNotLogged();
+
+$this->container['users']->hideIfStaffNotLogged();
 
 //define('PAGE_ID', 'admin_topbar');
 
@@ -20,7 +20,6 @@ hideIfStaffNotLogged();
                 <span class="icon-bar icon-two"></span>
                 <span class="icon-bar icon-three"></span>
             </button>
-            <?php $this->container['plugins']->applyEvent('adminNewUpdateNotification'); ?>
             <?php $this->container['plugins']->applyEvent('adminUserMenu'); ?>
         </div>
     </div>
@@ -38,22 +37,22 @@ hideIfStaffNotLogged();
             <li>
                 <a <?php if (PAGE_ID == 'admin_settings_general') {
             echo 'class="active"';
-        } ?> href="{@siteURL@}/my-admin/settings_general"><?php ea('page_settings_general'); ?></a>
+        } ?> href="{@siteURL@}/my-admin/settings_general"><?php $this->container['languages']->ea('page_settings_general'); ?></a>
             </li>
             <li>
                 <a <?php if (PAGE_ID == 'admin_settings_blog') {
             echo 'class="active"';
-        } ?> href="{@siteURL@}/my-admin/settings_blog"><?php ea('page_settings_blog'); ?></a>
+        } ?> href="{@siteURL@}/my-admin/settings_blog"><?php $this->container['languages']->ea('page_settings_blog'); ?></a>
             </li>
             <li>
                 <a <?php if (PAGE_ID == 'admin_settings_style') {
             echo 'class="active"';
-        } ?> href="{@siteURL@}/my-admin/settings_style"><?php ea('page_settings_style'); ?></a>
+        } ?> href="{@siteURL@}/my-admin/settings_style"><?php $this->container['languages']->ea('page_settings_style'); ?></a>
             </li>
             <li>
                 <a <?php if (PAGE_ID == 'admin_xml_command') {
             echo 'class="active"';
-        } ?> href="{@siteURL@}/my-admin/xml_command"><?php ea('page_settings_xml_command'); ?></a>
+        } ?> href="{@siteURL@}/my-admin/xml_command"><?php $this->container['languages']->ea('page_settings_xml_command'); ?></a>
             </li>
         </ul>
         <!-- /.nav-second-level -->

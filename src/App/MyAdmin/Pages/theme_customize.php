@@ -1,24 +1,22 @@
 <?php
 
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 $_SESSION["customizer"] = true;
 $_SESSION['customizerLastAction'] = time();
 
-global $my_date, $my_db, $my_users, $my_blog, $my_theme;
-
-$user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+$user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
 if ($user_rank < 3) {
     header('Location: ' . HOST . '/my-admin/home');
     exit();
 }
 
 define('PAGE_ID', 'admin_theme_customize');
-define('PAGE_NAME', ea('page_admin_theme_customize_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ea('page_admin_theme_customize_page_name', '1'));
 define('NO_VIEWPORT', true);
 
-getFileAdmin('header');
-getPageAdmin('topbar');
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 
 if (isset($_GET['theme']) && !empty($_GET['theme'])) {
     if ($this->container['theme']->themeExist($_GET['theme'])) {
@@ -32,7 +30,7 @@ if (isset($_GET['theme']) && !empty($_GET['theme'])) {
 ?>
 <script>
     var theme_var = "<?php echo $theme; ?>";
-    var t_exit_now = "<?php ea('page_admin_theme_customize_t_exit_now'); ?>";
+    var t_exit_now = "<?php $this->container['languages']->ea('page_admin_theme_customize_t_exit_now'); ?>";
 </script>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic'
       rel='stylesheet' type='text/css'>
@@ -49,13 +47,13 @@ if (isset($_GET['theme']) && !empty($_GET['theme'])) {
                         </div>
                         <div class="pull-right">
                             <a class="btn"
-                               onclick="saveCustomizer();"><?php ea('page_admin_theme_customize_save'); ?></a>
+                               onclick="saveCustomizer();"><?php $this->container['languages']->ea('page_admin_theme_customize_save'); ?></a>
                         </div>
                     </div>
                     <div class="left_panel_menu_content">
                         <div class="info_div" style="line-height: 1.8;">
                                     <span class="small_text">
-                                        <?php ea('page_admin_theme_customize_you_are_customizing'); ?><br>
+                                        <?php $this->container['languages']->ea('page_admin_theme_customize_you_are_customizing'); ?><br>
                                         <strong><?php echo $theme; ?></strong>
                                     </span>
                         </div>
@@ -75,7 +73,7 @@ if (isset($_GET['theme']) && !empty($_GET['theme'])) {
             </div>
         </div>
 
-        <?php getFileAdmin('footer'); ?>
+        <?php $this->getFileAdmin('footer'); ?>
         <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/base64.js"></script>
         <?php $this->container['plugins']->applyEvent('customizerJsMenu'); ?>
         <script id="js_to_ex" src="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/customizer/customizer.js"></script>

@@ -3,12 +3,12 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-hideIfStaffLogged();
+$this->container['users']->hideIfStaffLogged();
 
 define('PAGE_ID', 'admin_login');
-define('PAGE_NAME', ea('page_login_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_login_page_name', true));
 
-getFileAdmin('header');
+$this->getFileAdmin('header');
 ?>
 <body>
 <div class="container">
@@ -28,30 +28,30 @@ getFileAdmin('header');
             ?>
             <div class="login-panel panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title text-center"><?php ea('page_login_panel-title') ?></h3>
+                    <h3 class="panel-title text-center"><?php $this->container['languages']->ea('page_login_panel-title') ?></h3>
                 </div>
                 <div class="panel-body login-panel-body">
                     <form role="form" method="post">
                         <div class="form-group">
                             <input class="form-control b_form-control"
-                                   placeholder="<?php ea('page_login_placeholder_email') ?>" name="email" type="email"
+                                   placeholder="<?php $this->container['languages']->ea('page_login_placeholder_email') ?>" name="email" type="email"
                                    value="" autofocus required>
                         </div>
                         <div class="form-group">
                             <input class="form-control b_form-control"
-                                   placeholder="<?php ea('page_login_placeholder_password') ?>" name="password"
+                                   placeholder="<?php $this->container['languages']->ea('page_login_placeholder_password') ?>" name="password"
                                    type="password" value="" required>
                         </div>
                         <div class="checkbox b_checkbox">
                             <label>
                                 <input name="remember" type="checkbox"
-                                       value="remember_t"><?php ea('page_login_remember') ?>
+                                       value="remember_t"><?php $this->container['languages']->ea('page_login_remember') ?>
                             </label>
                         </div>
                         <input type="submit"
                                style="/*border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;*/"
                                class="btn btn-primary btn-block b_btn" name="admin-login"
-                               value="<?php ea('page_login_button') ?>"/>
+                               value="<?php $this->container['languages']->ea('page_login_button') ?>"/>
                     </form>
                 </div>
             </div>
@@ -59,6 +59,6 @@ getFileAdmin('header');
     </div>
 </div>
 
-<?php getFileAdmin('footer'); ?>
+<?php $this->getFileAdmin('footer'); ?>
 </body>
 </html>

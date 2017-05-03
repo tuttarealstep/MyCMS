@@ -54,10 +54,9 @@ class TreeView
     }
 }
 
-global $my_users, $my_db;
-hideIfStaffNotLogged();
-if (staffLoggedIn() && isset($_POST['dir'])) {
-    $user_rank = $my_users->getInfo($_SESSION['staff']['id'], 'rank');
+$app->container['users']->hideIfStaffNotLogged();
+if ($app->container['users']->staffLoggedIn() && isset($_POST['dir'])) {
+    $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
     if ($user_rank < 3) {
         return;
     }

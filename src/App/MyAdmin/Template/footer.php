@@ -3,7 +3,7 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-getStyleScriptAdmin('script');
+$this->getStyleScriptAdmin('script');
 
 $this->container['plugins']->applyEvent('adminFooter');
 

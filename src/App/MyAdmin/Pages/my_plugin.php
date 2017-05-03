@@ -1,5 +1,5 @@
 <?php
-hideIfStaffNotLogged();
+$this->container['users']->hideIfStaffNotLogged();
 
 $pluginName = $_GET['pluginName'];
 
@@ -19,11 +19,11 @@ if (!is_string($pluginName) || ($this->container['plugins']->isEvent("my_plugin_
 $this->container['plugins']->applyEvent("my_plugin_" . $pluginName . "_beforeHeader");
 
 if (!isset($_GET['hiddenHeader'])) {
-    getFileAdmin('header');
+    $this->getFileAdmin('header');
 }
 
 if (!isset($_GET['hiddenMenu'])) {
-    getPageAdmin('topbar');
+    $this->getPageAdmin('topbar');
 } else {
     $this->container['my_admin']->checkEvents($pluginName);
 }
@@ -45,7 +45,7 @@ if (!isset($_GET['hiddenFooter'])) {
     </div>
     <!-- /#wrapper -->
     <?php
-    getFileAdmin('footer');
+    $this->getFileAdmin('footer');
     ?>
     </body>
 
