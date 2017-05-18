@@ -245,6 +245,10 @@ class Application
             }
         }
 
+        if (!defined('MY_THEME')) {
+            define('MY_THEME', $this->container['settings']->getSettingsValue('site_template'));
+        }
+
         if (!defined("MY_BASE_PATH")) {
             define("MY_BASE_PATH", "");
         }
