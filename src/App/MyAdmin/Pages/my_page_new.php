@@ -129,7 +129,7 @@ if (defined("INDEX_ERROR")) {
                         <br/>
                         <div class="form-group" id="textareaContent">
                             <textarea name="pages_content" id="pages_content"
-                                      style="height:300px;"><?php echo $this->container['theme']->noTags((isset($pages['content'])) ? $pages['content'] : ""); ?></textarea>
+                                      style="height:300px;"><?php echo (isset($pages['content']) ? $pages['content'] : ""); ?></textarea>
                         </div>
                     </div>
                 </div>

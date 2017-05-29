@@ -150,7 +150,7 @@ if (defined("INDEX_ERROR")) {
                         <div class="form-group">
                             {@noTAGS_start@}
                             <textarea name="pages_content"
-                                      style="height:300px;"><?php echo $this->container['theme']->noTags($pages['content']); ?></textarea>
+                                      style="height:300px;"><?php echo $pages['content']; ?></textarea>
                             {@noTAGS_end@}
                         </div>
                     </div>
