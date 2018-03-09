@@ -231,8 +231,8 @@ class MyCMSAdmin
 
         if (isset($this->menuArrayCallback[ $menuId ])) {
 
-            $this->container['plugins']->addEvent("my_plugin_" . strtolower($this->container["functions"]->addSpace($menuId)), $this->menuArrayCallback[ $menuId ]);
-            $this->menuArray[ $menuId ]["link"] = "/my-admin/my_plugin/" . strtolower($this->container["functions"]->addSpace($menuId));
+            $this->container['plugins']->addEvent("my_plugin_" . $this->container["functions"]->addSpace($menuId), $this->menuArrayCallback[ $menuId ]);
+            $this->menuArray[ $menuId ]["link"] = "/my-admin/my_plugin/" . $this->container["functions"]->addSpace($menuId);
         }
 
 
@@ -337,8 +337,8 @@ class MyCMSAdmin
     function checkEvents($menuId)
     {
         if (isset($this->subMenuArrayCallback[ $menuId ])) {
-            $this->container['plugins']->addEvent("my_plugin_" . strtolower($this->container["functions"]->addSpace($menuId)), $this->subMenuArrayCallback[ $menuId ]["callBack"]);
-            $this->subMenuArray[ $menuId ]["link"] = "/my-admin/my_plugin/" . strtolower($this->container["functions"]->addSpace($menuId));
+            $this->container['plugins']->addEvent("my_plugin_" . $this->container["functions"]->addSpace($menuId), $this->subMenuArrayCallback[ $menuId ]["callBack"]);
+            $this->subMenuArray[ $menuId ]["link"] = "/my-admin/my_plugin/" . $this->container["functions"]->addSpace($menuId);
 
             if (isset($this->subMenuArrayCallback[ $menuId ]["customUrlArguments"])) {
                 $this->subMenuArray[ $menuId ]["link"] .= "?" . http_build_query($this->subMenuArrayCallback[ $menuId ]["customUrlArguments"]);
@@ -382,7 +382,7 @@ class MyCMSAdmin
     {
         if (is_callable($callBack)) {
             //die(strtolower($this->container["functions"]->addSpace($pageNAME)));
-            $this->container['plugins']->addEvent("my_plugin_" . strtolower($this->container["functions"]->addSpace($pageNAME)), $callBack);
+            $this->container['plugins']->addEvent("my_plugin_" . $this->container["functions"]->addSpace($pageNAME), $callBack);
         }
     }
 

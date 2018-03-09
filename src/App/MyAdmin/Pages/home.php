@@ -6,7 +6,7 @@
 $this->container['users']->hideIfStaffNotLogged();
 
 define('PAGE_ID', 'admin_home');
-define('PAGE_NAME', $this->container['languages']->ea('page_home_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_home_page_name', true));
 
 $this->getFileAdmin('header');
 $this->getPageAdmin('topbar');
@@ -15,7 +15,7 @@ $this->getPageAdmin('topbar');
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_home_page_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ta('page_home_page_header'); ?></h1>
         </div>
     </div>
 
@@ -23,7 +23,7 @@ $this->getPageAdmin('topbar');
         <div class="col-lg-4 col-md-4 col-lg-offset-0 col-md-offset-0">
             <div class="panel b_panel">
                 <div class="panel-heading text-center">
-                    <i class="fa fa-info fa-fw"></i> <?php $this->container['languages']->ea('page_home_general_info'); ?>
+                    <i class="fa fa-info fa-fw"></i> <?php $this->container['languages']->ta('page_home_general_info'); ?>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -32,33 +32,33 @@ $this->getPageAdmin('topbar');
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog WHERE postPOSTED = '1'"); ?></span>
                             <i class="fa fa-thumb-tack fa-fw"></i> <a
-                                    href="{@siteURL@}/my-admin/posts"><?php $this->container['languages']->ea('page_home_general_info_post'); ?></a>
+                                    href="{@siteURL@}/my-admin/posts"><?php $this->container['languages']->ta('page_home_general_info_post'); ?></a>
                         </li>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog_post_comments WHERE enable = '1'"); ?></span>
                             <i class="fa fa-comment fa-fw"></i> <a
-                                    href="{@siteURL@}/my-admin/comments"><?php $this->container['languages']->ea('page_home_general_info_comments'); ?></a>
+                                    href="{@siteURL@}/my-admin/comments"><?php $this->container['languages']->ta('page_home_general_info_comments'); ?></a>
                         </li>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog_category"); ?></span>
                             <i class="fa fa-cubes fa-fw"></i> <a
-                                    href="{@siteURL@}/my-admin/category"><?php $this->container['languages']->ea('page_home_general_info_category'); ?></a>
+                                    href="{@siteURL@}/my-admin/category"><?php $this->container['languages']->ta('page_home_general_info_category'); ?></a>
                         </li>
                     </ul>
                     <table class="table table-responsive">
-                        <thead><?php $this->container['languages']->ea('page_home_info_in_use'); ?></thead>
+                        <thead><?php $this->container['languages']->ta('page_home_info_in_use'); ?></thead>
                         <tr>
                             <td>MyCMS</td>
                             <td><span class="label label-success pull-right">{@my_cms_version@}</span></td>
                         </tr>
                         <tr>
-                            <td><?php $this->container['languages']->ea('page_home_info_theme_in_use'); ?></td>
+                            <td><?php $this->container['languages']->ta('page_home_info_theme_in_use'); ?></td>
                             <td>
                                 <span class="label label-success pull-right">{@templateNAME@} - {@templateVERSION@}</span>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php $this->container['languages']->ea('page_home_info_theme_created_by'); ?></td>
+                            <td><?php $this->container['languages']->ta('page_home_info_theme_created_by'); ?></td>
                             <td><span class="label label-success pull-right">{@templateAUTHOR@}</span></td>
                         </tr>
                         <tr>
@@ -76,29 +76,12 @@ $this->getPageAdmin('topbar');
         <div class="col-lg-4 col-md-4">
             <div class="panel b_panel">
                 <div class="panel-heading text-center">
-                    <i class="fa fa-newspaper-o fa-fw"></i> <?php $this->container['languages']->ea('page_home_general_info_notifications'); ?>
+                    <i class="fa fa-newspaper-o fa-fw"></i> <?php $this->container['languages']->ta('page_home_general_info_notifications'); ?>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <?php
-                    $info = $this->container['theme']->thereIsNewUpdate(false);
-                    if ($info[0] == true) {
-                        switch ($info[1]) {
-                            case 'all_update':
-                                $update_text = $this->container['languages']->ea('page_home_general_info_update_all', true);
-                                break;
-                            case 'core_update':
-                                $update_text = $this->container['languages']->ea('page_home_general_info_core_update', true);
-                                break;
-                            case 'db_update':
-                                $update_text = $this->container['languages']->ea('page_home_general_info_db_update', true);
-                                break;
-                        }
-                        echo '<div class="alert alert-danger"><span class="badge" style="background-color: #E53935">!</span> <b>' . $update_text . '</b> <a href="{@siteURL@}/my-admin/update" class="btn btn-info" style="float: right; margin-top: -6px;">' . $this->container['languages']->ea('page_home_general_info_button_update', true) . '</a></div>';
-                    } else {
-                        echo $this->container['languages']->ea('page_home_no_notifications', true);
-                    }
-                    ?>
+                    <div class="notificationPanel">
+                    </div>
                 </div>
                 <!-- /.panel-body -->
             </div>
@@ -118,7 +101,22 @@ $this->getPageAdmin('topbar');
 <!-- /#wrapper -->
 
 <?php $this->getFileAdmin('footer'); ?>
+<script>
+    $(document).ready(function ()
+    {
+        $.ajax({
+            url: "{@siteURL@}/src/App/Content/Ajax/checkNewUpdate.php",
+            type: "get",
+            error: function () {
+                alert("AJAX ERROR");
+            }
+        }).done(function (data) {
+            $(".notificationPanel").text(data)
+        })
 
+    })
+
+</script>
 </body>
 
 </html>
