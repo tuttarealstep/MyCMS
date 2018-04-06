@@ -130,8 +130,8 @@ class simpleMarkdown
                 if (mcVisible) {
                     mcVisible = false;
                     tinyMCE.execCommand("mceRemoveEditor", true, tinymce.editors[0].id);
-                    simplemde = new SimpleMDE({element: document.getElementById("posts_content"), forceSync: true});
-                    simplemde.value(toMarkdown(document.getElementById("posts_content").value));
+                    simplemde = new SimpleMDE({element: document.getElementById("postContent"), forceSync: true});
+                    simplemde.value(toMarkdown(document.getElementById("postContent").value));
 
                 } else {
                     mcVisible = true;
@@ -140,7 +140,7 @@ class simpleMarkdown
                     simplemde = null;
 
                     var converter = new showdown.Converter();
-                    document.getElementById("posts_content").value = converter.makeHtml(document.getElementById("posts_content").value);
+                    document.getElementById("postContent").value = converter.makeHtml(document.getElementById("postContent").value);
 
                     tinymce.init({
                         selector: "textarea",

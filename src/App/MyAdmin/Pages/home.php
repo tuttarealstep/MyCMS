@@ -30,7 +30,7 @@ $this->getPageAdmin('topbar');
 
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog WHERE postPOSTED = '1'"); ?></span>
+                            <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog"); ?></span>
                             <i class="fa fa-thumb-tack fa-fw"></i> <a
                                     href="{@siteURL@}/my-admin/posts"><?php $this->container['languages']->ta('page_home_general_info_post'); ?></a>
                         </li>

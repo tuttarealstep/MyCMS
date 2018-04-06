@@ -42,7 +42,7 @@ class MyCMSAdmin
         $this->container['router']->map('POST', '/my-admin/category', $my_admin_folder_name . 'category');
         $this->container['router']->map('POST', '/my-admin/comments', $my_admin_folder_name . 'comments');
         $this->container['router']->map('POST', '/my-admin/posts', $my_admin_folder_name . 'posts');
-        $this->container['router']->map('POST', '/my-admin/posts_new', $my_admin_folder_name . 'posts_new');
+        $this->container['router']->map('POST', '/my-admin/post_create', $my_admin_folder_name . 'post_create');
         $this->container['router']->map('GET', '/my-admin/users_bans', $my_admin_folder_name . 'users_bans');
         $this->container['router']->map('POST', '/my-admin/users_bans', $my_admin_folder_name . 'users_bans');
 
@@ -67,8 +67,8 @@ class MyCMSAdmin
         $this->container['router']->map('GET', '/my-admin/page_edit/[i:id]', $my_admin_folder_name . 'my_page_edit');
         $this->container['router']->map('POST', '/my-admin/page_edit/[i:id]', $my_admin_folder_name . 'my_page_edit');
 
-        $this->container['router']->map('GET', '/my-admin/posts_edit/[i:id]', $my_admin_folder_name . 'posts_edit');
-        $this->container['router']->map('POST', '/my-admin/posts_edit/[i:id]', $my_admin_folder_name . 'posts_edit');
+        $this->container['router']->map('GET', '/my-admin/posts_edit/[i:id]', $my_admin_folder_name . 'post_create');
+        $this->container['router']->map('POST', '/my-admin/posts_edit/[i:id]', $my_admin_folder_name . 'post_create');
 
         $this->container['router']->map('GET', '/my-admin/theme_manager', $my_admin_folder_name . 'theme_manager');
         $this->container['router']->map('POST', '/my-admin/theme_manager', $my_admin_folder_name . 'theme_manager');
@@ -96,7 +96,7 @@ class MyCMSAdmin
 
     function checkNotification()
     {
-        if ($this->container['users']->isAdmin()) {
+        /*if ($this->container['users']->isAdmin()) {
             if (!isset($_SESSION['my-admin']['notification']['dashboard'])) {
                 if ($this->container['theme']->thereIsNewUpdate()) {
                     $_SESSION['my-admin']['notification']['dashboard'] = $this->container['theme']->thereIsNewUpdate(false);
@@ -104,7 +104,8 @@ class MyCMSAdmin
                     unset($_SESSION['my-admin']['notification']['dashboard']);
                 }
             }
-        }
+        }*/
+        //todo do check update async with js on admin panel
         //todo complete the notification, session or array in the container?
     }
 
@@ -420,7 +421,7 @@ class MyCMSAdmin
 
         $this->container['plugins']->applyEvent('addAdminMenu', "menu_posts", $this->container["languages"]->ta("page_posts_name", true), "#", ['admin_posts', 'admin_posts_new'], '<i class="fa fa-thumb-tack fa-fw fa-3x icon_menu_topbar" style="color: #E91E63;"></i>');
         $this->container['plugins']->applyEvent('addAdminSubMenu', "sub_menu_posts", "menu_posts", $this->container["languages"]->ta("page_posts_all", true), "{@siteURL@}/my-admin/posts", ['admin_posts']);
-        $this->container['plugins']->applyEvent('addAdminSubMenu', "sub_menu_posts_new", "menu_posts", $this->container["languages"]->ta("page_posts_new", true), "{@siteURL@}/my-admin/posts_new", ['admin_posts_new']);
+        $this->container['plugins']->applyEvent('addAdminSubMenu', "sub_menu_post_create", "menu_posts", $this->container["languages"]->ta("page_post_create", true), "{@siteURL@}/my-admin/post_create", ['admin_post_create']);
 
         $this->container['plugins']->applyEvent('addAdminMenu', "comments", $this->container["languages"]->ta("page_comments_page_name", true), "{@siteURL@}/my-admin/comments", ['admin_comments'], '<i class="fa fa-comment fa-fw fa-3x icon_menu_topbar" style="color: #9C27B0;"></i>');
 
@@ -445,5 +446,6 @@ class MyCMSAdmin
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_xml_command", "menu_settings", $this->container["languages"]->ta("page_settings_xml_command", true), "{@siteURL@}/my-admin/xml_command", ['admin_xml_command']);
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_settings_user", "menu_settings", $this->container["languages"]->ta("page_settings_user", true), "{@siteURL@}/my-admin/settings_user", ['admin_settings_user']);
 
+        $this->container['plugins']->applyEvent('addAdminMenu', "admin_upload", $this->container["languages"]->ta("page_upload", true), "{@siteURL@}/my-admin/upload", ['upload'], '<i class="fa fa-media-o fa-fw fa-3x icon_menu_topbar" style="color: #00BCD4;"></i>');
     }
 }

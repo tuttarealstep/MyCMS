@@ -30,7 +30,7 @@ class MyCMSBlog
     public function verifyPostId($postId)
     {
         $filter_id = filter_var($postId, FILTER_SANITIZE_NUMBER_INT);
-        if ($this->database->single("SELECT COUNT(*) FROM my_blog WHERE postID = :post_id LIMIT 1", ["post_id" => $filter_id]) > 0) {
+        if ($this->database->single("SELECT COUNT(*) FROM my_blog WHERE postId = :post_id LIMIT 1", ["post_id" => $filter_id]) > 0) {
             return true;
         }
 
@@ -45,9 +45,9 @@ class MyCMSBlog
     public function getPosts($max = -1)
     {
         if ($max > -1) {
-            return $this->database->query("SELECT * FROM my_blog WHERE postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC LIMIT $max");
+            return $this->database->query("SELECT * FROM my_blog WHERE postStatus = 'publish' ORDER BY postDate DESC LIMIT $max");
         } else {
-            return $this->database->query("SELECT * FROM my_blog WHERE postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC");
+            return $this->database->query("SELECT * FROM my_blog WHERE postStatus = 'publish' ORDER BY postDate DESC");
         }
     }
 
@@ -60,9 +60,9 @@ class MyCMSBlog
     public function getPostsFromCategory($max = -1, $category)
     {
         if ($max > -1) {
-            return $this->database->query("SELECT * FROM my_blog WHERE postCATEGORY = :cat AND postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC LIMIT $max", ['cat' => $category]);
+            return $this->database->query("SELECT my_blog.* FROM my_blog, my_blog_category, my_blog_category_relationships WHERE my_blog_category_relationships.categoryId = my_blog_category.categoryId AND my_blog_category.categoryName = :cat AND my_blog.postStatus = 'publish' AND my_blog.postId = my_blog_category_relationships.postId ORDER BY postDate DESC LIMIT $max", ['cat' => $category]);
         } else {
-            return $this->database->query("SELECT * FROM my_blog WHERE postCATEGORY = :cat AND postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC", ['cat' => $category]);
+            return $this->database->query("SELECT my_blog.* FROM my_blog, my_blog_category, my_blog_category_relationships WHERE my_blog_category_relationships.categoryId = my_blog_category.categoryId AND my_blog_category.categoryName = :cat AND my_blog.postStatus = 'publish' AND my_blog.postId = my_blog_category_relationships.postId ORDER BY postDate DESC", ['cat' => $category]);
         }
     }
 
@@ -75,9 +75,9 @@ class MyCMSBlog
     public function getPostsFromAuthorId($max = -1, $authorId)
     {
         if ($max > -1) {
-            return $this->database->query("SELECT * FROM my_blog WHERE postAUTHOR = :authorid AND postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC LIMIT $max", ['authorid' => $authorId]);
+            return $this->database->query("SELECT * FROM my_blog WHERE postAuthor = :authorid AND postStatus = 'publish' ORDER BY postDate DESC LIMIT $max", ['authorid' => $authorId]);
         } else {
-            return $this->database->query("SELECT * FROM my_blog WHERE postAUTHOR = :authorid AND postPOSTED = '1' AND postSTATUS = 'publish' ORDER BY postDATE DESC", ['authorid' => $authorId]);
+            return $this->database->query("SELECT * FROM my_blog WHERE postAuthor = :authorid AND postStatus = 'publish' ORDER BY postDate DESC", ['authorid' => $authorId]);
         }
     }
 
@@ -102,14 +102,14 @@ class MyCMSBlog
         $urlSQL = [];
 
         if (count($keywords) > 0) {
-            $titleSQL[] = "if (postTITLE LIKE '%{$words}%', {$scoreFullTitle}, 0)";
-            $docSQL[] = "if (postCONT LIKE '%{$words}%', {$scoreFullDocument}, 0)";
+            $titleSQL[] = "if (postTitle LIKE '%{$words}%', {$scoreFullTitle}, 0)";
+            $docSQL[] = "if (postTitle LIKE '%{$words}%', {$scoreFullDocument}, 0)";
         }
 
         foreach ($keywords as $key) {
-            $titleSQL[] = "if (postTITLE LIKE '%{$key}%', {$scoreTitleKeyword}, 0)";
-            $docSQL[] = "if (postCONT LIKE '%{$key}%', {$scoreDocumentKeyword}, 0)";
-            $urlSQL[] = "if (postPERMALINK LIKE '%{$key}%', {$scoreUrlKeyword}, 0)";
+            $titleSQL[] = "if (postTitle LIKE '%{$key}%', {$scoreTitleKeyword}, 0)";
+            $docSQL[] = "if (postContent LIKE '%{$key}%', {$scoreDocumentKeyword}, 0)";
+            $urlSQL[] = "if (postName LIKE '%{$key}%', {$scoreUrlKeyword}, 0)";
         }
 
         if (empty($titleSQL)) {
@@ -136,9 +136,9 @@ class MyCMSBlog
                 )
             ) as relevance
             FROM my_blog
-            WHERE postPOSTED = '1' AND postSTATUS = 'publish'
+            WHERE postStatus = 'publish'
             HAVING relevance > 0
-            ORDER BY relevance DESC, postDATE DESC
+            ORDER BY relevance DESC, postDate DESC
             LIMIT {$max}";
 
             return $this->database->query($sql);
@@ -156,9 +156,9 @@ class MyCMSBlog
                 )
             ) as relevance
             FROM my_blog
-            WHERE postPOSTED = '1' AND postSTATUS = 'publish'
+            WHERE postStatus = 'publish'
             HAVING relevance > 0
-            ORDER BY relevance DESC, postDATE DESC";
+            ORDER BY relevance DESC, postDate DESC";
 
             return $this->database->query($sql);
         }
@@ -200,10 +200,10 @@ class MyCMSBlog
         $list = [];
 
         foreach ($categories as $category) {
-            $number = $this->database->rowCount("SELECT * FROM my_blog WHERE postCATEGORY = :postCATEGORY AND postPOSTED = '1' AND postSTATUS = 'publish' ", ["postCATEGORY" => $category['catNAME']]);
+            $number = $this->database->rowCount("SELECT my_blog.* FROM my_blog, my_blog_category_relationships WHERE my_blog_category_relationships.postId = my_blog.postId AND my_blog_category_relationships.categoryId = :categoryId AND postStatus = 'publish' ", ["categoryId" => $category['categoryId']]);
 
             if ($number > 0) {
-                $list[] = ["catNAME" => $category['catNAME'], "score" => $number];
+                $list[] = ["categoryName" => $category['categoryName'], "score" => $number];
             }
         }
 
@@ -239,9 +239,9 @@ class MyCMSBlog
 
 
         return $list;
-        //return $this->database->query("SELECT *, count(*) AS count FROM my_blog INNER JOIN my_blog_category ON (my_blog.postCATEGORY = my_blog_category.catNAME) GROUP BY my_blog_category.catNAME ORDER BY count(*) DESC LIMIT 10");
-        //return $this->database->query("SELECT * FROM my_blog b, my_blog_category c WHERE b.postCATEGORY = c.catNAME");
     }
+
+
 
     /**
      * @param $type
@@ -258,37 +258,42 @@ class MyCMSBlog
 
         switch ($type) {
             case 'id':
-                $information = $this->database->single("SELECT postID FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = $id;
                 break;
             case 'titleOriginal':
-                $information = $this->database->single("SELECT postTITLE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                $information = htmlspecialchars($information);
+                $information = $this->database->single("SELECT postTitle FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 break;
             case 'title':
-                $information = $this->database->single("SELECT postTITLE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                $information = htmlspecialchars($information);
+                $information = $this->database->single("SELECT postTitle FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = htmlspecialchars_decode($information);
                 break;
             case 'content':
-                $information = $this->database->single("SELECT postCONT FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = $this->database->single("SELECT postContent FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 break;
             case 'date':
-                $information = $this->database->single("SELECT postDATE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = $this->database->single("SELECT postDate FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 break;
             case 'authorID':
-                $information = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = $this->database->single("SELECT postAuthor FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 break;
             case 'authorName':
-                $authorID = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $authorID = $this->database->single("SELECT postAuthor FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 $information = $this->container['users']->getInfo($authorID, 'name') . ' ' . $this->container['users']->getInfo($authorID, 'surname');
                 break;
-            case 'category':
-                $information = $this->database->single("SELECT postCATEGORY FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+            case 'categoryIdArray':
+                $information = $this->database->query("SELECT categoryId FROM my_blog_category_relationships WHERE postId = :blog_id", ['blog_id' => $id]);
+                break;
+            case 'categoryNameArray':
+                $information = $this->database->column("SELECT categoryName FROM my_blog_category, my_blog_category_relationships WHERE my_blog_category.categoryId = my_blog_category_relationships.categoryId AND my_blog_category_relationships.postId = :blog_id", ['blog_id' => $id]);
                 break;
             case 'permalink':
-                $information = $this->database->single("SELECT postPERMALINK FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
+                $information = $this->database->single("SELECT postName FROM my_blog WHERE postId = :blog_id LIMIT 1", ['blog_id' => $id]);
                 break;
+            case 'fullPermalink':
+                $information = "/blog/" . date('Y', strtotime($this->getInfo("date", $id, true))) . "/" . date('m', strtotime($this->getInfo("date",$id, true))) . "/" . $this->getInfo("permalink", $id, true);
+                 break;
             case 'idFROMpermalink':
-                $information = $this->database->single("SELECT postID FROM my_blog WHERE postPERMALINK = :perm_id LIMIT 1", ['perm_id' => $id]);
+                $information = $this->database->single("SELECT postId FROM my_blog WHERE postName = :perm_id LIMIT 1", ['perm_id' => $id]);
                 break;
             case 'commentsNumber':
                 $information = $this->database->rowCount("SELECT * FROM my_blog_post_comments WHERE postid = :blog_id AND enable = '1' LIMIT 1", ['blog_id' => $id]);
@@ -296,11 +301,14 @@ class MyCMSBlog
             case 'comments':
                 $information = $this->database->query("SELECT * FROM my_blog_post_comments WHERE postid = :blog_id AND enable = '1'", ['blog_id' => $id]);
                 break;
-            case 'postSTATUS':
-                $information = $this->database->single("SELECT postSTATUS FROM my_blog WHERE postID = :perm_id LIMIT 1", ['perm_id' => $id]);
+            case 'postStatus':
+                $information = $this->database->single("SELECT postStatus FROM my_blog WHERE postId = :postId LIMIT 1", ['postId' => $id]);
                 break;
-            case 'commentSTATUS':
-                $information = $this->database->single("SELECT commentSTATUS FROM my_blog WHERE postPERMALINK = :perm_id LIMIT 1", ['perm_id' => $id]);
+            case 'commentStatus':
+                $information = $this->database->single("SELECT commentStatus FROM my_blog WHERE postId = :postId LIMIT 1", ['postId' => $id]);
+                break;
+            case 'name':
+                $information = $this->database->single("SELECT postName FROM my_blog WHERE postId = :postId LIMIT 1", ['postId' => $id]);
                 break;
             default:
                 return false;
@@ -315,142 +323,17 @@ class MyCMSBlog
         return false;
     }
 
-
-    /**
-     * Deprecated (only for compatibility issues)
-     *
-     * @param $object
-     * @param $id
-     * @return null
-     */
-    function get($object, $id)
-    {
-        if (empty($id)) {
-            return null;
-        }
-
-        if (empty($object)) {
-            return null;
-        } else {
-            switch ($object) {
-                case 'id':
-                    $informazione = $this->database->single("SELECT postID FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'title':
-                    $informazione = $this->database->single("SELECT postTITLE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo htmlspecialchars($informazione);
-                    break;
-                case 'content':
-                    $informazione = $this->database->single("SELECT postCONT FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'date':
-                    $informazione = $this->database->single("SELECT postDATE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'author':
-                    $informazione = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo removeSpace($informazione);
-                    break;
-                case 'authorspace':
-                    $informazione = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'category':
-                    $informazione = $this->database->single("SELECT postCATEGORY FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'permalink':
-                    $informazione = $this->database->single("SELECT postPERMALINK FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-                    echo $informazione;
-                    break;
-                case 'idFROMpermalink':
-                    $informazione = $this->database->single("SELECT postID FROM my_blog WHERE postPERMALINK = :perm_id LIMIT 1", ['perm_id' => $id]);
-                    echo $informazione;
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Deprecated (only for compatibility issues)
-     *
-     * @param $object
-     * @param $id
-     * @return null
-     */
-    function gets($object, $id)
-    {
-        if (empty($id)) {
-            return null;
-        }
-
-        if (empty($object)) {
-            return null;
-        } else {
-            switch ($object) {
-                case 'id':
-                    $informazione = $this->database->single("SELECT postID FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'title':
-                    $informazione = $this->database->single("SELECT postTITLE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return htmlspecialchars($informazione);
-                    break;
-                case 'content':
-                    $informazione = $this->database->single("SELECT postCONT FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'date':
-                    $informazione = $this->database->single("SELECT postDATE FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'author':
-                    $informazione = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return removeSpace($informazione);
-                    break;
-                case 'authorspace':
-                    $informazione = $this->database->single("SELECT postAUTHOR FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'category':
-                    $informazione = $this->database->single("SELECT postCATEGORY FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'permalink':
-                    $informazione = $this->database->single("SELECT postPERMALINK FROM my_blog WHERE postID = :blog_id LIMIT 1", ['blog_id' => $id]);
-
-                    return $informazione;
-                    break;
-                case 'idFROMpermalink':
-                    $informazione = $this->database->single("SELECT postID FROM my_blog WHERE postPERMALINK = :perm_id LIMIT 1", ['perm_id' => $id]);
-
-                    return $informazione;
-                    break;
-            }
-        }
-    }
-
     /**
      * @param null $permalink
      * @return null
      */
     function permalinkFinder($permalink = null)
     {
-        if (!empty($permalink)) {
-            $sql = $this->database->iftrue("SELECT * FROM my_blog WHERE postPERMALINK = :permalink LIMIT 1", ['permalink' => $permalink]);
-
-            return $sql;
+        if (!empty($permalink))
+        {
+            return $this->database->iftrue("SELECT * FROM my_blog WHERE postName = :permalink LIMIT 1", ['permalink' => $permalink]);
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -461,13 +344,18 @@ class MyCMSBlog
     function categoryFinder($category = null)
     {
         if (!empty($category)) {
-            $sql = $this->database->iftrue("SELECT * FROM my_blog_category WHERE catNAME = :category LIMIT 1", ['category' => $category]);
+            $sql = $this->database->iftrue("SELECT * FROM my_blog_category WHERE categoryName = :category LIMIT 1", ['category' => $category]);
 
             return $sql;
 
         } else {
             return null;
         }
+    }
+
+    function getCategoryId($categoryName)
+    {
+        return $this->database->single("SELECT categoryId FROM my_blog_category WHERE categoryName = :categoryName LIMIT 1", ['categoryName' => $categoryName]);
     }
 
     /**
@@ -519,6 +407,30 @@ class MyCMSBlog
                 return false;
             }
         }
+    }
 
+    function generateUniqueName($name, $postId)
+    {
+        $name = preg_replace('~[^\pL\d]+~u', '-', $name);
+        $name = iconv('utf-8', 'us-ascii//TRANSLIT', $name);
+        $name = preg_replace('~[^-\w]+~', '', $name);
+        $name = trim($name, '-');
+        $name = preg_replace('~-+~', '-', $name);
+        $name = strtolower($name);
+
+        if(empty($name))
+            $name = $postId;
+
+        $finder = $this->permalinkFinder($name);
+        if ($finder == true)
+        {
+            $i = 1;
+            while ($this->permalinkFinder($name . '_' . $i) == true):
+                $i++;
+            endwhile;
+            $name = $name . '_' . $i;
+        }
+
+        return $name;
     }
 }

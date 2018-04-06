@@ -2,9 +2,9 @@
 
 
 {% if _GET['id'] %}
-    {% set postID = _GET['id'] %}
-    {% if container.blog.verifyPostId(postID) %}
-        {% set title = container.blog.getInfo('title', postID) ~ " - " ~ siteNAME %}
+    {% set postId = _GET['id'] %}
+    {% if container.blog.verifyPostId(postId) %}
+        {% set title = container.blog.getInfo('title', postId) ~ " - " ~ siteNAME %}
         {% set archive = 0 %}
     {% endif %}
 {% elseif _GET['category'] %}
@@ -53,8 +53,8 @@
     {% set next = max + 10 %}
     {% set archive = 4 %}
 {% elseif _GET['year'] %}
-    {% set postID = container.blog.getInfo("idFROMpermalink", "/blog/" ~ container.security.mySqlSecure(_GET['year']) ~ "/" ~container.security.mySqlSecure( _GET['month']) ~ "/" ~ container.security.mySqlSecure(_GET['title'])) %}
-    {% set title = container.blog.getInfo('title', postID) ~ " - " ~ siteNAME %}
+    {% set postId = container.blog.getInfo("idFROMpermalink", container.security.mySqlSecure(_GET['title'])) %}
+    {% set title = container.blog.getInfo('title', postId) ~ " - " ~ siteNAME %}
     {% set archive = 0 %}
 {% else %}
     {% if _GET['maxPosts'] %}
@@ -87,12 +87,12 @@
                 <div class="col-md-6 col-md-offset-3">
                     <article class="articlePage">
                         <a class="author-info pull-left"
-                           href="/blog/author/{{ container.blog.getInfo('authorID', postID) }}">{{ container.blog.getInfo('authorName', postID) }}</a>&nbsp;
-                        <h6>{{ container.blog.getInfo('date', postID)|date("d/m/Y") }}</h6>
+                           href="/blog/author/{{ container.blog.getInfo('authorID', postId) }}">{{ container.blog.getInfo('authorName', postId) }}</a>&nbsp;
+                        <h6>{{ container.blog.getInfo('date', postId)|date("d/m/Y") }}</h6>
                         <hr>
-                        <h1>{{ container.blog.getInfo('title', postID) }}</h1>
+                        <h1>{{ container.blog.getInfo('title', postId) }}</h1>
                         <div class="article-content-post-page" style="height: 100%;">
-                            {{ container.blog.getInfo('content', postID) | raw }}
+                            {{ container.blog.getInfo('content', postId) | raw }}
                         </div>
                     </article>
                 </div>
@@ -102,7 +102,7 @@
                     <div class="col-md-6 col-md-offset-3">
                         <form role="form" method="post" action="">
                             <div class="form-group">
-                                <input type="hidden" name="post_id" value="{{ postID }}"/>
+                                <input type="hidden" name="post_id" value="{{ postId }}"/>
                                 <textarea name="commento"
                                           placeholder="{{ container.languages.e('blog_post_title_comment') }}"
                                           style=" width:100%;min-width:100%;max-width:100%;height:100px;min-height:100px;max-height:100px;"
@@ -120,9 +120,9 @@
             <div class="row comment-section-post-page">
                 <div class="col-md-6 col-md-offset-3">
                     <h4>{{ container.languages.e('blog_post_last_comments') }}
-                        ({{ container.blog.getInfo('commentsNumber', postID) }})</h4>
-                    {% if container.blog.getInfo('commentsNumber', postID) > 0 %}
-                        {% for comment in container.blog.getInfo('comments', postID) %}
+                        ({{ container.blog.getInfo('commentsNumber', postId) }})</h4>
+                    {% if container.blog.getInfo('commentsNumber', postId) > 0 %}
+                        {% for comment in container.blog.getInfo('comments', postId) %}
                             <div class="well well-sm">
                                 <h4>{{ container.users.getUserName(comment.author) }}
                                     <small>{{ comment.date }}</small>
@@ -147,28 +147,28 @@
                     {% set counter = 0 %}
                     {% for post in container.blog.getPosts(max) %}
                         <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
-                            <h1>{{ post.postTITLE }}</h1>
-                            {% if  post.postCONT | length > 255 %}
-                                {{ post.postCONT | striptags [:255] | raw }}...
+                            <h1>{{ post.postTitle }}</h1>
+                            {% if  post.postContent | length > 255 %}
+                                {{ post.postContent | striptags [:255] | raw }}...
                             {% else %}
-                                {{ post.postCONT | raw }}
+                                {{ post.postContent | raw }}
                             {% endif %}
                             <div class="bottomPostInformation">
                                 <div class="row">
                                     <div class="col-md-12 read-more-button-container">
                                         <a class="read-more-button"
-                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                           href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ container.languages.e('read_more') }}</a>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 text-left">
                                         <p><a class="author-info pull-left"
-                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
-                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                              href="/blog/author/{{ post.postAuthor }}">{{ container.blog.getInfo('authorName', post.postId) }}</a>&nbsp;
+                                            <small>({{ post.postDate|date("d/m/Y") }})</small>
                                         </p>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postId) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comments') }} {% endif %}</p>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                     <hr>
                     <ul class="list-unstyled">
                         {% for category in container.blog.getCategories() %}
-                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            <li><a href="{@siteURL@}/blog/category/{{ category.categoryName }}">{{ category.categoryName }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -214,28 +214,28 @@
                     {% set counter = 0 %}
                     {% for post in container.blog.getPostsFromCategory(max, catName) %}
                         <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
-                            <h1>{{ post.postTITLE }}</h1>
-                            {% if  post.postCONT | length > 255 %}
-                                {{ post.postCONT | striptags [:255] | raw }}...
+                            <h1>{{ post.postTitle }}</h1>
+                            {% if  post.postContent | length > 255 %}
+                                {{ post.postContent | striptags [:255] | raw }}...
                             {% else %}
-                                {{ post.postCONT | raw }}
+                                {{ post.postContent | raw }}
                             {% endif %}
                             <div class="bottomPostInformation">
                                 <div class="row">
                                     <div class="col-md-12 read-more-button-container">
                                         <a class="read-more-button"
-                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                           href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ container.languages.e('read_more') }}</a>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 text-left">
                                         <p><a class="author-info pull-left"
-                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
-                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                              href="/blog/author/{{ post.postAuthor }}">{{ container.blog.getInfo('authorName', post.postId) }}</a>&nbsp;
+                                            <small>({{ post.postDate|date("d/m/Y") }})</small>
                                         </p>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postId) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comments') }} {% endif %}</p>
                                     </div>
                                 </div>
                             </div>
@@ -254,7 +254,7 @@
                     <hr>
                     <ul class="list-unstyled">
                         {% for category in container.blog.getCategories() %}
-                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            <li><a href="{@siteURL@}/blog/category/{{ category.categoryName }}">{{ category.categoryName }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -282,28 +282,28 @@
                     {% set counter = 0 %}
                     {% for post in container.blog.getPostsFromAuthorId(max, authorId) %}
                         <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
-                            <h1>{{ post.postTITLE }}</h1>
-                            {% if  post.postCONT | length > 255 %}
-                                {{ post.postCONT | striptags [:255] | raw }}...
+                            <h1>{{ post.postTitle }}</h1>
+                            {% if  post.postContent | length > 255 %}
+                                {{ post.postContent | striptags [:255] | raw }}...
                             {% else %}
-                                {{ post.postCONT | raw }}
+                                {{ post.postContent | raw }}
                             {% endif %}
                             <div class="bottomPostInformation">
                                 <div class="row">
                                     <div class="col-md-12 read-more-button-container">
                                         <a class="read-more-button"
-                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                           href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ container.languages.e('read_more') }}</a>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 text-left">
                                         <p><a class="author-info pull-left"
-                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
-                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                              href="/blog/author/{{ post.postAuthor }}">{{ container.blog.getInfo('authorName', post.postId) }}</a>&nbsp;
+                                            <small>({{ post.postDate|date("d/m/Y") }})</small>
                                         </p>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postId) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comments') }} {% endif %}</p>
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +322,7 @@
                     <hr>
                     <ul class="list-unstyled">
                         {% for category in container.blog.getCategories() %}
-                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            <li><a href="{@siteURL@}/blog/category/{{ category.categoryName }}">{{ category.categoryName }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -351,28 +351,28 @@
                     {% set counter = 0 %}
                     {% for post in container.blog.getPostsFromSearch(max, words) %}
                         <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
-                            <h1>{{ post.postTITLE }}</h1>
-                            {% if  post.postCONT | length > 255 %}
-                                {{ post.postCONT | striptags [:255] | raw }}...
+                            <h1>{{ post.postTitle }}</h1>
+                            {% if  post.postContent | length > 255 %}
+                                {{ post.postContent | striptags [:255] | raw }}...
                             {% else %}
-                                {{ post.postCONT | raw }}
+                                {{ post.postContent | raw }}
                             {% endif %}
                             <div class="bottomPostInformation">
                                 <div class="row">
                                     <div class="col-md-12 read-more-button-container">
                                         <a class="read-more-button"
-                                           href="{{ post.postPERMALINK }}">{{ container.languages.e('read_more') }}</a>
+                                           href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ container.languages.e('read_more') }}</a>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 text-left">
                                         <p><a class="author-info pull-left"
-                                              href="/blog/author/{{ post.postAUTHOR }}">{{ container.blog.getInfo('authorName', post.postID) }}</a>&nbsp;
-                                            <small>({{ post.postDATE|date("d/m/Y") }})</small>
+                                              href="/blog/author/{{ post.postAuthor }}">{{ container.blog.getInfo('authorName', post.postId) }}</a>&nbsp;
+                                            <small>({{ post.postDate|date("d/m/Y") }})</small>
                                         </p>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postID) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postID) }} {{ container.languages.e('comments') }} {% endif %}</p>
+                                        <p class="post-info pull-right">{% if container.blog.getInfo('commentsNumber', post.postId) == 1 %}{{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comment') }}{% else %} {{ container.blog.getInfo('commentsNumber', post.postId) }} {{ container.languages.e('comments') }} {% endif %}</p>
                                     </div>
                                 </div>
                             </div>
@@ -391,7 +391,7 @@
                     <hr>
                     <ul class="list-unstyled">
                         {% for category in container.blog.getCategories() %}
-                            <li><a href="{@siteURL@}/blog/category/{{ category.catNAME }}">{{ category.catNAME }}</a>
+                            <li><a href="{@siteURL@}/blog/category/{{ category.categoryName }}">{{ category.categoryName }}</a>
                             </li>
                         {% endfor %}
                     </ul>

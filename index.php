@@ -8,7 +8,7 @@ define('MY_CMS_PATH', true);
 define('FILE', dirname( __FILE__ ));
 define('MY_INSTALL', '/install/');
 
-$disableInstall = false;
+$disableInstall = true;
 
 if($disableInstall == false && file_exists(FILE.MY_INSTALL.'index.php'))
 {

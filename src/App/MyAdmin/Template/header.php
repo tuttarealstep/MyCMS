@@ -28,7 +28,7 @@ endif;
     <meta name="author" content="">
     <link rel="icon" href="{@siteURL@}/src/App/Utils/MyCMS.ico">
     <title>{@siteNAME@}<?php echo $page_name ?></title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+    <link href="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/css/lato.css" rel="stylesheet">
     <?php $this->getStyleScriptAdmin('css'); ?>
     <?php $this->container['plugins']->applyEvent('adminHead'); ?>
     <?php $this->noRobots(); ?>
