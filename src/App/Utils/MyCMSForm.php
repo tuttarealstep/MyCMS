@@ -112,7 +112,7 @@ if (isset($_POST['search'])) {
 if (isset($_POST['save_settings_general'])) {
 
     if ($app->container['users']->userLoggedIn()) {
-        if ($this->container['users']->currentUserHasPermission("manage_options")) {
+        if ($app->container['users']->currentUserHasPermission("manage_options")) {
             $settings_site_name = htmlentities($_POST['settings_site_name']);
             $settings_site_description = htmlentities($_POST['settings_site_description']);
             $settings_site_url = htmlentities($_POST['settings_site_url']);
@@ -161,7 +161,7 @@ if (isset($_POST['save_settings_blog'])) {
 
     if ($app->container['users']->userLoggedIn()) {
 
-        if ($this->container['users']->currentUserHasPermission("manage_options")) {
+        if ($app->container['users']->currentUserHasPermission("manage_options")) {
 
             $settings_blog_private = htmlentities($_POST['settings_blog_private']);
             $settings_blog_comments_active = htmlentities($_POST['settings_blog_comments_active']);
@@ -193,7 +193,7 @@ if (isset($_POST['save_settings_blog'])) {
 if (isset($_POST['save_settings_style'])) {
 
     if ($app->container['users']->userLoggedIn()) {
-        if ($this->container['users']->currentUserHasPermission("manage_options")) {
+        if ($app->container['users']->currentUserHasPermission("manage_options")) {
             $settings_style_language = htmlentities($_POST['settings_style_language']);
             $settings_style_template = htmlentities($_POST['settings_style_template']);
             $settings_style_template_language = htmlentities($_POST['settings_style_template_language']);
@@ -218,7 +218,7 @@ if (isset($_POST['save_settings_style'])) {
 if (isset($_POST['save_settings_xml_commands'])) {
 
     if ($app->container['users']->userLoggedIn()) {
-        if ($this->container['users']->currentUserHasPermission("manage_options")) {
+        if ($app->container['users']->currentUserHasPermission("manage_options")) {
             $xml_command_code = $_POST['xml_command_code'];
             $mycms_xml = simplexml_load_string($xml_command_code);
             if (isset($mycms_xml->command['value'])) {
@@ -259,7 +259,7 @@ if (isset($_POST['save_settings_xml_commands'])) {
 if (isset($_POST['import_page_json'])) {
 
     if ($app->container['users']->userLoggedIn()) {
-        if ($this->container['users']->currentUserHasPermission("import")) {
+        if ($app->container['users']->currentUserHasPermission("import")) {
             $json_code = $_POST['json_code'];
             $mycms_json = json_decode($json_code, true);
             if ($mycms_json != false) {
