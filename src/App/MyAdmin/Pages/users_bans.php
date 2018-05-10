@@ -2,7 +2,12 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("edit_users"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_users_bans');
 define('PAGE_NAME', $this->container['languages']->ea('page_users_bans_page_name', '1'));
@@ -13,8 +18,6 @@ $this->getPageAdmin('topbar');
 $info = "";
 
 if (isset($_POST['banuser'])) {
-    $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank >= 2) {
         $ban_user_email = $_POST['ban_user_email'];
         $ban_ip = $_POST['ban_ip'];
         $expire_date = $_POST['expire_date'];
@@ -34,10 +37,6 @@ if (isset($_POST['banuser'])) {
                 $this->container['database']->query("INSERT INTO my_users_banned (user_ip,expire_date) VALUES (:user_ip, :user_expire_date)", ["user_ip" => $ban_ip, "user_expire_date" => $converted_date]);
             }
         }
-
-    } else {
-        $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_ranks_error_4', '1') . '</div>';
-    }
 }
 ?>
 <div class="container">

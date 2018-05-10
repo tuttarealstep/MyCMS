@@ -39,10 +39,10 @@ endif;
     <![endif]-->
 
     <?php
-    if (isset($_SESSION['staff']['id'])) {
+    if (isset($_SESSION['user']['id'])) {
 
 
-        switch ($this->container['users']->getInfo($_SESSION['staff']['id'], 'adminColor')) {
+        switch ($this->container['users']->getInfo($_SESSION['user']['id'], 'adminColor')) {
             default:
             case 'default':
 

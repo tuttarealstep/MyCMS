@@ -3,16 +3,14 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
-
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
+if(!$this->container['users']->currentUserHasPermission("manage_links"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
-if ($this->container['users']->staffLoggedIn()) {
+if ($this->container['users']->userLoggedIn()) {
 
     if (isset($_GET['id'])) {
 

@@ -1,0 +1,25 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ constant("PAGE_NAME") }}{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid siteContainer">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-12">
+                {{ page_loader_content | raw }}
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-12">
+                {% include "pages/components/sidebar.twig" %}
+            </div>
+    </div>
+
+{% endblock content %}
+
+{% block footer %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $(window).scrollTop($('.siteContainer').offset().top);
+        });
+    </script>
+{% endblock footer %}

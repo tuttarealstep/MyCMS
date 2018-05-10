@@ -91,6 +91,8 @@ class MyCMSAdmin
         $this->container['router']->map('GET', '/my-admin/my_plugin/[*:pluginName]', $my_admin_folder_name . 'my_plugin');
         $this->container['router']->map('POST', '/my-admin/my_plugin/[*:pluginName]', $my_admin_folder_name . 'my_plugin');
 
+        $this->container['router']->map('POST', '/my-admin/upload', $my_admin_folder_name . 'upload');
+
         $this->container['router']->map('GET', '/my-admin/[*:page]', $my_admin_folder_name . 'page');
     }
 
@@ -123,7 +125,18 @@ class MyCMSAdmin
     function addMenu($menuId, $title, $link, $activePageIdArray = [], $iconCode = "", $customClass = "", $customStyle = "", $customLiClass = "", $customLiStyle = "")
     {
         if (!isset($this->menuArray[ $menuId ])) {
-            $this->menuArray[ $menuId ] = ['title' => $title, 'link' => $link, 'activePageIdArray' => $activePageIdArray, 'iconCode' => $iconCode, 'customClass' => $customClass, 'customStyle' => $customStyle, 'customLiClass' => $customLiClass, 'customLiStyle' => $customLiStyle];
+            $this->menuArray[ $menuId ] = ['title' => $title, 'link' => $link, 'activePageIdArray' => $activePageIdArray, 'iconCode' => $iconCode, 'customClass' => $customClass, 'customStyle' => $customStyle, 'customLiClass' => $customLiClass, 'customLiStyle' => $customLiStyle, 'permission' => 'read'];
+        }
+    }
+
+    /**
+     * @param $menuId
+     * @param $permission
+     */
+    function addMenuPermission($menuId, $permission)
+    {
+        if (isset($this->menuArray[ $menuId ])) {
+            $this->menuArray[ $menuId ]['permission'] = $permission;
         }
     }
 
@@ -139,7 +152,18 @@ class MyCMSAdmin
     function addSubMenu($menuId, $fatherMenuId, $title, $link, $activePageIdArray = [], $customClass = "", $customStyle = "")
     {
         if (isset($this->menuArray[ $fatherMenuId ])) {
-            $this->subMenuArray[ $menuId ] = ['fatherMenuId' => $fatherMenuId, 'title' => $title, 'link' => $link, 'activePageIdArray' => $activePageIdArray, 'customClass' => $customClass, 'customStyle' => $customStyle];
+            $this->subMenuArray[ $menuId ] = ['fatherMenuId' => $fatherMenuId, 'title' => $title, 'link' => $link, 'activePageIdArray' => $activePageIdArray, 'customClass' => $customClass, 'customStyle' => $customStyle, 'permission' => 'read'];
+        }
+    }
+
+    /**
+     * @param $menuId
+     * @param $permission
+     */
+    function addSubMenuPermission($menuId, $permission)
+    {
+        if (isset($this->subMenuArray[ $menuId ])) {
+            $this->subMenuArray[ $menuId ]['permission'] = $permission;
         }
     }
 
@@ -204,6 +228,10 @@ class MyCMSAdmin
     function getMenu($menuId, $return = false)
     {
         $varToPrint = "";
+
+        if (!$this->container['users']->currentUserHasPermission($this->menuArray[ $menuId ]['permission'])) {
+            return $varToPrint;
+        }
 
         if (!isset($this->menuArray[ $menuId ])) {
             return $varToPrint;
@@ -296,6 +324,10 @@ class MyCMSAdmin
     function getSubMenu($menuId, $return = false)
     {
         $varToPrint = "";
+
+        if (!$this->container['users']->currentUserHasPermission($this->subMenuArray[ $menuId ]['permission'])) {
+            return $varToPrint;
+        }
 
         if (!isset($this->subMenuArray[ $menuId ])) {
             return $varToPrint;
@@ -402,6 +434,9 @@ class MyCMSAdmin
         $this->container['plugins']->addEvent('addAdminFunctionMenu', [$this, 'addFunctionMenu'], 1, 2);
         $this->container['plugins']->addEvent('addAdminFunctionSubMenu', [$this, 'addFunctionSubMenu'], 1, 3);
 
+        $this->container['plugins']->addEvent('addMenuPermission', [$this, 'addMenuPermission'], 1, 2);
+        $this->container['plugins']->addEvent('addSubMenuPermission', [$this, 'addSubMenuPermission'], 1, 2);
+
         $this->addDefaultMenu();
 
         $this->container['plugins']->addEvent('getAdminMenu', [$this, 'getMenu']);
@@ -446,6 +481,33 @@ class MyCMSAdmin
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_xml_command", "menu_settings", $this->container["languages"]->ta("page_settings_xml_command", true), "{@siteURL@}/my-admin/xml_command", ['admin_xml_command']);
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_settings_user", "menu_settings", $this->container["languages"]->ta("page_settings_user", true), "{@siteURL@}/my-admin/settings_user", ['admin_settings_user']);
 
-        $this->container['plugins']->applyEvent('addAdminMenu', "admin_upload", $this->container["languages"]->ta("page_upload", true), "{@siteURL@}/my-admin/upload", ['upload'], '<i class="fa fa-media-o fa-fw fa-3x icon_menu_topbar" style="color: #00BCD4;"></i>');
+        $this->container['plugins']->applyEvent('addAdminMenu', "admin_upload", $this->container["languages"]->ta("page_upload", true), "#", ['upload_library'], '<i class="fa fa-archive fa-fw fa-3x icon_menu_topbar" style="color: #4caf50;"></i>');
+        $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_upload_library", "admin_upload", $this->container["languages"]->ta("page_upload_library", true), "{@siteURL@}/my-admin/upload", ['upload_library']);
+        $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_upload_new", "admin_upload", $this->container["languages"]->ta("page_upload_add_new", true), "{@siteURL@}/my-admin/upload_new", ['upload_add_new']);
+
+        $this->container['plugins']->applyEvent('addMenuPermission', "comments", "moderate_comments");
+        $this->container['plugins']->applyEvent('addMenuPermission', "admin_category", "manage_categories");
+        $this->container['plugins']->applyEvent('addMenuPermission', "admin_menu", "manage_links");
+        $this->container['plugins']->applyEvent('addMenuPermission', "admin_pages", "read_private_pages");
+        $this->container['plugins']->applyEvent('addMenuPermission', "menu_posts", "read_private_posts");
+        $this->container['plugins']->applyEvent('addMenuPermission', "theme_manager", "edit_themes");
+
+
+        /*
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "sub_menu_posts", "read_private_posts");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "sub_menu_post_create", "read_private_posts");*/
+
+        $this->container['plugins']->applyEvent('addMenuPermission', "menu_user", "show_user_menu");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_ranks", "promote_users");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_users_bans", "edit_users");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_users_info", "list_users");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_users_new", "create_users");
+
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_settings_general", "manage_options");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_settings_blog", "manage_options");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_settings_style", "manage_options");
+        $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_xml_command", "manage_options");
+
+        $this->container['plugins']->applyEvent('addMenuPermission', "admin_upload", "upload_files");
     }
 }

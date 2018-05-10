@@ -1,0 +1,163 @@
+body
+{
+    font-family: 'Roboto Slab', serif;
+}
+header
+{
+    height: 100vh;
+    overflow: hidden;
+}
+
+header > .container-fluid, header > .container-fluid > .row
+{
+    height: 100%;
+}
+
+.headerImage
+{
+    top: 0;
+    left: 0;
+}
+
+.headerImage > img
+{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    min-width: 100vw;
+    object-fit: cover;
+}
+
+.siteContainer
+{
+    background-color: #fff;
+    position: relative;
+    padding: 2.5em;
+}
+
+.siteBrand
+{
+    color: #fff;
+    position: absolute;
+    bottom: 8%;
+    display: table-cell;
+    vertical-align: bottom;
+    width: 100%;
+}
+
+.brandContainer
+{
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+}
+
+.siteBrand h1
+{
+    font-weight: 700;
+}
+
+.siteBrand h1 > a
+{
+    color: #fff;
+    text-decoration: none;
+}
+
+.defaultPost {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.defaultPost > .title > a
+{
+    color: #525255;
+    text-decoration: none;
+}
+
+.defaultPost > .title > a:hover
+{
+    text-decoration: underline;
+}
+
+.author-info {
+    color: #2D87DF;
+}
+
+.read-more-button-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.read-more-button, .read-more-button:hover {
+    color: #696969;
+    font-size: 14px;
+}
+
+.textOnBg {
+    color: rgba(0, 0, 0, .45);
+    font-weight: 400;
+}
+
+hr {
+    margin-top: 10px;
+}
+
+.btnBlog {
+    background-color: #2D87DF;
+    color: #fff;
+    border-radius: 40px;
+    margin-bottom: 20px;
+}
+
+.btnBlog:hover {
+    background-color: #2c7cd2;
+    color: #fff;
+}
+
+.archive-0 {
+    padding-top: 5vh;
+    height: 100%;
+    background-color: #fff;
+    margin-top: -20px;
+}
+
+.articlePage > h1 {
+    font-weight: 700;
+    font-family: 'Lora', serif;
+}
+
+.article-content-post-page {
+    font-size: 18px;
+    color: rgba(0, 0, 0, .8);
+    line-height: 1.5;
+}
+
+.comment-section-post-page {
+    padding-top: 3vh;
+    background-color: #FAFAFA;
+}
+
+.danger {
+    background-color: #d9534f;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.menuBar > ul
+{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menuBar > ul > li
+{
+    border-bottom: 1px solid #e6e6e6;
+    margin: 0;
+    padding: 0;
+}
+
+.menuBar > ul > li > a
+{
+    color: #525255;
+}

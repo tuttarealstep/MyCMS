@@ -2,10 +2,15 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("edit_themes"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'theme_manager');
-define('PAGE_NAME', $this->container['languages']->ea('page_theme_manager', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_theme_manager', true));
 
 $this->getFileAdmin('header');
 $this->getPageAdmin('topbar');
@@ -14,8 +19,7 @@ $info = "";
 
 if (isset($_GET['remove'])) {
     if (is_numeric($_GET['remove'])) {
-        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+        if ($this->container['users']->currentUserHasPermission("delete_themes")) {
             $info = $this->container['database']->row("SELECT * FROM my_style WHERE style_id = :style_id LIMIT 1", ['style_id' => $this->container['security']->mySqlSecure($_GET['remove'])]);
             $style_path_name = $info['style_path_name'];
 
@@ -52,9 +56,8 @@ if (isset($_GET['info'])) {
 
 if (isset($_POST['set_theme'])) {
 
-    if ($this->container['users']->staffLoggedIn()) {
-        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($this->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("switch_themes")) {
             if (isset($_POST['style_path_name'])) {
                 $style_path_name = $this->container['security']->mySqlSecure($_POST['style_path_name']);
                 if ($this->container['settings']->getSettingsValue("site_template") != $style_path_name) {
@@ -69,9 +72,9 @@ if (isset($_POST['set_theme'])) {
 }
 
 if (isset($_POST['newtheme'])) {
-    if ($this->container['users']->staffLoggedIn()) {
-        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($this->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("install_themes"))
+        {
 
             $jsonurl = htmlentities($_POST['jsonurl']);
             $info = $this->container['theme']->downloadTheme($jsonurl);
@@ -83,9 +86,9 @@ if (isset($_POST['newtheme'])) {
 }
 
 if (isset($_POST['uploadTheme'])) {
-    if ($this->container['users']->staffLoggedIn()) {
-        $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($this->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("upload_themes"))
+        {
             $info = $this->container['theme']->installTheme($_FILES['themeFile']);
             if ($info == true) {
                 $info = null;
@@ -208,10 +211,9 @@ if (defined("INDEX_ERROR")) {
                         </li>
                     </ul>
                 </div>
-                <?php
-                $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-                if ($user_rank >= 3) {
-                    ?>
+            <?php
+            if ($this->container['users']->currentUserHasPermission("switch_themes")) {
+            ?>
                     <div class="well well-sm" style="height: 52px;" id="info-theme-button">
                         <form action="" method="post">
                             <input type="hidden" name="style_path_name"
@@ -225,7 +227,11 @@ if (defined("INDEX_ERROR")) {
                             <?php } ?>
                         </form>
                     </div>
+            <?php } ?>
 
+                <?php
+                if ($this->container['users']->currentUserHasPermission("edit_themes")) {
+                    ?>
                     <?php if ($info['style_enable_remove'] == '1') { ?>
                         <div class="well well-sm" style="height: 52px;" id="info-theme-button">
                             <a href="{@siteURL@}/my-admin/theme_manager/remove/<?php echo $info['style_id'] ?>"
@@ -321,21 +327,32 @@ if (defined("INDEX_ERROR")) {
                 ?>
             </div>
             <div class="col-lg-4 col-sm-5 col-md-4 col-xs-12">
+                <?php
+                if ($this->container['users']->currentUserHasPermission("upload_themes")) {
+                    ?>
                 <div class="panel b_panel">
                     <div class="panel-heading">
                         <h1 class="panel-title text-center"><?php $this->container['languages']->ea('page_theme_manager_upload_new_theme'); ?></h1>
                     </div>
-                    <form enctype="multipart/form-data" method="post">
-                        <div class="panel-body text-center">
-                            <div class="form-group">
-                                <label style="font-weight: normal;"><?php $this->container['languages']->ea('page_theme_manager_placeholder_upload'); ?></label>
-                                <input type="file" id="themeFile" name="themeFile">
+
+                        <form enctype="multipart/form-data" method="post">
+                            <div class="panel-body text-center">
+                                <div class="form-group">
+                                    <label style="font-weight: normal;"><?php $this->container['languages']->ea('page_theme_manager_placeholder_upload'); ?></label>
+                                    <input type="file" id="themeFile" name="themeFile">
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" name="uploadTheme"
-                                class="btn btn-block btn-primary b_btn b_btn_radius"><?php $this->container['languages']->ea('page_theme_manager_upload_button'); ?></button>
-                    </form>
+                            <button type="submit" name="uploadTheme"
+                                    class="btn btn-block btn-primary b_btn b_btn_radius"><?php $this->container['languages']->ea('page_theme_manager_upload_button'); ?></button>
+                        </form>
                 </div>
+                <?php
+            }
+            ?>
+
+                <?php
+                if ($this->container['users']->currentUserHasPermission("install_themes")) {
+                ?>
                 <div class="panel b_panel">
                     <div class="panel-heading">
                         <h1 class="panel-title text-center"><?php $this->container['languages']->ea('page_theme_manager_add_new_theme'); ?></h1>
@@ -351,6 +368,9 @@ if (defined("INDEX_ERROR")) {
                                 class="btn btn-block btn-primary b_btn b_btn_radius"><?php $this->container['languages']->ea('page_theme_manager_add_button'); ?></button>
                     </form>
                 </div>
+                    <?php
+                }
+                ?>
             </div>
         <?php } ?>
     </div>

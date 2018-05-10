@@ -5,7 +5,7 @@
 
 
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
 //define('PAGE_ID', 'admin_topbar');
 

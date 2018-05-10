@@ -10,20 +10,20 @@ if (isset($_POST['admin-login'])) {
     }
 
     if ($remember == "remember_t") {
-        $login = $app->container['users']->loginAdmin($mail, $password, true);
+        $login = $app->container['users']->login($mail, $password, true, true);
         if ($login["login"] == 1) {
             header("location: " . HOST . "/my-admin/index");
             exit;
         } else {
-            define("INDEX_ERROR", $app->container['languages']->ea($login["error"], '1'));
+            define("INDEX_ERROR", $app->container['languages']->ta($login["error"], true));
         }
     } else {
-        $login = $app->container['users']->loginAdmin($mail, $password, false);
+        $login = $app->container['users']->login($mail, $password, false, true);
         if ($login["login"] == 1) {
             header("location: " . HOST . "/my-admin/index");
             exit;
         } else {
-            define("INDEX_ERROR", $app->container['languages']->ea($login["error"], '1'));
+            define("INDEX_ERROR", $app->container['languages']->ta($login["error"], true));
         }
     }
 }
@@ -111,10 +111,8 @@ if (isset($_POST['search'])) {
 
 if (isset($_POST['save_settings_general'])) {
 
-    if ($app->container['users']->staffLoggedIn()) {
-
-        $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($app->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("manage_options")) {
             $settings_site_name = htmlentities($_POST['settings_site_name']);
             $settings_site_description = htmlentities($_POST['settings_site_description']);
             $settings_site_url = htmlentities($_POST['settings_site_url']);
@@ -161,10 +159,9 @@ if (isset($_POST['save_settings_general'])) {
 }
 if (isset($_POST['save_settings_blog'])) {
 
-    if ($app->container['users']->staffLoggedIn()) {
+    if ($app->container['users']->userLoggedIn()) {
 
-        $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+        if ($this->container['users']->currentUserHasPermission("manage_options")) {
 
             $settings_blog_private = htmlentities($_POST['settings_blog_private']);
             $settings_blog_comments_active = htmlentities($_POST['settings_blog_comments_active']);
@@ -195,9 +192,8 @@ if (isset($_POST['save_settings_blog'])) {
 }
 if (isset($_POST['save_settings_style'])) {
 
-    if ($app->container['users']->staffLoggedIn()) {
-        $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($app->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("manage_options")) {
             $settings_style_language = htmlentities($_POST['settings_style_language']);
             $settings_style_template = htmlentities($_POST['settings_style_template']);
             $settings_style_template_language = htmlentities($_POST['settings_style_template_language']);
@@ -221,9 +217,8 @@ if (isset($_POST['save_settings_style'])) {
 
 if (isset($_POST['save_settings_xml_commands'])) {
 
-    if ($app->container['users']->staffLoggedIn()) {
-        $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($app->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("manage_options")) {
             $xml_command_code = $_POST['xml_command_code'];
             $mycms_xml = simplexml_load_string($xml_command_code);
             if (isset($mycms_xml->command['value'])) {
@@ -263,9 +258,8 @@ if (isset($_POST['save_settings_xml_commands'])) {
 
 if (isset($_POST['import_page_json'])) {
 
-    if ($app->container['users']->staffLoggedIn()) {
-        $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-        if ($user_rank >= 3) {
+    if ($app->container['users']->userLoggedIn()) {
+        if ($this->container['users']->currentUserHasPermission("import")) {
             $json_code = $_POST['json_code'];
             $mycms_json = json_decode($json_code, true);
             if ($mycms_json != false) {
@@ -294,7 +288,7 @@ if (isset($_POST['import_page_json'])) {
 }
 
 if (isset($_POST['page_settings_user_save_button'])) {
-    if ($app->container['users']->staffLoggedIn()) {
+    if ($app->container['users']->userLoggedIn()) {
         $password = htmlentities($app->container['security']->mySqlSecure($_POST['password']));
         $new_password = htmlentities($app->container['security']->mySqlSecure($_POST['new_password']));
         $password_repeat = htmlentities($app->container['security']->mySqlSecure($_POST['password_repeat']));
@@ -302,7 +296,7 @@ if (isset($_POST['page_settings_user_save_button'])) {
 
         $validate_password = $app->container['users']->validate("password", $new_password);
 
-        $user_data = $app->container['users']->getUserData($_SESSION['staff']['id']);
+        $user_data = $app->container['users']->getUserData($_SESSION['user']['id']);
 
         if (!password_verify($password, $user_data['password'])) {
             define("INDEX_ERROR", $app->container['languages']->ea("error_wrong_password", '1'));
@@ -320,7 +314,7 @@ if (isset($_POST['page_settings_user_save_button'])) {
 
         $password = $app->container['security']->myCmsSecurityCreatePassword($new_password);
 
-        $app->container['database']->query("UPDATE my_users SET password = :password WHERE id = :id ", ["id" => $_SESSION['staff']['id'], "password" => $password]);
+        $app->container['database']->query("UPDATE my_users SET password = :password WHERE id = :id ", ["id" => $_SESSION['user']['id'], "password" => $password]);
 
     }
 }

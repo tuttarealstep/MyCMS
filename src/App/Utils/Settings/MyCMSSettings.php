@@ -72,7 +72,7 @@ class MyCMSSettings
 
     }
 
-    function saveSettings($settings_name = "", $settings_value = "")
+    function saveSettings($settings_name = "", $settings_value = "", $createSetting = false)
     {
         $settings_name = filter_var($settings_name, FILTER_SANITIZE_STRING);
         $settings_value = filter_var($settings_value, FILTER_SANITIZE_STRING);
@@ -81,6 +81,10 @@ class MyCMSSettings
         if ($check > 0) {
             $insert = $this->database->query("UPDATE my_cms_settings SET settings_value = :setting_value_new WHERE settings_name = :setting_name_new", ["setting_value_new" => $settings_value, "setting_name_new" => $settings_name]);
         } else {
+            if($createSetting)
+            {
+                $this->database->query("INSERT INTO my_cms_settings(settings_name,settings_value) VALUES(:setting_name_new,:setting_value_new)", ["setting_name_new" => $settings_name, "setting_value_new" => $settings_value]);
+            }
             return false;
         }
 

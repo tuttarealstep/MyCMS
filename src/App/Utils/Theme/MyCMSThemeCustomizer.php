@@ -383,7 +383,7 @@ class MyCMSThemeCustomizer extends MyCMSContainer
 
         <?php
         foreach ($this->customJsFunctions as $key => $function) {
-            echo $function($key);
+            echo $function($key, $this->container);
         }
         ?>
         <?php

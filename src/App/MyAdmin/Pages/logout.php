@@ -3,5 +3,5 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-$this->container['users']->hideIfStaffNotLogged();
-$this->container['users']->logoutAdmin();
+$this->container['users']->hideIfNotLogged();
+$this->container['users']->logout();

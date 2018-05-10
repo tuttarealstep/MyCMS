@@ -1,15 +1,14 @@
 <?php
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("customize"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 $_SESSION["customizer"] = true;
 $_SESSION['customizerLastAction'] = time();
-
-$user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
-}
 
 define('PAGE_ID', 'admin_theme_customize');
 define('PAGE_NAME', $this->container['languages']->ea('page_admin_theme_customize_page_name', '1'));

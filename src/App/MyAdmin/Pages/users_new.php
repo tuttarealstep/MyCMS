@@ -5,7 +5,12 @@
  * Time: 11.21
  */
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("create_users"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_users_new');
 define('PAGE_NAME', $this->container['languages']->ea('page_users_new_page_name', '1'));

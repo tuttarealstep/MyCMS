@@ -1,35 +1,27 @@
 <?php
 //TODO enable/disable comments for single post
+//TODO check for staff if not publish
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("read_private_posts"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_post_create');
 
 if (isset($_GET['id']) && is_numeric($_GET['id']))
 {
-    define('PAGE_NAME', $this->container['languages']->ta('page_post_create', true));
-} else {
     define('PAGE_NAME', $this->container['languages']->ta('page_post_create_edit', true));
+} else {
+    define('PAGE_NAME', $this->container['languages']->ta('page_post_create', true));
 }
-
-$this->container['theme']->addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
-
-$this->getFileAdmin('header');
-$this->getPageAdmin('topbar');
-
-$this->container['plugins']->applyEvent('postsNewAfterTopBar');
-$this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
-
-$this->container['plugins']->addEvent('parsePostContent', function ($content) {
-    return $content;
-});
-
-$this->getStyleScriptAdmin('script');
 
 
 $postType = "post";
 $postTitle = "";
-$postAuthor = $_SESSION['staff']['id'];
+$postAuthor = $_SESSION['user']['id'];
 $postContent = "";
 $postStatus = "draft";
 $postCategory = [];
@@ -41,7 +33,7 @@ $postDateD = date('d', time());
 $postDateH = date('H', time());
 $postDateI = date('i', time());
 $postDateS = date('s', time());
-$postStatusLabel = ($postStatus == "publish") ? $this->container['languages']->ta('page_post_create_label_published', '1') : (($postSTATUS == "pending") ? $this->container['languages']->ta('page_post_create_label_pending_review', true) : $this->container['languages']->ta('page_post_create_label_draft', true));
+$postStatusLabel = ($postStatus == "publish") ? $this->container['languages']->ta('page_post_create_label_published', '1') : (($postStatus == "pending") ? $this->container['languages']->ta('page_post_create_label_pending_review', true) : $this->container['languages']->ta('page_post_create_label_draft', true));
 $commentStatus = "open";
 
 if (isset($_GET['id']) && is_numeric($_GET['id']) && !isset($_POST['post_create_create'])) {
@@ -54,15 +46,45 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && !isset($_POST['post_create_
         exit();
     }
 
+    if($this->container['blog']->getInfo('authorID', $postId) == $_SESSION['user']['id'] && !$this->container['users']->currentUserHasPermission("edit_posts"))
+    {
+        if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
+            if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+            }
+        } else {
+            if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+            }
+        }
+    } else {
+        if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
+            if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+            }
+        } else {
+            if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+            }
+        }
+    }
+
+
     $postDate = date('Y-m-d H:i', strtotime($this->container['blog']->getInfo('date', $postId)));
     $postType = "post";
     $postTitle = $this->container['blog']->getInfo('title', $postId);
-    $postAuthor = $_SESSION['staff']['id'];
+    $postAuthor = $_SESSION['user']['id'];
     $postContent = $this->container['blog']->getInfo('content', $postId);
     $postStatus = $this->container['blog']->getInfo('postStatus', $postId);
     $postStatusLabel = ($postStatus == "publish") ? $this->container['languages']->ta('page_post_create_label_published', true) : (($postStatus == "pending") ? $this->container['languages']->ta('page_post_create_label_pending_review', true) : $this->container['languages']->ta('page_post_create_label_draft', true));
 
     $postCategory = $this->container['blog']->getInfo('categoryNameArray', $postId);
+
+    if($postCategory == null)
+    {
+        $postCategory = [];
+    }
+
     $postName = $this->container['blog']->getInfo('name', $postId);
     $commentStatus = $this->container['blog']->getInfo('commentStatus', $postId);
 
@@ -79,18 +101,26 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && !isset($_POST['post_create_
         $postId = (int)$_POST['postId'];
         $postType = "post";
         $postTitle = htmlspecialchars(stripslashes($_POST['postTitle']));
-        $postAuthor = $_SESSION['staff']['id'];
+        $postAuthor = $_SESSION['user']['id'];
         $postContent = $this->container['plugins']->applyEvent('parsePostContent', $_POST['postContent']);
         $postStatus = $_POST['postSTATUS'];
         $postCategory = isset($_POST['category']) ? (array)$_POST['category'] : [];
         $postDate = date('Y-m-d H:i:s', strtotime($_POST['postDate']));
 
+        if (!$this->container['users']->currentUserHasPermission("publish_posts") && $postStatus == "publish")
+        {
+            $postStatus = 'draft';
+        }
+
         $postName = (empty($this->container['blog']->getInfo('name', $postId))) ? $this->container['blog']->generateUniqueName($this->container['functions']->fixText($this->container['functions']->addSpace($_POST['postTitle'])), $postId) : $this->container['blog']->getInfo('name', $postId);
+
         $commentStatus = "open";
 
+        if (strlen($postName) > 200)
+            $postName = substr($postName, 0, 200);
 
-        if ($postTitle == "" && $postContent == "")
-            return;
+        /*if ($postTitle == "" && $postContent == "")
+            return;*/
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $postId = (int)$_GET['id'];
@@ -100,12 +130,14 @@ postTitle = :postTitle,
 postContent = :postContent,
 postDate = :postDate,
 postStatus = :postStatus,
+postName = :postName,
 postModified = :postModified,
 commentStatus = :commentStatus WHERE postId = :postId", [
                 "postTitle"     => $postTitle,
                 "postContent"   => $postContent,
                 "postDate"      => $postDate,
                 "postStatus"    => $postStatus,
+                "postName"    => $postName,
                 "postModified"  => $postDate = date('Y-m-d H:i:s', time()),
                 "commentStatus" => $commentStatus,
                 "postId"        => $postId
@@ -167,7 +199,6 @@ commentStatus = :commentStatus WHERE postId = :postId", [
             }
         }
 
-
         //todo check query errors
         //$info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ta('page_post_create_success_posted', true) . ' <a href="'.'/blog/' . date('Y', time()) . '/' . date('m', time()) . '/' . $postName . '">' . $this->container['languages']->ta('page_post_create_success_show', true) . '</a></div>';
         header('Location: ' . HOST . '/my-admin/post_create?id=' . $postId . '&createMessage=true');
@@ -198,6 +229,19 @@ NULL,
         $postId = $this->container['database']->lastInsertId();
     }
 }
+$this->container['theme']->addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
+
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
+
+$this->container['plugins']->applyEvent('postsNewAfterTopBar');
+$this->container['plugins']->applyEvent('postsNewEditAfterTopBar');
+
+$this->container['plugins']->addEvent('parsePostContent', function ($content) {
+    return $content;
+});
+
+$this->getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">
     tinymce.init({
@@ -210,7 +254,9 @@ NULL,
         ],
 
         toolbar: "insertfile undo redo | styleselect forecolor backcolor |  bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        autosave_ask_before_unload: false
+        autosave_ask_before_unload: false,
+        relative_urls : false,
+        remove_script_host: false
     });
 </script>
 <style>
@@ -278,11 +324,13 @@ if (defined("INDEX_ERROR")) {
                 <div class="panel b_panel">
                     <div class="panel-body b_panel-body panel-body-padding">
                         <div class="form-group">
+                            {@noTAGS_start@}
                             <input type="text"
                                    placeholder="<?php $this->container['languages']->ta('page_post_create_title'); ?>"
                                    name="postTitle"
-                                   id="postTitle" class="form-control b_form-control" maxlength="100"
+                                   id="postTitle" class="form-control b_form-control" maxlength="2000"
                                    value="<?php echo $postTitle; ?>">
+                            {@noTAGS_end@}
                         </div>
                         <br/>
                         <div class="addons-menu">
@@ -290,8 +338,10 @@ if (defined("INDEX_ERROR")) {
                         </div>
                         <br/>
                         <div class="form-group" id="textareaContent">
+                            {@noTAGS_start@}
                             <textarea id="postContent" name="postContent"
                                       style="height:300px;"><?php echo $postContent; ?></textarea>
+                            {@noTAGS_end@}
                         </div>
                     </div>
                 </div>
@@ -310,11 +360,12 @@ if (defined("INDEX_ERROR")) {
                             <div class="panel-body b_panel-body">
                                 <div class="panel-body-padding">
                                     <span id="permalinkPanel" class="<?php echo (isset($_GET['id'])) ?: "hidden" ?>">
+                                        <?php if($postName != "") {?>
                                     <span class="label label-danger"><?php $this->container['languages']->ta('page_post_create_permalink'); ?></span><br/>
                                     <p id="permalinkMsg" style="word-wrap: break-word; ">
-                                        {@siteURL@}/blog/<?php echo date('Y', time()); ?>
-                                        /<?php echo date('m', time()); ?>/<?php echo $postName; ?></p>
+                                        {@siteURL@}/blog/<?php echo date('Y', time()); ?>/<?php echo date('m', time()); ?>/<?php echo $postName; ?></p>
                                     <hr>
+                                        <?php } ?>
                                         </span>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -344,9 +395,11 @@ if (defined("INDEX_ERROR")) {
                                                 <select name="postSTATUSselect" id="postSTATUSselect"
                                                         class="form-control"
                                                         style="display: inline-block; width: auto">
+                                                    <?php if ($this->container['users']->currentUserHasPermission("publish_posts")) { ?>
                                                     <option
                                                         <?php if ($postStatus == "publish") { ?>selected="selected" <?php } ?>
                                                         value="publish"><?php $this->container['languages']->ta('page_post_create_label_published'); ?></option>
+                                                    <?php } ?>
                                                     <option
                                                         <?php if ($postStatus == "pending") { ?>selected="selected" <?php } ?>
                                                         value="pending"><?php $this->container['languages']->ta('page_post_create_label_pending_review'); ?></option>

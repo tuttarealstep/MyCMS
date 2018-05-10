@@ -2,7 +2,12 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("moderate_comments"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_comments');
 define('PAGE_NAME', $this->container['languages']->ea('page_comments_page_name', '1'));
@@ -12,8 +17,6 @@ $this->getPageAdmin('topbar');
 $info = "";
 
 if (isset($_POST['execute'])) {
-    $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank >= 2) {
         if ($_POST['ifchecked'] == 'delete') {
             if (!empty($_POST['check_list'])) {
                 foreach ($_POST['check_list'] as $select) {
@@ -34,7 +37,6 @@ if (isset($_POST['execute'])) {
                 $info = '<div class="row"><div class="alert alert-danger">' . $this->container['languages']->ea('page_comments_delete_empty_checklist', '1') . '</div>';
             }
         }
-    }
 }
 ?>
 <div class="container">

@@ -1,0 +1,10 @@
+{
+  "theme_name": "simple",
+  "theme_author": "MyCMS",
+  "theme_zip_file_name": "simple",
+  "my_cms_version": "0.0.6.1",
+  "theme_error_page": "error",
+  "theme_maintenance_page": "maintenance",
+  "theme_version": "0.0.0.1",
+  "theme_languages": "it_IT,en_US"
+}

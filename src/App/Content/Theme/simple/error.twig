@@ -1,0 +1,25 @@
+{% extends "layout.twig" %}
+
+{% block title %}{{ container.languages.e('404_error_page_name') }}{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid siteContainer">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-12 text-center">
+                <h1 class="home_text" style="font-size: 52px">{{ container.languages.e('404_title') }}</h1>
+                <h2 class="home_text second_text">{{ container.languages.e('404_description') }}</h2>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-12">
+                {% include "pages/components/sidebar.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $(window).scrollTop($('.siteContainer').offset().top);
+        });
+    </script>
+{% endblock footer %}

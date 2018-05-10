@@ -4,11 +4,11 @@
 \*                     */
 
 
-$this->container['users']->hideIfStaffNotLogged();
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("publish_pages"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
 define('PAGE_ID', 'admin_pages_new');
@@ -73,7 +73,9 @@ $this->getStyleScriptAdmin('script');
         ],
 
         toolbar: "insertfile undo redo | styleselect forecolor backcolor |  bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        autosave_ask_before_unload: false
+        autosave_ask_before_unload: false,
+        relative_urls : false,
+        remove_script_host: false
     });
 </script>
 <style>

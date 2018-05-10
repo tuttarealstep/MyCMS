@@ -11,6 +11,19 @@ function sendAjax(parameters, successCallback) {
     });
 }
 
+function customizerApi(parameters, successCallback) {
+    var url = myBasePath + "/src/App/Content/Ajax/customizerApi.php";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: parameters,
+        success: successCallback,
+        error: function (xhr, textStatus, errorThrown) {
+            console.log('error');
+        }
+    });
+}
+
 function categorySuccess(param) {
     if (param == "duplicate") {
         var newCategoryName = $("#newCategoryName");
@@ -187,3 +200,32 @@ $(document).ready(function () {
     });
 
 });
+
+function uploadMedia(fileObj)
+{
+    var formData = new FormData();
+
+    $.each(fileObj, function (i, file) {
+        formData.append(0, file);
+
+        $.ajax({
+            type: 'POST',
+            url: myBasePath + "/src/App/Content/Ajax/asyncMediaUpload.php",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data : formData,
+            success: function(result) {
+                $("#containerUploadInfo").append(result)
+
+                if (MEDIA_ADDON_PAGE)
+                {
+                    $("#editMediaLink").remove()
+                }
+            },
+            error: function(err){
+                console.log(err);
+            }
+        })
+    })
+}

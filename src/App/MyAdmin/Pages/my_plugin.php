@@ -1,5 +1,5 @@
 <?php
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
 $pluginName = $_GET['pluginName'];
 

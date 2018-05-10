@@ -1,5 +1,5 @@
 <?php
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
 define('PAGE_ID', 'admin_settings_user');
 define('PAGE_NAME', $this->container['languages']->ea('page_settings_page_name', '1') . ': ' . $this->container['languages']->ea('page_settings_user', '1'));

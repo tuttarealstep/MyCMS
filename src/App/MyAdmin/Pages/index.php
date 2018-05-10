@@ -5,7 +5,7 @@
  * Time: 20.03
  */
 
-if ($this->container['users']->staffLoggedIn()) {
+if ($this->container['users']->userLoggedIn()) {
     header("location: " . HOST . "/my-admin/home");
     exit;
 } else {

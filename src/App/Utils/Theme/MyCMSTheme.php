@@ -9,7 +9,7 @@ namespace MyCMS\App\Utils\Theme;
 
 use MyCMS\App\Utils\Exceptions\MyCMSException;
 use MyCMS\App\Utils\Management\MyCMSFileManager;
-use MyCMS\App\Utils\Management\MyCMSUsers;
+use MyCMS\App\Utils\Users\MyCMSUsers;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use ZipArchive;
@@ -89,9 +89,9 @@ class MyCMSTheme
             if (isset($_SESSION['customizerThemeSession']['theme'])) {
                 if (isset($_GET["theme"])) {
                     if ($this->themeExist($this->container["security"]->mySqlSecure($_GET["theme"]))) {
-                        $this->userIploadThemeFunctionsByTheme($this->container["security"]->mySqlSecure($_GET["theme"]));
+                        $this->loadThemeFunctionsByTheme($this->container["security"]->mySqlSecure($_GET["theme"]));
                     } else {
-                        $this->userIploadThemeFunctionsByTheme("default");
+                        $this->loadThemeFunctionsByTheme("default");
                     }
                 }
             }
@@ -234,7 +234,7 @@ class MyCMSTheme
                 }
 
 
-                if (isset($_SESSION['staff']['id'])) {
+                if (isset($_SESSION['user']['id'])) {
                     if (isset($_GET['custom_tags'])) {
                         foreach ($this->tag as $tag => $value) {
                             if (isset($_GET[ $tag ])) {
@@ -423,7 +423,7 @@ class MyCMSTheme
             $page = str_ireplace('{@' . $error . '@}', $value, $page);
         }
 
-        if (isset($_SESSION['staff']['id'])) {
+        if (isset($_SESSION['user']['id'])) {
             if (isset($_GET['custom_tags'])) {
                 foreach ($this->tag as $tag => $value) {
                     if (isset($_GET[ $tag ])) {
@@ -1089,7 +1089,7 @@ class MyCMSTheme
     {
         $maintenance = $this->container['settings']->getSettingsValue('site_maintenance');
 
-        if ($admin_check == true && $this->container['users']->staffLoggedIn()) {
+        if ($admin_check == true && $this->container['users']->userLoggedIn() && ($this->container['users']->hasPermission("customize") || $this->container['users']->hasPermission("update_cms"))) {
             $maintenance = false;
         } else {
             if ($maintenance == 'true') {
@@ -1551,7 +1551,7 @@ class MyCMSTheme
 
                         $mail = htmlentities($this->container['security']->mySqlSecure($email));
                         $password = htmlentities($this->container['security']->mySqlSecure($password));
-                        $login = $this->container['users']->loginAdmin($mail, $password, false);
+                        $login = $this->container['users']->login($mail, $password, false);
                         if ($login["login"] == 1) {
                             $success = true;
                             $try = false;
@@ -1565,14 +1565,13 @@ class MyCMSTheme
                         if ($success == true && $try == false) {
                             echo "Success...!\n";
                             echo "\n";
-                            $complete_name = $this->container['users']->getInfo($_SESSION['staff']['id'], 'name') . ' ' . $this->container['users']->getInfo($_SESSION['staff']['id'], 'surname');
-                            $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-                            if ($user_rank >= 3) {
+                            $complete_name = $this->container['users']->getInfo($_SESSION['user']['id'], 'name') . ' ' . $this->container['users']->getInfo($_SESSION['staff']['id'], 'surname');
+                            if ($this->container['users']->currentUserHasPermission("use_cmd")) {
                                 $this->consoleAW("Welcome $complete_name\n");
                                 $this->consoleAW("Type a command ('help' for list of commands)'\n");
                                 $admin_mode = true;
                                 while ($admin_mode == true) {
-                                    echo "\n[" . $this->container['users']->getInfo($_SESSION['staff']['id'], 'name') . "]>";
+                                    echo "\n[" . $this->container['users']->getInfo($_SESSION['user']['id'], 'name') . "]>";
                                     $command_admin = trim(fgets(fopen("php://stdin", "r")));
                                     switch ($command_admin) {
                                         case 'help':
@@ -1645,7 +1644,7 @@ class MyCMSTheme
                                     }
                                 }
                             } else {
-                                $this->consoleAW("You are not admin (rank 3)\n");
+                                $this->consoleAW("Permission denied\n");
                                 sleep(1);
                                 echo "Bye...\n";
                                 break;
@@ -1923,6 +1922,17 @@ class MyCMSTheme
 
     }
 
+    public function resetThemeSettings($theme = "")
+    {
+        if (empty($theme)) {
+            $theme = MY_THEME;
+        }
+
+        $this->container["database"]->query("DELETE FROM my_cms_settings WHERE settings_name = :name", ['name' => "theme_settings_$theme"]);
+
+        return true;
+    }
+
     public function setThemeSettings($settings, $theme = "")
     {
         if (empty($theme)) {
@@ -1939,5 +1949,14 @@ class MyCMSTheme
         return true;
     }
 
+    function getDatabasePageContent($pageIdMenu)
+    {
+        $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageID_MENU = :pageIdMenu AND pagePUBLIC = '1' AND pageINTHEME = '0' LIMIT 1", ["pageIdMenu" => $pageIdMenu]);
+        if (!isset($info)) {
+            return false;
+        }
+        
+        return $info["pageHTML"];
+    }
     //todo add all useful function to plugin system
 }

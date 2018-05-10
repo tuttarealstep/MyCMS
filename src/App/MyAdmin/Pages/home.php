@@ -3,7 +3,7 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
 define('PAGE_ID', 'admin_home');
 define('PAGE_NAME', $this->container['languages']->ta('page_home_page_name', true));
@@ -29,21 +29,27 @@ $this->getPageAdmin('topbar');
                 <div class="panel-body">
 
                     <ul class="list-group">
+                        <?php if ($this->container['users']->currentUserHasPermission("edit_posts")) { ?>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog"); ?></span>
                             <i class="fa fa-thumb-tack fa-fw"></i> <a
                                     href="{@siteURL@}/my-admin/posts"><?php $this->container['languages']->ta('page_home_general_info_post'); ?></a>
                         </li>
+                        <?php }
+                        if ($this->container['users']->currentUserHasPermission("moderate_comments")) { ?>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog_post_comments WHERE enable = '1'"); ?></span>
                             <i class="fa fa-comment fa-fw"></i> <a
                                     href="{@siteURL@}/my-admin/comments"><?php $this->container['languages']->ta('page_home_general_info_comments'); ?></a>
                         </li>
+                        <?php }
+                        if ($this->container['users']->currentUserHasPermission("manage_categories")) { ?>
                         <li class="list-group-item">
                             <span class="badge"><?php echo $this->container['database']->single("SELECT count(*) FROM my_blog_category"); ?></span>
                             <i class="fa fa-cubes fa-fw"></i> <a
                                     href="{@siteURL@}/my-admin/category"><?php $this->container['languages']->ta('page_home_general_info_category'); ?></a>
                         </li>
+                        <?php } ?>
                     </ul>
                     <table class="table table-responsive">
                         <thead><?php $this->container['languages']->ta('page_home_info_in_use'); ?></thead>
@@ -105,13 +111,18 @@ $this->getPageAdmin('topbar');
     $(document).ready(function ()
     {
         $.ajax({
-            url: "{@siteURL@}/src/App/Content/Ajax/checkNewUpdate.php",
+            url: "{@siteURL@}/src/App/Content/Ajax/checkNotifications.php",
             type: "get",
             error: function () {
                 alert("AJAX ERROR");
             }
         }).done(function (data) {
-            $(".notificationPanel").text(data)
+            if(data == "")
+            {
+                $(".notificationPanel").text("<?php $this->container['languages']->ta('page_home_no_notifications') ?>")
+            } else {
+                $(".notificationPanel").html(data)
+            }
         })
 
     })

@@ -433,4 +433,19 @@ class MyCMSBlog
 
         return $name;
     }
+
+    function initBlogTags()
+    {
+        //todo add tags with media
+       /* $this->container['theme']->addCallBackTag('showMedia', function ($arg, $container) {
+            if(isset($arg['mediaId']))
+            {
+                $result = $this->container['media']->getMedia((int)$arg['mediaId']);
+                if(!$result)
+                    return "";
+
+                return "asdasdsadsadassa " . $result['name'];
+            }
+        });*/
+    }
 }

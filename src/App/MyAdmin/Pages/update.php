@@ -1,17 +1,12 @@
 <?php
-/**
- * MyCMS(TProgram) - Project
- * Date: 31/07/2015 Time: 14:15
- */
 
 $this->noRobots();
+//todo update this page with new method
+$this->container['users']->hideIfNotLogged();
 
-$this->container['users']->hideIfStaffNotLogged();
-
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
+if(!$this->container['users']->currentUserHasPermission("update_cms"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
 if (!$this->container['theme']->thereIsNewUpdate()) {
@@ -25,11 +20,6 @@ define('PAGE_NAME', $this->container['languages']->ea('page_update_page_name', '
 $this->getFileAdmin('header');
 
 $this->getStyleScriptAdmin('script');
-
-$user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header("location: " . HOST . "/my-admin/home");
-}
 
 //PHP SETTINGS
 ini_set('memory_limit', '512M');

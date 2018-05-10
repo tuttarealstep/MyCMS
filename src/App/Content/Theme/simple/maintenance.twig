@@ -1,0 +1,31 @@
+{% set PAGE_ID = "maintenance" %}
+{% extends "layout.twig" %}
+
+{% block head %}
+    {{ container.theme.addMetaTag('maintenance', '<meta http-equiv="refresh" content=60 url="{@siteURL@}">') }}
+    {{ parent() }}
+{% endblock head %}
+
+{% block title %}{{ container.languages.e('maintenance_page_name') }}{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid siteContainer">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <h1 class="home_text" style="font-size: 52px">{{ container.languages.e('maintenance_title') }}</h1>
+                <h2 class="home_text second_text">{{ container.languages.e('maintenance_title_description') }}</h2>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-12">
+                {% include "pages/components/sidebar.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            $(window).scrollTop($('.siteContainer').offset().top);
+        });
+    </script>
+{% endblock footer %}

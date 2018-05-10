@@ -3,7 +3,10 @@ define('MY_CMS_PATH', true);
 define("LOADER_LOAD_PAGE", false);
 include '../../../../src/Bootstrap.php';
 
-if ($app->container['users']->staffLoggedIn()) {
+if ($app->container['users']->userLoggedIn()) {
+    if(!$app->container['users']->currentUserHasPermission("edit_pages"))
+        return;
+
     if (isset($_POST['content']) && isset($_POST['pageID'])) {
         $content = addslashes(base64_decode($_POST['content']));
 

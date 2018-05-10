@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <META name="description" content="{{ siteDESCRIPTION }}">
+
+        <title>{% block title %}{% endblock %}</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
+        {@getSTYLE=css@}
+
+        <style>
+            body, .siteContainer{
+                background-color: {{ backgroundColor }} !important;
+                color: {{ textColor }} !important;
+            }
+
+            .defaultPost > .title > a, .menuBar > ul > li > a, .read-more-button
+            {
+                color: {{ textColor }} !important;
+            }
+
+            #siteName, #siteDescription {
+                color: {{ siteInfoColor }} !important;
+            }
+        </style>
+
+        {{ container.theme.getMetaTag( PAGE_ID ) }}
+    {% endblock %}
+</head>
+<body {% block bodyTag %}{% endblock %}>
+{% block header %}
+    {% include "pages/components/header.twig" %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+    {% include "pages/components/footer.twig" %}
+    {@getSTYLE=script@}
+    {{ container.plugins.applyEvent('underFooter') }}
+{% endblock %}
+</body>
+</html>

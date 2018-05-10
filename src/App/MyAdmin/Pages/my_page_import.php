@@ -1,10 +1,9 @@
 <?php
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
+if(!$this->container['users']->currentUserHasPermission("import"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
 define('PAGE_ID', 'admin_pages_edit');

@@ -1,0 +1,42 @@
+{% extends "layout.twig" %}
+
+{% set title = siteNAME %}
+
+{% block title %}{{ container.languages.e('home_title') }}{% endblock title %}
+
+{% block topbar %}
+    {{ parent() }}
+{% endblock topbar %}
+
+{% block content %}
+    <div class="container-fluid siteContainer">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-12">
+                {% if homePageView == "articlesSimpleThemePage" %}
+                    <h1>{{ container.languages.e('posts') }}</h1>
+                    <hr>
+                    {% set counter = 0 %}
+                    {% set max = 10 %}
+                    {% for post in container.blog.getPosts(max) %}
+                        <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
+                            <span class="date">{{ container.blog.getInfo('date', postId)|date("d/m/Y") }}</span>
+                            <h2 class="title"><a href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ post.postTitle }}</a></h2>
+                        </article>
+                        {% set counter = counter + 1 %}
+                    {% endfor %}
+                    <div class="text-center">
+                        {% if counter > 0 %}
+                            <a class="btn btnBlog"
+                               href="/blog">{{ container.languages.e('show_more') }}</a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    {{ container.theme.getDatabasePageContent(homePageView) | raw }}
+                {% endif %}
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-12">
+                {% include "pages/components/sidebar.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

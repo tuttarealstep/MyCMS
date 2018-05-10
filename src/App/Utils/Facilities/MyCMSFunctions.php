@@ -7,10 +7,11 @@
 
 namespace MyCMS\App\Utils\Facilities;
 
+use MyCMS\App\Utils\Models\Container;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class MyCMSFunctions
+class MyCMSFunctions extends Container
 {
     function removeSpace($string)
     {
@@ -109,5 +110,11 @@ class MyCMSFunctions
     function stringUrlDecode($string)
     {
         return urldecode($string);
+    }
+
+    function fileSizeConvert($bytes, $decimals = 2) {
+        $sizeAnnotations = 'BKMGTP';
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sizeAnnotations[$factor];
     }
 }

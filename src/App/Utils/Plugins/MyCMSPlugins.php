@@ -114,7 +114,12 @@ class MyCMSPlugins
             foreach ((array)current($this->events[ $eventName ]) as $event) {
                 if ($event['callback'] != null) {
                     $args[1] = $value;
-                    $value = call_user_func_array($event['callback'], array_slice($args, 1, (int)$event['argumentsNumber']));
+                    if(is_callable($event['callback']))
+                    {
+                        $value = call_user_func_array($event['callback'], array_slice($args, 1, (int)$event['argumentsNumber']));
+                    } else {
+                        $value = $event['callback'];
+                    }
                 }
             }
 

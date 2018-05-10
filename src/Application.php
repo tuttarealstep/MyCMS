@@ -21,7 +21,9 @@ use MyCMS\App\Utils\Facilities\MyCMSFunctions;
 use MyCMS\App\Utils\Facilities\MyCMSThemeFunctions;
 use MyCMS\App\Utils\Languages\MyCMSLanguage;
 use MyCMS\App\Utils\Management\MyCMSCache;
-use MyCMS\App\Utils\Management\MyCMSUsers;
+use MyCMS\App\Utils\Users\MyCMSRoles;
+use MyCMS\App\Utils\Users\MyCMSUsers;
+use MyCMS\App\Utils\Media\MyCMSMedia;
 use MyCMS\App\Utils\PageLoader\MyCMSPageLoader;
 use MyCMS\App\Utils\Plugins\MyCMSPlugins;
 use MyCMS\App\Utils\Router\MyCMSRouter;
@@ -60,6 +62,7 @@ class Application
      */
     function initialize()
     {
+        //todo add cron
         if ($this->isInConsole()) {
             define("LOADER_LOAD_PAGE", false);
         } else {
@@ -104,7 +107,11 @@ class Application
 
         $this->initTheme();
 
+        $this->initRoles();
+
         $this->initUsers();
+
+        $this->initMedia();
 
         $this->setTags();
 
@@ -266,6 +273,7 @@ class Application
             $_SESSION['security']['session_key'] = SESSION_KEY;
         }
 
+
     }
 
     /**
@@ -308,7 +316,7 @@ class Application
      */
     function initFunctions()
     {
-        $this->container['functions'] = new MyCMSFunctions();
+        $this->container['functions'] = new MyCMSFunctions($this->container);
     }
 
     /**
@@ -337,6 +345,99 @@ class Application
     }
 
     /**
+     * Initialize the roles class
+     */
+    function initRoles()
+    {
+        $this->container['roles'] = new MyCMSRoles($this->container);
+
+        //todo remove this add in schema
+        $this->container['roles']->addRole("user", "User",  [
+            "read" => true
+        ]);
+        $this->container['roles']->addRole("author", "Author",  [
+            "read" => true,
+            "edit_posts" => true,
+            "delete_posts" => true,
+            "publish_posts" => true,
+            "upload_files" => true,
+            "edit_published_posts" => true,
+            "delete_published_posts" => true,
+        ]);
+        $this->container['roles']->addRole("editor", "Editor",  [
+            "read" => true,
+            "edit_posts" => true,
+            "delete_posts" => true,
+            "publish_posts" => true,
+            "upload_files" => true,
+            "edit_published_posts" => true,
+            "delete_published_posts" => true,
+            "read_private_posts" => true,
+            "read_private_pages" => true,
+            "publish_pages" => true,
+            "moderate_comments" => true,
+            "manage_links" => true,
+            "manage_categories" => true,
+            "edit_published_pages" => true,
+            "edit_private_posts" => true,
+            "edit_private_pages" => true,
+            "edit_pages" => true,
+            "edit_others_posts" => true,
+            "edit_others_pages" => true,
+            "delete_published_pages" => true,
+            "delete_private_pages" => true,
+            "delete_private_posts" => true,
+            "delete_pages" => true,
+            "delete_others_posts" => true
+        ]);
+
+        $this->container['roles']->addRole("administrator", "Administrator",  [
+            "read" => true,
+            "edit_posts" => true,
+            "delete_posts" => true,
+            "publish_posts" => true,
+            "upload_files" => true,
+            "edit_published_posts" => true,
+            "delete_published_posts" => true,
+            "unfiltered_html" => true,
+            "read_private_posts" => true,
+            "read_private_pages" => true,
+            "publish_pages" => true,
+            "moderate_comments" => true,
+            "manage_links" => true,
+            "manage_categories" => true,
+            "edit_published_pages" => true,
+            "edit_private_posts" => true,
+            "edit_private_pages" => true,
+            "edit_pages" => true,
+            "edit_others_posts" => true,
+            "delete_published_pages" => true,
+            "delete_private_pages" => true,
+            "delete_private_posts" => true,
+            "delete_pages" => true,
+            "delete_others_posts" => true,
+            "create_users" => true,
+            "edit_users" => true,
+            "edit_files" => true,
+            "edit_themes" => true,
+            "delete_themes" => true,
+            "upload_themes" => true,
+            "install_themes" => true,
+            "update_themes" => true,
+            "update_cms" => true,
+            "customize" => true,
+            "switch_themes" => true,
+            "promote_users" => true,
+            "manage_options" => true,
+            "list_users" => true,
+            "import" => true,
+            "export" => true,
+            "use_cmd" => true,
+            "show_user_menu" => true
+        ]);
+    }
+
+    /**
      * Initialize the users class
      * @throws MyCMSException
      */
@@ -353,7 +454,6 @@ class Application
 
         $users->controlBan();
         $users->controlSession();
-        $users->controlSessionAdmin();
         $users->setUserTag();
 
         $this->container['users'] = $users;
@@ -389,6 +489,8 @@ class Application
     {
         $this->container['blog'] = new MyCMSBlog($this->container);
         $this->container['theme']->setContainer($this->container);
+        $this->container['blog']->initBlogTags();
+
     }
 
     /**
@@ -433,6 +535,11 @@ class Application
         $this->container['api'] = new MyCMSApi($this->container);
     }
 
+    function initMedia()
+    {
+        $this->container['media'] = new MyCMSMedia($this->container);
+    }
+
     function updatePluginContainer()
     {
         $this->container["plugins"]->setContainer($this->container);
@@ -440,7 +547,10 @@ class Application
 
     function initPluginsInitializedEvent()
     {
+
+        $this->container['plugins']->addEvent('mimeTypes', (object)$this->container['security']->getMimeTypes());
         $this->container['themeCustomizer']->applyCustomizerLateEvents();
+        $this->container['media']->setMediaEvents();
         $this->container['plugins']->addEvent('initialized', '');
     }
 
@@ -479,6 +589,8 @@ class Application
                 $styleInfo = $this->container['theme']->styleInfo(MY_THEME);
                 $match['target'] = $styleInfo["style_error_page"];
             }
+
+            $this->container['plugins']->applyEvent('custom_headers');
 
             if ($this->container['theme']->isAdminUrl($match['target']) == false) {
                 $this->container['theme']->controlMaintenance($match['target']);

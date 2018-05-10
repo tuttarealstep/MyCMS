@@ -48,7 +48,7 @@ class MyCMSPageLoader
         if (empty($url))
             return false;
 
-        if (isset($_SESSION['staff']['id'])) {
+        if (isset($_SESSION['user']['id'])) {
             if (!$this->container['database']->iftrue("SELECT pageID FROM my_page WHERE pageURL = :page_url OR pageURL = :page_url_two AND pageINTHEME = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url])) {
                 return false;
             }

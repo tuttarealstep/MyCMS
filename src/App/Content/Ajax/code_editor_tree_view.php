@@ -54,10 +54,9 @@ class TreeView
     }
 }
 
-$app->container['users']->hideIfStaffNotLogged();
-if ($app->container['users']->staffLoggedIn() && isset($_POST['dir'])) {
-    $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank < 3) {
+$app->container['users']->hideIfNotLogged();
+if ($app->container['users']->userLoggedIn() && isset($_POST['dir'])) {
+    if(!$app->container['users']->currentUserHasPermission("edit_files")) {
         return;
     }
 

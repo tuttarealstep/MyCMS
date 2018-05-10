@@ -371,3 +371,18 @@ a:hover, .pagination > li > a:hover {
     text-transform: uppercase;
     border: 0;
 }
+
+label
+{
+    font-weight: 400;
+}
+
+textarea
+{
+    resize: vertical;
+}
+
+.table-responsive
+{
+    border: none;
+}

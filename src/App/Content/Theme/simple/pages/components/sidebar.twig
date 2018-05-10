@@ -1,0 +1,16 @@
+<form method="post" accept-charset="utf-8">
+        <div class="input-group" style="margin-bottom: 20px !important;">
+            <input id="searchbox" type="text" name="searchform" class="form-control">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" name="search" type="submit"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+</form>
+<hr>
+<div class="menuBar">
+    {% if container.theme.isMaintenance == false %}
+        <ul>
+        {{ container.plugins.applyEvent('getMenu', true) | raw }}
+        </ul>
+    {% endif %}
+</div>

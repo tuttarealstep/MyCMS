@@ -32,4 +32,9 @@ class Container
     {
         $this->container = $container;
     }
+
+    function __construct($container)
+    {
+        $this->setContainer($container);
+    }
 }

@@ -5,10 +5,10 @@
  * Time: 22.31
  */
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
+if(!$this->container['users']->currentUserHasPermission("edit_files"))
+{
     header('Location: ' . HOST . '/my-admin/home');
     exit();
 }

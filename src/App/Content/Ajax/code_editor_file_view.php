@@ -8,10 +8,9 @@ define('MY_CMS_PATH', true);
 define("LOADER_LOAD_PAGE", false);
 include '../../../../src/Bootstrap.php';
 
-$app->container['users']->hideIfStaffNotLogged();
-if ($app->container['users']->staffLoggedIn()) {
-    $user_rank = $app->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank < 3) {
+$app->container['users']->hideIfNotLogged();
+if ($app->container['users']->userLoggedIn()) {
+    if (!$app->container['users']->currentUserHasPermission("edit_files")) {
         return;
     }
 

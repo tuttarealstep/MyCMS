@@ -95,10 +95,10 @@ class MyCMSApi
         $preg = "_api_/";
         $banned_settings_id = ["6", "8", "9", "10", "11", "12"];
 
-        if (preg_match("/_api_/users//i", $url)) {
+        if (preg_match("/_api_\/users\//i", $url)) {
 
 
-        } elseif (preg_match("/_api_/web_site//i", $url)) {
+        } elseif (preg_match("/_api_\/web_site\//i", $url)) {
 
             preg_match("/_api_/web_site/(.*)/i", $url, $match);
 

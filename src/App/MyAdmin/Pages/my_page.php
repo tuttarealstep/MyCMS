@@ -2,10 +2,14 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
+
+if (!$this->container['users']->currentUserHasPermission("read_private_pages")) {
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_pages');
-define('PAGE_NAME', $this->container['languages']->ea('page_pages_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_pages_page_name', true));
 
 $this->getFileAdmin('header');
 $this->getPageAdmin('topbar');
@@ -13,13 +17,25 @@ $this->getPageAdmin('topbar');
 $info = "";
 
 if (isset($_POST['execute'])) {
-    $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank >= 3) {
         if ($_POST['ifchecked'] == 'delete') {
             if (!empty($_POST['check_list'])) {
                 foreach ($_POST['check_list'] as $select) {
-                    $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
-                    $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_delete_successfully', '1') . '</div>';
+                    if ($this->container['users']->currentUserHasPermission("delete_pages"))
+                    {
+                        $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                        $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_delete_successfully', '1') . '</div>';
+                    } else {
+                        if($this->container['database']->single('SELECT pagePUBLIC FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]) == "1")
+                        {
+                            if ($this->container['users']->currentUserHasPermission("delete_published_pages")) {
+                                $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                            }
+                        } else {
+                            if ($this->container['users']->currentUserHasPermission("delete_private_pages")) {
+                                $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                            }
+                        }
+                    }
                 }
             } else {
                 $info = '<div class="row"><div class="alert alert-danger">' . $this->container['languages']->ea('page_pages_delete_empty_checklist', '1') . '</div>';
@@ -34,11 +50,13 @@ if (isset($_POST['execute'])) {
         } elseif ($_POST['ifchecked'] == 'export') {
             if (!empty($_POST['check_list'])) {
                 foreach ($_POST['check_list'] as $select) {
-                    $this->container['theme']->my_page_export($select);
+                    if ($this->container['users']->currentUserHasPermission("export"))
+                    {
+                        $this->container['theme']->my_page_export($select);
+                    }
                 }
             }
         }
-    }
 }
 ?>
 <div class="container">
@@ -47,12 +65,16 @@ if (isset($_POST['execute'])) {
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_pages_page_name'); ?> <a style="margin-left: 10px"
-                                                                             href="{@siteURL@}/my-admin/my_page_import"
-                                                                             class="btn btn-primary pull-right"><?php $this->container['languages']->ea('page_pages_header_import'); ?></a>
-
-                <a href="{@siteURL@}/my-admin/my_page_new"
-                   class="btn btn-primary pull-right"><?php $this->container['languages']->ea('page_pages_header_create_new'); ?></a>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ta('page_pages_page_name'); ?>
+                <?php
+                if ($this->container['users']->currentUserHasPermission("import")) {
+                    ?>
+                    <a style="margin-left: 10px" href="{@siteURL@}/my-admin/my_page_import" class="btn btn-primary pull-right"><?php $this->container['languages']->ea('page_pages_header_import'); ?></a>
+                <?php }  if ($this->container['users']->currentUserHasPermission("publish_pages")) {
+                ?>
+                <a href="{@siteURL@}/my-admin/my_page_new" class="btn btn-primary pull-right"><?php $this->container['languages']->ea('page_pages_header_create_new'); ?></a>
+                <?php }
+                ?>
             </h1>
         </div>
         <!-- /.col-lg-12 -->
@@ -75,11 +97,35 @@ if (isset($_POST['execute'])) {
                         </thead>
                         <tbody>
                         <?php
+                        $query = "SELECT * FROM my_page WHERE pageCANDELETE = '1' AND 1 = 1 ";
+                        $permissions = false;
+                        if($this->container['users']->currentUserHasPermission("edit_private_pages") || $this->container['users']->currentUserHasPermission("delete_private_pages"))
+                        {
+                            $query .= "AND pagePUBLIC = '0'";
 
-                        $page = $this->container['database']->query("SELECT * FROM my_page WHERE pageCANDELETE = '1'");
-                        $i = 0;
+                            if($this->container['users']->currentUserHasPermission("delete_published_pages")
+                                || $this->container['users']->currentUserHasPermission("edit_published_pages"))
+                            {
+                                $query .= "OR pagePUBLIC = '1'";
+                            }
+
+                            $permissions = true;
+                        } else {
+                            if($this->container['users']->currentUserHasPermission("delete_published_pages")
+                                || $this->container['users']->currentUserHasPermission("edit_published_pages"))
+                            {
+                                $query .= "AND pagePUBLIC = '1'";
+                                $permissions = true;
+                            }
+                        }
+
+                        $page = [];
+                        if($permissions)
+                        {
+                            $page = $this->container['database']->query($query);
+                        }
+
                         foreach ($page as $pageinfo) {
-                            $i++;
                             ?>
                             <tr>
                                 <td><?php echo $pageinfo['pageID']; ?></td>
@@ -104,14 +150,29 @@ if (isset($_POST['execute'])) {
         <div class="col-lg-6">
             <p><?php $this->container['languages']->ea('page_posts_if_check'); ?></p>
             <select name="ifchecked" class="form-control">
-                <option selected="" value="delete"><?php $this->container['languages']->ea('page_pages_check_delete'); ?></option>
-                <option selected="" value="export"><?php $this->container['languages']->ea('page_pages_check_export'); ?></option>
-                <option selected="selected" value="edit"><?php $this->container['languages']->ea('page_pages_check_edit'); ?></option>
+                <?php
+                if ($this->container['users']->currentUserHasPermission("delete_published_pages") || $this->container['users']->currentUserHasPermission("delete_private_pages") || $this->container['users']->currentUserHasPermission("delete_pages") ) {
+                    ?>
+                    <option selected=""
+                            value="delete"><?php $this->container['languages']->ea('page_pages_check_delete'); ?></option>
+                    <?php
+                }
+                if ($this->container['users']->currentUserHasPermission("export")) {
+                ?>
+                <option selected=""
+                        value="export"><?php $this->container['languages']->ea('page_pages_check_export'); ?></option>
+                <?php }
+                if ($this->container['users']->currentUserHasPermission("edit_published_pages") || $this->container['users']->currentUserHasPermission("edit_pages") || $this->container['users']->currentUserHasPermission("edit_private_pages") ) {
+                ?>
+                <option selected="selected"
+                        value="edit"><?php $this->container['languages']->ea('page_pages_check_edit'); ?></option>
+                <?php } ?>
             </select>
         </div>
         <div class="col-lg-3">
             <p>&nbsp;</p>
-            <button type="submit" name="execute" class="btn btn-danger"><?php $this->container['languages']->ea('page_pages_check_button'); ?></button>
+            <button type="submit" name="execute"
+                    class="btn btn-danger"><?php $this->container['languages']->ea('page_pages_check_button'); ?></button>
         </div>
         </form>
     </div>

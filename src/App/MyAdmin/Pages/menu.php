@@ -2,8 +2,13 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
 
+$this->container['users']->hideIfNotLogged();
+
+if(!$this->container['users']->currentUserHasPermission("manage_links"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_menu');
 define('PAGE_NAME', $this->container['languages']->ea('page_menu_page_name', '1'));
@@ -20,120 +25,111 @@ $info = "";
 $this->getStyleScriptAdmin('script');
 
 if (isset($_POST['newmenu'])) {
-    $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank >= 3) {
 
-        if (!empty($_POST['name'])) {
 
-            $name = addslashes($_POST['name']);
-            $pageNAMEURL = addslashes($_POST['url']);
-            $personal_url = addslashes($_POST['personal_url']);
-            $selected_icon = addslashes($_POST['selected_icon']);
+    if (!empty($_POST['name'])) {
 
-            if ($pageNAMEURL == "empty") {
+        $name = addslashes($_POST['name']);
+        $pageNAMEURL = addslashes($_POST['url']);
+        $personal_url = addslashes($_POST['personal_url']);
+        $selected_icon = addslashes($_POST['selected_icon']);
 
-                if (!empty($personal_url)) {
+        if ($pageNAMEURL == "empty") {
 
-                    $idpagina = $this->container['database']->single("SELECT pageID_MENU FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
-
-                    if (!empty($selected_icon)) {
-                        $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon, menu_icon_image) VALUES ('$name', '$idpagina', '$personal_url', '0', 'glyphicon','$selected_icon')");
-                    } else {
-                        $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort,menu_icon_image) VALUES ('$name', '$idpagina', '$personal_url', '0', '')");
-                    }
-                    $info = '<div class="alert alert-success">' . $this->container['languages']->ea('page_menu_add_success', '1') . '</div>';
-                    $name = '';
-                    $personal_url = '';
-
-                } else {
-                    $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_menu_error_empty_personal_url', '1') . '</div>';
-                    $name = addslashes($_POST['name']);
-                    $personal_url = addslashes($_POST['personal_url']);
-                }
-
-            } else {
-
+            if (!empty($personal_url)) {
 
                 $idpagina = $this->container['database']->single("SELECT pageID_MENU FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
-                $page_url = $this->container['database']->single("SELECT pageURL FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
+
                 if (!empty($selected_icon)) {
-                    $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon,menu_icon_image) VALUES ('$name', '$idpagina', '$page_url', '0', 'glyphicon','$selected_icon')");
+                    $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon, menu_icon_image) VALUES ('$name', '$idpagina', '$personal_url', '0', 'glyphicon','$selected_icon')");
                 } else {
-                    $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort,menu_icon_image) VALUES ('$name', '$idpagina', '$page_url', '0', '')");
+                    $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort,menu_icon_image) VALUES ('$name', '$idpagina', '$personal_url', '0', '')");
                 }
                 $info = '<div class="alert alert-success">' . $this->container['languages']->ea('page_menu_add_success', '1') . '</div>';
                 $name = '';
                 $personal_url = '';
+
+            } else {
+                $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_menu_error_empty_personal_url', '1') . '</div>';
+                $name = addslashes($_POST['name']);
+                $personal_url = addslashes($_POST['personal_url']);
             }
 
         } else {
-            $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_menu_error_add_name', '1') . '</div>';
-            $name = addslashes($_POST['name']);
-            $personal_url = addslashes($_POST['personal_url']);
+
+
+            $idpagina = $this->container['database']->single("SELECT pageID_MENU FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
+            $page_url = $this->container['database']->single("SELECT pageURL FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
+            if (!empty($selected_icon)) {
+                $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon,menu_icon_image) VALUES ('$name', '$idpagina', '$page_url', '0', 'glyphicon','$selected_icon')");
+            } else {
+                $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort,menu_icon_image) VALUES ('$name', '$idpagina', '$page_url', '0', '')");
+            }
+            $info = '<div class="alert alert-success">' . $this->container['languages']->ea('page_menu_add_success', '1') . '</div>';
+            $name = '';
+            $personal_url = '';
         }
+
+    } else {
+        $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_menu_error_add_name', '1') . '</div>';
+        $name = addslashes($_POST['name']);
+        $personal_url = addslashes($_POST['personal_url']);
     }
 }
 ?>
-<?php
-$user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank > 2) {
-    ?>
-    <script>
-        function updateSort() {
+<script>
+    function updateSort() {
 
-            menulist = $('#menuedit').sortable('serialize');
-            $.ajax({
-                url: "{@siteURL@}/src/App/Content/Ajax/menu_update.php",
-                type: "post",
-                data: menulist,
-                error: function () {
-                    alert("AJAX ERROR");
+        menulist = $('#menuedit').sortable('serialize');
+        $.ajax({
+            url: "{@siteURL@}/src/App/Content/Ajax/menu_update.php",
+            type: "post",
+            data: menulist,
+            error: function () {
+                alert("AJAX ERROR");
+            }
+        });
+    }
+
+    $(document).ready(
+        function () {
+            $("#menuedit").sortable({
+                update: function () {
+                    menulist = $('#menuedit').sortable('serialize');
+                    $.ajax({
+                        url: "{@siteURL@}/src/App/Content/Ajax/menu_update.php",
+                        type: "post",
+                        data: menulist,
+                        error: function () {
+                            alert("AJAX ERROR");
+                        }
+                    });
                 }
             });
+
+            $('.menuButtonUp').click(function () {
+                var current = $(this).closest('li');
+                current.prev().before(current);
+                updateSort();
+            });
+            $('.menuButtonDown').click(function () {
+                var current = $(this).closest('li');
+                current.next().after(current);
+                updateSort();
+            });
         }
-
-        $(document).ready(
-            function () {
-                $("#menuedit").sortable({
-                    update: function () {
-                        menulist = $('#menuedit').sortable('serialize');
-                        $.ajax({
-                            url: "{@siteURL@}/src/App/Content/Ajax/menu_update.php",
-                            type: "post",
-                            data: menulist,
-                            error: function () {
-                                alert("AJAX ERROR");
-                            }
-                        });
-                    }
-                });
-
-                $('.menuButtonUp').click(function () {
-                    var current = $(this).closest('li');
-                    current.prev().before(current);
-                    updateSort();
-                });
-                $('.menuButtonDown').click(function () {
-                    var current = $(this).closest('li');
-                    current.next().after(current);
-                    updateSort();
-                });
-            }
-        );
-        $(function () {
-            $(".icon-picker").iconPicker();
-        });
-    </script>
-    <?php
-}
-?>
+    );
+    $(function () {
+        $(".icon-picker").iconPicker();
+    });
+</script>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
             <?php if (!empty($info)) {
                 echo '<br>' . $info . '<br>';
             } ?>
-            <h1 class="h1PagesTitle"><?php $this->container['languages']->ea('page_menu_header'); ?></h1>
+            <h1 class="h1PagesTitle"><?php $this->container['languages']->ta('page_menu_header'); ?></h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

@@ -2,43 +2,42 @@
 /*                     *\
 |	MYCMS - TProgram    |
 \*                     */
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
+if(!$this->container['users']->currentUserHasPermission("promote_users"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
+}
 
 define('PAGE_ID', 'admin_ranks');
-define('PAGE_NAME', $this->container['languages']->ea('page_ranks_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_ranks_page_name', true));
 
 $this->getFileAdmin('header');
 $this->getPageAdmin('topbar');
 
 $info = "";
 
-if (isset($_POST['rankutente'])) {
-    $user_rank = $this->container['users']->getInfo($_SESSION['staff']['id'], 'rank');
-    if ($user_rank >= 3) {
+
+if (isset($_POST['rankutente']))
+{
         if (!empty($_POST['email_rank'])) {
             $email_rank = $_POST['email_rank'];
             if ($this->container['users']->controlMail($email_rank)) {
                 $rank_id = $_POST['rank_id'];
                 $this->container['database']->query("UPDATE my_users SET rank = '" . $rank_id . "' WHERE mail = '" . $email_rank . "' LIMIT 1");
-                $info = '<div class="alert alert-success">' . $this->container['languages']->ea('page_ranks_error_1', '1') . '</div>';
+                $info = '<div class="alert alert-success">' . $this->container['languages']->ta('page_ranks_error_1', true) . '</div>';
                 $username_rank = '';
                 $rank_id = '';
             } else {
-                $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_ranks_error_2', '1') . '</div>';
+                $info = '<div class="alert alert-danger">' . $this->container['languages']->ta('page_ranks_error_2', true) . '</div>';
                 $email_rank = $_POST['email_rank'];
                 $rank_id = $_POST['rank_id'];
             }
         } else {
-            $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_ranks_error_3', '1') . '</div>';
+            $info = '<div class="alert alert-danger">' . $this->container['languages']->ta('page_ranks_error_3', true) . '</div>';
             $email_rank = $_POST['email_rank'];
             $rank_id = $_POST['rank_id'];
         }
-    } else {
-        $info = '<div class="alert alert-danger">' . $this->container['languages']->ea('page_ranks_error_4', '1') . '</div>';
-        $email_rank = $_POST['email_rank'];
-        $rank_id = $_POST['rank_id'];
-    }
 }
 ?>
 <div class="container">
@@ -62,31 +61,20 @@ if (isset($_POST['rankutente'])) {
                             <th><?php $this->container['languages']->ea('page_ranks_table_user'); ?></th>
                             <th><?php $this->container['languages']->ea('page_ranks_table_rank'); ?></th>
                             <th><?php $this->container['languages']->ea('page_ranks_table_mail'); ?></th>
-                            <th><?php $this->container['languages']->ea('page_ranks_table_name_rank'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
 
-                        $ranks = $this->container['database']->query("SELECT * from my_users WHERE rank >= '0' ORDER BY rank DESC");
-                        $i = 0;
-                        foreach ($ranks as $ranksinfo) {
-                            $i++;
+                        $ranks = $this->container['database']->query("SELECT * from my_users ORDER BY rank DESC");
 
-                            if ($ranksinfo['rank'] == 2) {
-                                $rank_name = $this->container['languages']->ea('page_ranks_2', '1');
-                            } elseif ($ranksinfo['rank'] == 3) {
-                                $rank_name = $this->container['languages']->ea('page_ranks_3', '1');
-                            } elseif ($ranksinfo['rank'] == 1) {
-                                $rank_name = $this->container['languages']->ea('page_ranks_1', '1');
-                            }
-
+                        foreach ($ranks as $ranksinfo)
+                        {
                             ?>
                             <tr>
                                 <td><?php echo $ranksinfo['name'] . ' ' . $ranksinfo['surname']; ?></td>
-                                <td><?php echo $ranksinfo['rank']; ?></td>
+                                <td><?php $this->container['languages']->ta($ranksinfo['rank']); ?></td>
                                 <td><?php echo $ranksinfo['mail']; ?></td>
-                                <td><?php echo $rank_name; ?></td>
                             </tr>
                             <?php
                         }
@@ -101,22 +89,25 @@ if (isset($_POST['rankutente'])) {
         <div class="col-lg-4">
             <div class="panel b_panel">
                 <div class="panel-heading">
-                    <h1 class="panel-title text-center"><?php $this->container['languages']->ea('page_ranks_give_user_title'); ?></h1>
+                    <h1 class="panel-title text-center"><?php $this->container['languages']->ta('page_ranks_give_user_title'); ?></h1>
                 </div>
                 <form action="" method="post">
                     <div class="panel-body b_panel-body">
                         <div class="panel-body-padding">
                             <input type="text" name="email_rank"
-                                   placeholder="<?php $this->container['languages']->ea('page_ranks_give_user_email'); ?>"
+                                   placeholder="<?php $this->container['languages']->ta('page_ranks_give_user_email'); ?>"
                                    class="form-control b_form-control" maxlength="100"
                                    value="<?php echo (isset($email_rank)) ? $email_rank : ""; ?>">
                             <br/>
-                            <span class="label label-success"><?php $this->container['languages']->ea('page_ranks_table_name_rank'); ?></span>
+                            <span class="label label-success"><?php $this->container['languages']->ta('page_ranks_table_name_rank'); ?></span>
                             <br/><br/>
                             <select name='rank_id' class='dropdown form-control b_form-control'>
-                                <option value='2'><?php $this->container['languages']->ea('page_ranks_2'); ?></option>
-                                <option value='3'><?php $this->container['languages']->ea('page_ranks_3'); ?></option>
-                                <option value='1'><?php $this->container['languages']->ea('page_ranks_1'); ?></option>
+                                <?php
+                                foreach ($this->container['roles']->getRoles() as $key => $value)
+                                {
+                                    ?><option value='<?php echo $key; ?>'><?php $this->container['languages']->ta($key); ?></option><?php
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>

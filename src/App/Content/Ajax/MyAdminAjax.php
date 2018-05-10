@@ -3,7 +3,7 @@ define('MY_CMS_PATH', true);
 define("LOADER_LOAD_PAGE", false);
 include '../../../../src/Bootstrap.php';
 
-if ($app->container['users']->staffLoggedIn()) {
+if ($app->container['users']->userLoggedIn()) {
     function newCategory($category, $app)
     {
         $finder = $app->container['blog']->categoryFinder($category);
@@ -28,7 +28,8 @@ if ($app->container['users']->staffLoggedIn()) {
         switch ($_POST['m']) {
             case 'newCategory':
                 if (isset($_POST['category']) && !empty($_POST['category'])) {
-                    newCategory($app->container['security']->mySqlSecure($_POST['category']), $app);
+                    if($app->container['users']->currentUserHasPermission("manage_categories"))
+                        newCategory($app->container['security']->mySqlSecure($_POST['category']), $app);
                 }
                 break;
             case 'customizerKeepSession':
@@ -52,12 +53,35 @@ if ($app->container['users']->staffLoggedIn()) {
             case 'changeAdminColor':
                 if (isset($_POST['color']) && !empty($_POST['color'])) {
                     $color = $app->container['security']->mySqlSecure($_POST['color']);
-                    $app->container['users']->setInfo($_SESSION['staff']['id'], "adminColor", $color);
+                    $app->container['users']->setInfo($_SESSION['user']['id'], "adminColor", $color);
                 }
                 break;
             case 'savePostDraft':
                 if(!isset($_POST['id']) && !empty($_POST['id']))
                     return;
+
+                if($this->container['blog']->getInfo('authorID', $_POST['id']) == $_SESSION['user']['id'] && !$this->container['users']->currentUserHasPermission("edit_posts"))
+                {
+                    if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
+                        if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                            return;
+                        }
+                    } else {
+                        if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                            return;
+                        }
+                    }
+                } else {
+                    if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
+                        if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                            return;
+                        }
+                    } else {
+                        if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                            return;
+                        }
+                    }
+                }
 
                 if (isset($_POST['title']) && !empty($_POST['title']))
                {
@@ -67,6 +91,62 @@ if ($app->container['users']->staffLoggedIn()) {
                 {
                     $app->container['database']->query("UPDATE my_blog SET postContent = :postContent WHERE postId = :postId", ["postContent" => $app->container['plugins']->applyEvent('parsePostContent', $_POST['content']), "postId" => (int)$_POST['id']]);
                 }
+                break;
+        }
+    }
+
+    if(isset($_POST['action']))
+    {
+        switch ($_POST['action'])
+        {
+            case 'query-media':
+
+                $query = "SELECT * FROM my_media WHERE 1 = 1";
+
+                if(isset($_POST['data']['mimeType']) && !empty($_POST['data']['mimeType']))
+                {
+                    switch (strtolower($_POST['data']['mimeType']))
+                    {
+                        case 'image':
+                        case 'audio':
+                        case 'video':
+                            $query .= " AND mime_type LIKE '" . $_POST['data']['mimeType'] . "%'";
+                            break;
+                    }
+                }
+
+                if(isset($_POST['data']['search']) && !empty($_POST['data']['search']))
+                {
+                    $query .= " AND title LIKE '%" . $_POST['data']['search'] . "%'";
+                }
+
+                if(isset($_POST['data']['orderby']) && !empty($_POST['data']['orderby']))
+                {
+                    $query .= " ORDER BY " . $_POST['data']['orderby'];
+
+                    if(isset($_POST['data']['order']) && !empty($_POST['data']['order']))
+                    {
+                        switch (strtolower($_POST['data']['order']))
+                        {
+                            case 'desc':
+                            case 'asc':
+                                $query .= " " . strtoupper($_POST['data']['order']);
+                                break;
+                        }
+                    }
+                }
+
+                $result = $app->container['database']->query($query);
+
+                header("Content-Type: application/json");
+
+                if(!$result)
+                {
+                    echo json_encode([]);
+                    return;
+                }
+
+                echo json_encode($result);
                 break;
         }
     }

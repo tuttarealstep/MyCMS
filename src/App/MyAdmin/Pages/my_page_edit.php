@@ -3,17 +3,15 @@
 |	MYCMS - TProgram    |
 \*                     */
 
-$this->container['users']->hideIfStaffNotLogged();
+$this->container['users']->hideIfNotLogged();
 
-
-$user_rank = $this->container["users"]->getInfo($_SESSION['staff']['id'], 'rank');
-if ($user_rank < 3) {
-    header('Location: ' . HOST . '/my-admin/home');
-    exit();
+if(!$this->container['users']->currentUserHasPermission("edit_pages"))
+{
+    throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
 define('PAGE_ID', 'admin_pages_edit');
-define('PAGE_NAME', $this->container['languages']->ea('page_pages_edit', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_pages_edit', true));
 
 $this->container['theme']->addStyleScriptAdmin('script', '{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/tinymce/tinymce.min.js');
 
@@ -32,6 +30,24 @@ if (isset($_GET['id'])) {
             $pages['content'] = $this->container['database']->single("SELECT pageHTML FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
             $pages['URL'] = $this->container['database']->single("SELECT pageURL FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
             $pagePUBLIC = $this->container['database']->single("SELECT pagePUBLIC FROM my_page WHERE pageID = '" . $_GET['id'] . "' LIMIT 1");
+
+            if($pagePUBLIC == "1")
+            {
+                if(!$this->container['users']->currentUserHasPermission("edit_published_pages"))
+                {
+
+                    header('Location: ' . HOST . '/my-admin/home');
+                    exit();
+                }
+            } else {
+                if(!$this->container['users']->currentUserHasPermission("edit_private_pages"))
+                {
+
+                    header('Location: ' . HOST . '/my-admin/home');
+                    exit();
+                }
+            }
+
             $pagePUBLICLabel = ($pagePUBLIC == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
 
         }
@@ -90,7 +106,9 @@ $this->getStyleScriptAdmin('script');
         ],
 
         toolbar: "insertfile undo redo | styleselect forecolor backcolor |  bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        autosave_ask_before_unload: false
+        autosave_ask_before_unload: false,
+        relative_urls : false,
+        remove_script_host: false
     });
 </script>
 <style>
