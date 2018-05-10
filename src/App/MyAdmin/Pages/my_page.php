@@ -22,17 +22,17 @@ if (isset($_POST['execute'])) {
                 foreach ($_POST['check_list'] as $select) {
                     if ($this->container['users']->currentUserHasPermission("delete_pages"))
                     {
-                        $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                        $this->container['database']->query('DELETE FROM my_page WHERE pageId = :select AND pageCanDelete = "1"', ['select' => $select]);
                         $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_delete_successfully', '1') . '</div>';
                     } else {
-                        if($this->container['database']->single('SELECT pagePUBLIC FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]) == "1")
+                        if($this->container['database']->single('SELECT pagePublic FROM my_page WHERE pageId = :select AND pageCanDelete = "1"', ['select' => $select]) == "1")
                         {
                             if ($this->container['users']->currentUserHasPermission("delete_published_pages")) {
-                                $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                                $this->container['database']->query('DELETE FROM my_page WHERE pageId = :select AND pageCanDelete = "1"', ['select' => $select]);
                             }
                         } else {
                             if ($this->container['users']->currentUserHasPermission("delete_private_pages")) {
-                                $this->container['database']->query('DELETE FROM my_page WHERE pageID = :select AND pageCANDELETE = "1"', ['select' => $select]);
+                                $this->container['database']->query('DELETE FROM my_page WHERE pageId = :select AND pageCanDelete = "1"', ['select' => $select]);
                             }
                         }
                     }
@@ -97,16 +97,16 @@ if (isset($_POST['execute'])) {
                         </thead>
                         <tbody>
                         <?php
-                        $query = "SELECT * FROM my_page WHERE pageCANDELETE = '1' AND 1 = 1 ";
+                        $query = "SELECT * FROM my_page WHERE pageCanDelete = '1' AND 1 = 1 ";
                         $permissions = false;
                         if($this->container['users']->currentUserHasPermission("edit_private_pages") || $this->container['users']->currentUserHasPermission("delete_private_pages"))
                         {
-                            $query .= "AND pagePUBLIC = '0'";
+                            $query .= "AND pagePublic = '0'";
 
                             if($this->container['users']->currentUserHasPermission("delete_published_pages")
                                 || $this->container['users']->currentUserHasPermission("edit_published_pages"))
                             {
-                                $query .= "OR pagePUBLIC = '1'";
+                                $query .= "OR pagePublic = '1'";
                             }
 
                             $permissions = true;
@@ -114,7 +114,7 @@ if (isset($_POST['execute'])) {
                             if($this->container['users']->currentUserHasPermission("delete_published_pages")
                                 || $this->container['users']->currentUserHasPermission("edit_published_pages"))
                             {
-                                $query .= "AND pagePUBLIC = '1'";
+                                $query .= "AND pagePublic = '1'";
                                 $permissions = true;
                             }
                         }
@@ -128,15 +128,15 @@ if (isset($_POST['execute'])) {
                         foreach ($page as $pageinfo) {
                             ?>
                             <tr>
-                                <td><?php echo $pageinfo['pageID']; ?></td>
+                                <td><?php echo $pageinfo['pageId']; ?></td>
                                 <td>
-                                    <a href="{@siteURL@}/my-admin/page_edit/<?php echo $pageinfo['pageID']; ?>"><?php echo $this->container['functions']->removeSpace($pageinfo['pageTITLE']); ?></a>
+                                    <a href="{@siteURL@}/my-admin/page_edit/<?php echo $pageinfo['pageId']; ?>"><?php echo $this->container['functions']->removeSpace($pageinfo['pageTitle']); ?></a>
                                 </td>
-                                <td><?php echo $pageinfo['pageURL']; ?></td>
-                                <td><?php echo $pageinfo['pageID_MENU']; ?></td>
-                                <td><?php echo ($pageinfo['pagePUBLIC'] == '1') ? $this->container['languages']->ea('page_pages_status_published', '1') : $this->container['languages']->ea('page_pages_status_draft', '1'); ?></td>
+                                <td><?php echo $pageinfo['pageUrl']; ?></td>
+                                <td><?php echo $pageinfo['pageIdMenu']; ?></td>
+                                <td><?php echo ($pageinfo['pagePublic'] == '1') ? $this->container['languages']->ea('page_pages_status_published', '1') : $this->container['languages']->ea('page_pages_status_draft', '1'); ?></td>
                                 <td><input type="checkbox" name="check_list[]"
-                                           value="<?php echo $pageinfo['pageID']; ?>"></td>
+                                           value="<?php echo $pageinfo['pageId']; ?>"></td>
                             </tr>
                             <?php
                         }

@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "description": "",
+  "url": "",
+  "author": "Stefano Valenzano",
+  "author url": "tuttarealstep.github.io",
+  "version": 1.0,
+  "pluginFile": "test.php"
+}

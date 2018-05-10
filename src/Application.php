@@ -76,6 +76,8 @@ class Application
             $_SESSION["customizer"] = false;
         }
 
+        $this->container['pluginsManualActivate'] = $this->activatePlugin;
+
         $this->initErrorReporting();
 
         /* MyCMS 6 use Monolog */
@@ -136,8 +138,17 @@ class Application
 
         $this->initPluginsInitializedEvent();
 
-        foreach ($this->activatePlugin as $plugin) {
-            $this->container["plugins"]->activatePlugin($plugin);
+        $dbActivePlugins = $this->container['settings']->getSettingsValue('active_plugins');
+        if($dbActivePlugins != false)
+        {
+            $dbActivePlugins = unserialize(base64_decode($dbActivePlugins));
+            if(is_array($dbActivePlugins))
+            {
+                $this->activatePlugin = array_merge($this->activatePlugin, $dbActivePlugins);
+            }
+            foreach ($this->activatePlugin as $plugin) {
+                $this->container["plugins"]->activatePlugin($plugin);
+            }
         }
 
         $this->container['plugins']->applyEvent('initialized');
@@ -433,7 +444,8 @@ class Application
             "import" => true,
             "export" => true,
             "use_cmd" => true,
-            "show_user_menu" => true
+            "show_user_menu" => true,
+            "manage_plugins" => true
         ]);
     }
 

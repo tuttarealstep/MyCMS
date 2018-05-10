@@ -1705,15 +1705,15 @@ class MyCMSTheme
 
     public function my_page_export($page_id)
     {
-        $page = $this->container['database']->row("SELECT * FROM my_page WHERE pageID = :page_id AND pageCANDELETE = '1'", ["page_id" => $page_id]);
-        unset($page["pageID"]);
-        $page["pageHTML"] = str_replace('"', "'", $page["pageHTML"]);
+        $page = $this->container['database']->row("SELECT * FROM my_page WHERE pageId = :page_id AND pageCanDelete = '1'", ["page_id" => $page_id]);
+        unset($page["pageId"]);
+        $page["pageHtml"] = str_replace('"', "'", $page["pageHtml"]);
         ob_end_clean();
 
         $json_page = stripcslashes(json_encode($page, JSON_PRETTY_PRINT));
         header('Content-Description: File Transfer');
         header('Content-Type: application/json');
-        header('Content-Disposition: attachment; filename="' . $page["pageTITLE"] . '.json"');
+        header('Content-Disposition: attachment; filename="' . $page["pageTitle"] . '.json"');
         echo $json_page;
         exit;
     }
@@ -1951,12 +1951,12 @@ class MyCMSTheme
 
     function getDatabasePageContent($pageIdMenu)
     {
-        $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageID_MENU = :pageIdMenu AND pagePUBLIC = '1' AND pageINTHEME = '0' LIMIT 1", ["pageIdMenu" => $pageIdMenu]);
+        $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageIdMenu = :pageIdMenu AND pagePublic = '1' AND pageInTheme = '0' LIMIT 1", ["pageIdMenu" => $pageIdMenu]);
         if (!isset($info)) {
             return false;
         }
         
-        return $info["pageHTML"];
+        return $info["pageHtml"];
     }
     //todo add all useful function to plugin system
 }

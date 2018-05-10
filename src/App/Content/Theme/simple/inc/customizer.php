@@ -43,11 +43,11 @@ class MyCMSSimpleCustomizer extends MyCMSContainer
         $selectPageOptions = [
             $this->container['languages']->e("customizer_theme_home_page_select_simple_articles", true) => 'articlesSimpleThemePage'
         ];
-        $pagesQuery = $this->container['database']->query("SELECT * FROM my_page WHERE pagePUBLIC = '1'");
+        $pagesQuery = $this->container['database']->query("SELECT * FROM my_page WHERE pagePublic = '1'");
 
         foreach ($pagesQuery as $page)
         {
-            $selectPageOptions[$this->container['functions']->removeSpace($page['pageTITLE'])] = $page['pageID_MENU'];
+            $selectPageOptions[$this->container['functions']->removeSpace($page['pageTitle'])] = $page['pageIdMenu'];
         }
 
         if(isset($selectPageOptions['Blog']))

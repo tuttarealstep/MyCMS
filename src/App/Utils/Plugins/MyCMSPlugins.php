@@ -205,13 +205,18 @@ class MyCMSPlugins
     /**
      * Reads the plugin in their folder
      * @param string $pluginsFolder
+     * @param bool $noCache
      * @return array
      */
-    function getPlugins($pluginsFolder = "")
+    function getPlugins($pluginsFolder = "", $noCache = false)
     {
-        if (!$pluginsCacheList = $this->container['cache']->get('pluginsList', 18000)) {
-            $pluginsCacheList = [];
+        if($noCache == false)
+        {
+            if (!$pluginsCacheList = $this->container['cache']->get('pluginsList', 18000)) {
+                $pluginsCacheList = [];
+            }
         }
+
 
         if (isset($pluginsCacheList[ $pluginsFolder ])) {
             return $pluginsCacheList[ $pluginsFolder ];

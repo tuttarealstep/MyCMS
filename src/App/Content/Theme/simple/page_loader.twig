@@ -2,6 +2,13 @@
 
 {% block title %}{{ constant("PAGE_NAME") }}{% endblock title %}
 
+{% block head %}
+    {{ parent() }}
+    <style>
+        {{ page_custom_css }}
+    </style>
+{% endblock head %}
+
 {% block content %}
     <div class="container-fluid siteContainer">
         <div class="row">

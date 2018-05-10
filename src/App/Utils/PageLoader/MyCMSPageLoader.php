@@ -49,26 +49,26 @@ class MyCMSPageLoader
             return false;
 
         if (isset($_SESSION['user']['id'])) {
-            if (!$this->container['database']->iftrue("SELECT pageID FROM my_page WHERE pageURL = :page_url OR pageURL = :page_url_two AND pageINTHEME = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url])) {
+            if (!$this->container['database']->iftrue("SELECT pageId FROM my_page WHERE pageUrl = :page_url OR pageUrl = :page_url_two AND pageInTheme = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url])) {
                 return false;
             }
-            $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageURL = :page_url OR pageURL = :page_url_two AND pageINTHEME = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url]);
+            $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageUrl = :page_url OR pageUrl = :page_url_two AND pageInTheme = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url]);
             if (!isset($info)) {
                 return false;
             }
         } else {
-            if (!$this->container['database']->iftrue("SELECT pageID FROM my_page WHERE pageURL = :page_url OR pageURL = :page_url_two AND pagePUBLIC = '1' AND pageINTHEME = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url])) {
+            if (!$this->container['database']->iftrue("SELECT pageId FROM my_page WHERE pageUrl = :page_url OR pageUrl = :page_url_two AND pagePublic = '1' AND pageInTheme = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url])) {
                 return false;
             }
-            $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageURL = :page_url OR pageURL = :page_url_two AND pagePUBLIC = '1' AND pageINTHEME = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url]);
+            $info = $this->container['database']->row("SELECT * FROM my_page WHERE pageUrl = :page_url OR pageUrl = :page_url_two AND pagePublic = '1' AND pageInTheme = '0' LIMIT 1", ["page_url" => $url, "page_url_two" => "{@siteURL@}/" . $url]);
             if (!isset($info)) {
                 return false;
             }
         }
 
 
-        define('PAGE_ID', $info["pageID_MENU"]);
-        define('PAGE_NAME', $this->container['functions']->removeSpace($info["pageTITLE"]));
+        define('PAGE_ID', $info["pageIdMenu"]);
+        define('PAGE_NAME', $this->container['functions']->removeSpace($info["pageTitle"]));
 
         if (isset($_SESSION["customizer"]) && $_SESSION["customizer"] == true) {
             $customizer = "<link rel=\"stylesheet\" href=\"{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/medium-editor/css/medium-editor.css\"><link rel=\"stylesheet\" href=\"{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/medium-editor/css/medium-editor-tables.css\"><link rel=\"stylesheet\" href=\"{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/medium-editor/css/themes/custom.css\" id=\"medium-editor-theme\">";
@@ -103,7 +103,7 @@ window.onload = function()
         
     }
 </script>";
-            $info["pageHTML"] = $customizer . "<input type='hidden' id='customizerPageId' value='" . $info["pageID"] . "'><span id='customizer'>" . $info["pageHTML"] . "</span>" . $customizerAppend;
+            $info["pageHtml"] = $customizer . "<input type='hidden' id='customizerPageId' value='" . $info["pageId"] . "'><span id='customizer'>" . $info["pageHtml"] . "</span>" . $customizerAppend;
 
         }
 
@@ -125,7 +125,8 @@ window.onload = function()
                     $errors = ['INDEX_ERROR' => ''];
                 }
 
-                $page_array["page_loader_content"] = $info["pageHTML"] . "\n";
+                $page_array["page_loader_content"] = $info["pageHtml"] . "\n";
+                $page_array["page_custom_css"] = $info["pageCustomCss"] . "\n";
                 $page_array = array_merge($page_array, $this->container['theme']->tag);
                 $page_array = array_merge($page_array, $errors);
 
@@ -162,23 +163,24 @@ window.onload = function()
 
 
                 $page = $twig->render("page_loader.twig", $page_array);
-                $page = str_replace("{@page_loader_content@}", $info["pageHTML"] . "\n", $page);
+                $page = str_replace("{@page_loader_content@}", $info["pageHtml"] . "\n", $page);
                 $page = $this->container['theme']->parseNoTag($page);
                 $page = $this->container['theme']->setTagFunctions($page);
             } else {
                 $page = $this->container['theme']->getFile('page_loader', "", true) . "\n";
-                $page = str_replace("{@page_loader_content@}", $info["pageHTML"] . "\n", $page);
+                $page = str_replace("{@page_loader_content@}", $info["pageHtml"] . "\n", $page);
                 $page = $this->container['theme']->parseNoTag($page);
                 $page = $this->container['theme']->setTagFunctions($page);
             }
         } else {
             $page = $this->container['theme']->getFile('page_loader', "", true) . "\n";
-            $page = str_replace("{@page_loader_content@}", $info["pageHTML"] . "\n", $page);
+            $page = str_replace("{@page_loader_content@}", $info["pageHtml"] . "\n", $page);
             $page = $this->container['theme']->parseNoTag($page);
             $page = $this->container['theme']->setTagFunctions($page);
         }
 
         $page = str_replace("{@page_loader_title@}", (isset($info["PAGE_NAME"])) ? $info["PAGE_NAME"] : "{@siteNAME@}" . "\n", $page);
+        $page = str_replace("{@page_custom_css@}", $info["pageCustomCss"] . "\n", $page);
 
         $finished = number_format(microtime(true) - $timer_start, 6);
         if (defined("MY_M_DEBUG") && MY_M_DEBUG == true) {
@@ -195,20 +197,20 @@ window.onload = function()
 
     function page_loader_match_database_page()
     {
-        $info = $this->container['database']->query("SELECT pageURL FROM my_page WHERE pageINTHEME = '0'");
+        $info = $this->container['database']->query("SELECT pageUrl FROM my_page WHERE pageInTheme = '0'");
 
         foreach ($info as $tag_info) {
             $url_info = str_replace("{@siteURL@}", "", $tag_info);
             $name_info = str_replace("{@siteURL@}/", "", $tag_info);
             $this->container['router']->map('GET', $url_info, $name_info);
 
-            $this->container['router']->map('GET', $url_info["pageURL"] . "/[*:args]", $name_info["pageURL"]);
+            $this->container['router']->map('GET', $url_info["pageUrl"] . "/[*:args]", $name_info["pageUrl"]);
         }
     }
 
     function checkIfPageExist($pageId)
     {
-        if ($this->container['database']->iftrue("SELECT pageID FROM my_page WHERE pageID = :pageId AND pageINTHEME = '0' LIMIT 1", ["pageId" => $pageId])) {
+        if ($this->container['database']->iftrue("SELECT pageId FROM my_page WHERE pageId = :pageId AND pageInTheme = '0' LIMIT 1", ["pageId" => $pageId])) {
             return true;
         }
 

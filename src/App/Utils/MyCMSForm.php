@@ -263,20 +263,20 @@ if (isset($_POST['import_page_json'])) {
             $json_code = $_POST['json_code'];
             $mycms_json = json_decode($json_code, true);
             if ($mycms_json != false) {
-                $pages_title = $app->container['functions']->addSpace(addslashes($mycms_json['pageTITLE']));
-                $pages_content = addslashes($mycms_json['pageHTML']);
-                $pages_menu_id = $mycms_json['pageID_MENU'];
+                $pages_title = $app->container['functions']->addSpace(addslashes($mycms_json['pageTitle']));
+                $pages_content = addslashes($mycms_json['pageHtml']);
+                $pages_menu_id = $mycms_json['pageIdMenu'];
 
-                $page_url = $mycms_json['pageURL'];
+                $page_url = $mycms_json['pageUrl'];
 
                 if (substr($pages_menu_id, 5, strlen($pages_menu_id) - 5) == $pages_title) {
-                    $find_url = $app->container['database']->single("SELECT COUNT(*) FROM my_page WHERE pageURL = :simulate_url", ["simulate_url" => $page_url]);
+                    $find_url = $app->container['database']->single("SELECT COUNT(*) FROM my_page WHERE pageUrl = :simulate_url", ["simulate_url" => $page_url]);
                     if ($find_url > 0) {
                         $page_url = "{@siteURL@}/" . $app->container['security']->myGenerateRandom(5) . $pages_title;
                     }
 
 
-                    $app->container['database']->query("INSERT INTO my_page (pageTITLE,pageURL,pageHTML, pageID_MENU) VALUES ('$pages_title', '$page_url', '$pages_content', '$pages_menu_id')");
+                    $app->container['database']->query("INSERT INTO my_page (pageTitle,pageUrl,pageHtml, pageIdMenu) VALUES ('$pages_title', '$page_url', '$pages_content', '$pages_menu_id')");
                 }
 
             }

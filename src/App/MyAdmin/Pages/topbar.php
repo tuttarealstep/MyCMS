@@ -58,3 +58,5 @@ $this->container['users']->hideIfNotLogged();
         <!-- /.nav-second-level -->
     </div>
 </div>
+
+<?php $this->container['plugins']->applyEvent('admin_notice'); ?>

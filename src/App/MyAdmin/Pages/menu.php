@@ -38,7 +38,7 @@ if (isset($_POST['newmenu'])) {
 
             if (!empty($personal_url)) {
 
-                $idpagina = $this->container['database']->single("SELECT pageID_MENU FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
+                $idpagina = $this->container['database']->single("SELECT pageIdMenu FROM my_page WHERE pageTitle = '" . $pageNAMEURL . "' LIMIT 1");
 
                 if (!empty($selected_icon)) {
                     $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon, menu_icon_image) VALUES ('$name', '$idpagina', '$personal_url', '0', 'glyphicon','$selected_icon')");
@@ -58,8 +58,8 @@ if (isset($_POST['newmenu'])) {
         } else {
 
 
-            $idpagina = $this->container['database']->single("SELECT pageID_MENU FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
-            $page_url = $this->container['database']->single("SELECT pageURL FROM my_page WHERE pageTITLE = '" . $pageNAMEURL . "' LIMIT 1");
+            $idpagina = $this->container['database']->single("SELECT pageIdMenu FROM my_page WHERE pageTitle = '" . $pageNAMEURL . "' LIMIT 1");
+            $page_url = $this->container['database']->single("SELECT pageUrl FROM my_page WHERE pageTitle = '" . $pageNAMEURL . "' LIMIT 1");
             if (!empty($selected_icon)) {
                 $this->container['database']->query("INSERT INTO my_menu (menu_name, menu_page_id, menu_link, menu_sort, menu_icon,menu_icon_image) VALUES ('$name', '$idpagina', '$page_url', '0', 'glyphicon','$selected_icon')");
             } else {
@@ -180,12 +180,12 @@ if (isset($_POST['newmenu'])) {
                             <select name="url" class="form-control b_form-control">
                                 <option value="empty"><?php $this->container['languages']->ea('page_menu_empty_page'); ?></option>
                                 <?php
-                                $page = $this->container['database']->query("SELECT * FROM my_page WHERE pagePUBLIC = '1'");
+                                $page = $this->container['database']->query("SELECT * FROM my_page WHERE pagePublic = '1'");
                                 $i = 0;
                                 foreach ($page as $pagerow) {
                                     $i++;
                                     ?>
-                                    <option value="<?php echo $pagerow['pageTITLE']; ?>"><?php echo $this->container['functions']->removeSpace($pagerow['pageTITLE']); ?></option>
+                                    <option value="<?php echo $pagerow['pageTitle']; ?>"><?php echo $this->container['functions']->removeSpace($pagerow['pageTitle']); ?></option>
                                     <?php
                                 }
                                 ?>

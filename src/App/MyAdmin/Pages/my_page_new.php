@@ -32,7 +32,7 @@ if (isset($_POST['pages_new_create'])) {
 
         $pages_content = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
 
-        $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
+        $pagePublic = addslashes($_POST['pagePublic']);
 
         $pages_menu_id = $this->container['security']->myGenerateRandom(5) . $pages_title;
 
@@ -41,19 +41,19 @@ if (isset($_POST['pages_new_create'])) {
         $page_url = "{@siteURL@}/" . $this->container['security']->mySqlSecure($pageUrlFromTitle);
 
 
-        $find_url = $this->container['database']->single("SELECT COUNT(*) FROM my_page WHERE pageURL = :simulate_url", ["simulate_url" => $page_url]);
+        $find_url = $this->container['database']->single("SELECT COUNT(*) FROM my_page WHERE pageUrl = :simulate_url", ["simulate_url" => $page_url]);
         if ($find_url > 0) {
             $page_url = "{@siteURL@}/" . $this->container['security']->myGenerateRandom(5) . $this->container['security']->mySqlSecure($pageUrlFromTitle);
         } else {
         }
 
 
-        $this->container['database']->query("INSERT INTO my_page (pageTITLE,pageURL,pagePUBLIC,pageHTML, pageID_MENU) VALUES ('$pages_title', '$page_url', '$pagePUBLIC', '$pages_content', '$pages_menu_id')");
+        $this->container['database']->query("INSERT INTO my_page (pageTitle,pageUrl,pagePublic,pageHtml,pageIdMenu) VALUES ('$pages_title', '$page_url', '$pagePublic', '$pages_content', '$pages_menu_id')");
         $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_new_success_created', '1') . ' <a href="' . $page_url . '">' . $this->container['languages']->ea('page_pages_new_success_show', '1') . '</a></div>';
 
     } else {
-        $pagePUBLIC = addslashes($_POST['pagePUBLIC']);
-        $pagePUBLICLabel = ($pagePUBLIC == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
+        $pagePublic = addslashes($_POST['pagePublic']);
+        $pagePublicLabel = ($pagePublic == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
 
         $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
         define("INDEX_ERROR", $this->container['languages']->ea('page_pages_new_error_title', '1'));
@@ -155,37 +155,37 @@ if (defined("INDEX_ERROR")) {
                                         <div class="col-lg-12 col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label><?php $this->container['languages']->ea('page_pages_new_status_label'); ?></label>
-                                                <input type="hidden" name="pagePUBLIC" id="pagePUBLIC"
-                                                       value="<?php if (isset($pagePUBLIC)) {
-                                                           echo $pagePUBLIC;
+                                                <input type="hidden" name="pagePublic" id="pagePublic"
+                                                       value="<?php if (isset($pagePublic)) {
+                                                           echo $pagePublic;
                                                        } else {
                                                            echo '1';
                                                        } ?>">
-                                                <span id="pagePUBLICLabel"
-                                                      class="text-capitalize"><?php if (isset($pagePUBLIC) && isset($pagePUBLICLabel)) {
-                                                        echo $pagePUBLICLabel;
+                                                <span id="pagePublicLabel"
+                                                      class="text-capitalize"><?php if (isset($pagePublic) && isset($pagePublicLabel)) {
+                                                        echo $pagePublicLabel;
                                                     } else {
                                                         $this->container['languages']->ea('page_pages_status_publish');
                                                     } ?></span>
-                                                <a href="#pagePUBLIC" id="editPagePUBLICButton"
+                                                <a href="#pagePublic" id="editPagePUBLICButton"
                                                    style="display: inline;">
                                                     <span aria-hidden="true">- <?php $this->container['languages']->ea('page_pages_new_label_edit_status'); ?></span></a>
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="pagePUBLICEdit"
+                                        <div class="col-lg-12 col-md-12 col-sm-12 hidden" id="pagePublicEdit"
                                              style="display: block;">
                                             <div class="form-group">
-                                                <select name="pagePUBLICselect" id="pagePUBLICselect"
+                                                <select name="pagePublicselect" id="pagePublicselect"
                                                         class="form-control"
                                                         style="display: inline-block; width: auto">
                                                     <option selected="selected"
                                                             value="1"><?php $this->container['languages']->ea('page_pages_status_publish'); ?></option>
                                                     <option value="0"><?php $this->container['languages']->ea('page_pages_status_draft'); ?></option>
                                                 </select>
-                                                <a href="#pagePUBLICselect" class="btn btn-default"
+                                                <a href="#pagePublicselect" class="btn btn-default"
                                                    id="okPagePUBLICButton"><?php $this->container['languages']->ea('page_pages_new_label_ok'); ?></a>
-                                                <a href="#pagePUBLICselect"
+                                                <a href="#pagePublicselect"
                                                    id="cancelPagePUBLICButton"> <?php $this->container['languages']->ea('page_pages_new_label_cancel'); ?></a>
                                             </div>
                                         </div>

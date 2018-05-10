@@ -134,7 +134,7 @@ function saveMyPage() {
     $.ajax({
         type: 'POST',
         url: myBasePath + "/src/App/Content/Ajax/saveMyPage.php",
-        data: {content: Base64.encode(content), pageID: $("#previewFrame").contents().find("#customizerPageId").val()},
+        data: {content: Base64.encode(content), pageId: $("#previewFrame").contents().find("#customizerPageId").val()},
         error: function (xhr, textStatus, errorThrown) {
             console.log('error');
         }

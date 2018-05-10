@@ -485,6 +485,8 @@ class MyCMSAdmin
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_upload_library", "admin_upload", $this->container["languages"]->ta("page_upload_library", true), "{@siteURL@}/my-admin/upload", ['upload_library']);
         $this->container['plugins']->applyEvent('addAdminSubMenu', "admin_upload_new", "admin_upload", $this->container["languages"]->ta("page_upload_add_new", true), "{@siteURL@}/my-admin/upload_new", ['upload_add_new']);
 
+        $this->container['plugins']->applyEvent('addAdminMenu', "admin_plugins", $this->container["languages"]->ta("page_plugins_menu_title", true), "{@siteURL@}/my-admin/plugins", ['admin_plugins'], '<i class="fa fa-plug fa-fw fa-3x icon_menu_topbar" style="color: #8bc34a;"></i>');
+
         $this->container['plugins']->applyEvent('addMenuPermission', "comments", "moderate_comments");
         $this->container['plugins']->applyEvent('addMenuPermission', "admin_category", "manage_categories");
         $this->container['plugins']->applyEvent('addMenuPermission', "admin_menu", "manage_links");
@@ -509,5 +511,6 @@ class MyCMSAdmin
         $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_xml_command", "manage_options");
 
         $this->container['plugins']->applyEvent('addMenuPermission', "admin_upload", "upload_files");
+
     }
 }

@@ -81,24 +81,24 @@ $(document).ready(function () {
     });
 
     $("#editPagePUBLICButton").click(function () {
-        $("#pagePUBLICEdit").toggleClass("hidden");
+        $("#pagePublicEdit").toggleClass("hidden");
         $("#editPagePUBLICButton").toggleClass("hidden");
     });
 
     $("#cancelPagePUBLICButton").click(function () {
-        $("#pagePUBLICEdit").toggleClass("hidden");
+        $("#pagePublicEdit").toggleClass("hidden");
         $("#editPagePUBLICButton").toggleClass("hidden");
     });
 
     $("#okPagePUBLICButton").click(function () {
-        var statusSelect = $("#pagePUBLICselect");
+        var statusSelect = $("#pagePublicselect");
         var status = statusSelect.val();
         switch (status) {
             case "1":
             case "0":
-                $("#pagePUBLIC").val(status);
-                $("#pagePUBLICLabel").text(statusSelect.find(":selected").text());
-                $("#pagePUBLICEdit").toggleClass("hidden");
+                $("#pagePublic").val(status);
+                $("#pagePublicLabel").text(statusSelect.find(":selected").text());
+                $("#pagePublicEdit").toggleClass("hidden");
                 $("#editPagePUBLICButton").toggleClass("hidden");
                 break;
             default:

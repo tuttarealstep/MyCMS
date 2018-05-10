@@ -453,6 +453,14 @@ $language = [
     'user' => 'User',
     'contributor' => 'Contributor',
     'author' => 'Author',
-    'editor' => 'Editor'
+    'editor' => 'Editor',
+
+    'page_plugins_header' => 'Plugins',
+    'page_plugins_table_name' => 'Name',
+    'page_plugins_table_description' => 'Description',
+    'page_plugins_manage' => 'Enable/Disable',
+    'page_plugins_menu_title' => 'Plugins',
+    'page_plugins_disable' => 'Disable',
+    'page_plugins_enable' => 'Enable'
     ];
 ?>
