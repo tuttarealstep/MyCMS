@@ -31,6 +31,8 @@
     {% endblock %}
 </head>
 <body {% block bodyTag %}{% endblock %}>
+{{ container.plugins.applyEvent('afterHeader') }}
+
 {% block header %}
     {% include "pages/components/header.twig" %}
 {% endblock %}
