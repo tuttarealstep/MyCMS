@@ -1,18 +1,17 @@
 <?php
 /**
- *  @author Stefano V. - Tuttarealstep
+ *  @author Stefano Valenzano - Tuttarealstep
  *  @package MyCMS
  */
 
 define('MY_CMS_PATH', true);
 define('FILE', dirname( __FILE__ ));
-define('MY_INSTALL', '/install/');
+define('CONFIG_FILE', '/src/App/Configuration/');
 
-$disableInstall = true;
-
-if($disableInstall == false && file_exists(FILE.MY_INSTALL.'index.php'))
+$disableInstall = false;
+if($disableInstall == false && !file_exists(FILE.CONFIG_FILE.'my_config.php'))
 {
-    header("location: ../install/index.php");
+    header("location: ../src/App/Content/Installer/index.php");
     exit;
 } else {
     require_once( dirname( __FILE__ ) . '/src/Bootstrap.php' );

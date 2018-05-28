@@ -26,7 +26,7 @@ if ($thereIsNewUpdate[0] == true)
 
     $app->container['plugins']->addEvent('admin_notifications', function () use ($app, $update_text)
     {
-        echo '<div class="alert alert-danger"><span class="badge" style="background-color: #E53935">!</span> <b>' . $update_text . '</b> <a href="{@siteURL@}/my-admin/update" class="btn btn-info" style="float: right; margin-top: -6px;">' . $app->container['languages']->ta('page_home_general_info_button_update', true) . '</a></div>';
+        echo '<div class="alert alert-danger"><span class="badge" style="background-color: #E53935">!</span> <b>' . $update_text . '</b> <a href="'. HOST . '/my-admin/update" class="btn btn-info" style="float: right; margin-top: -6px;">' . $app->container['languages']->ta('page_home_general_info_button_update', true) . '</a></div>';
     });
 }
 

@@ -1,6 +1,6 @@
 <?php
 /*                     *\
-|	MYCMS - TProgram    |
+|	MyCMS    |
 \*                     */
 
 $template_admin['name'] = 'Dafault';

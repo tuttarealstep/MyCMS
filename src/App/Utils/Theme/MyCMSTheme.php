@@ -84,7 +84,7 @@ class MyCMSTheme
             return false;
         }
 
-        if (isset($_SESSION["staff"]["id"])) {
+        if (isset($_SESSION["user"]["id"])) {
 
             if (isset($_SESSION['customizerThemeSession']['theme'])) {
                 if (isset($_GET["theme"])) {
@@ -1557,7 +1557,7 @@ class MyCMSTheme
                             $try = false;
                         } else {
                             echo "\n";
-                            echo ea($login["error"], '1') . "\n";
+                            echo $this->container['languages']->ta($login["error"], true) . "\n";
                             echo "\n";
                             $try = false;
                         }
@@ -1565,7 +1565,7 @@ class MyCMSTheme
                         if ($success == true && $try == false) {
                             echo "Success...!\n";
                             echo "\n";
-                            $complete_name = $this->container['users']->getInfo($_SESSION['user']['id'], 'name') . ' ' . $this->container['users']->getInfo($_SESSION['staff']['id'], 'surname');
+                            $complete_name = $this->container['users']->getInfo($_SESSION['user']['id'], 'name') . ' ' . $this->container['users']->getInfo($_SESSION['user']['id'], 'surname');
                             if ($this->container['users']->currentUserHasPermission("use_cmd")) {
                                 $this->consoleAW("Welcome $complete_name\n");
                                 $this->consoleAW("Type a command ('help' for list of commands)'\n");
@@ -1635,6 +1635,7 @@ class MyCMSTheme
                                             echo "Bye...\n";
                                             break;
                                         default:
+                                            //todo check & fix log problem
                                             $consolePluginCommands = $this->getConsoleCommands();
                                             if (isset($consolePluginCommands[ $command ])) {
                                                 $consolePluginCommands[ $command ]["function"]();

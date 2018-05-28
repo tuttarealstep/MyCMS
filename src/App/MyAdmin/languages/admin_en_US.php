@@ -1,6 +1,6 @@
 <?php
 /*                     *\
-|	MYCMS - TProgram    |
+|	MyCMS    |
 \*                     */
 
 //LINGUA : ITALIANA
@@ -461,6 +461,22 @@ $language = [
     'page_plugins_manage' => 'Enable/Disable',
     'page_plugins_menu_title' => 'Plugins',
     'page_plugins_disable' => 'Disable',
-    'page_plugins_enable' => 'Enable'
+    'page_plugins_enable' => 'Enable',
+    'page_users_info_edit' => 'Edit',
+    'page_users_info_delete' => 'Delete',
+
+    'page_users_info_edit_username' => 'Username',
+    'page_users_info_edit_name' => 'Name',
+    'page_users_info_edit_surname' => 'Surname',
+    'page_users_info_email' => 'Email',
+    'page_users_info_update_button' => 'Update',
+    'page_users_info_page_name_update' => 'Edit User',
+    'page_users_info_page_name_delete' => 'Delete User',
+    'page_users_info_delete_info' => 'You have selected the following user to delete it:',
+    'page_users_info_delete_info_contents' => 'What you want to do to the user\'s contents:',
+    'page_users_info_delete_button' => 'Delete',
+    'page_users_info_delete_contents_delete' => 'Delete contents',
+    'page_users_info_delete_contents_transfer' => 'Transfer contents',
+    'page_users_info_delete_contents_transfer_to' => ' to:',
     ];
 ?>

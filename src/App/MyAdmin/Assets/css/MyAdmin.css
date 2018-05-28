@@ -333,3 +333,7 @@ a, a:focus, a:active {
     border: 1px solid #DBDBDB;
     border-radius: 4px;
 }
+.table-responsive
+{
+    overflow-x: scroll;
+}

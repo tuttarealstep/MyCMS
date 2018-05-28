@@ -1,6 +1,6 @@
 <?php
 /*                     *\
-|	MYCMS - TProgram    |
+|	MyCMS    |
 \*                     */
 $this->container['users']->hideIfNotLogged();
 
@@ -58,6 +58,8 @@ if (isset($_POST['execute'])) {
             }
         }
 }
+
+$this->container['plugins']->applyEvent('my_page_after_header');
 ?>
 <div class="container">
     <div class="row">

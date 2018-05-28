@@ -1,6 +1,6 @@
 <?php
 /*                     *\
-|	MYCMS - TProgram    |
+|	MyCMS    |
 \*                     */
 
 //LINGUA : ITALIANA
@@ -479,6 +479,23 @@ $language = [
     'page_plugins_manage' => 'Attiva/Disattiva',
     'page_plugins_menu_title' => 'Plugins',
     'page_plugins_disable' => 'Disabilita',
-    'page_plugins_enable' => 'Abilita'
+    'page_plugins_enable' => 'Abilita',
+    'page_users_info_edit' => 'Modifica',
+    'page_users_info_delete' => 'Elimina',
+
+    'page_users_info_edit_username' => 'Username',
+    'page_users_info_edit_name' => 'Nome',
+    'page_users_info_edit_surname' => 'Cognome',
+    'page_users_info_email' => 'Email',
+    'page_users_info_update_button' => 'Aggiorna',
+    'page_users_info_page_name_update' => 'Modifica Utente',
+    'page_users_info_page_name_delete' => 'Elimina Utente',
+    'page_users_info_delete_info' => 'Hai selezionato il seguente utente per eliminarlo:',
+    'page_users_info_delete_info_contents' => 'Cosa vuoi fare ai contenuti dell\'utente:',
+    'page_users_info_delete_button' => 'Elimina',
+    'page_users_info_delete_contents_delete' => 'Elimina i contenuti',
+    'page_users_info_delete_contents_transfer' => 'Trasferisci i contenuti',
+    'page_users_info_delete_contents_transfer_to' => ' a:',
+
 ];
 ?>

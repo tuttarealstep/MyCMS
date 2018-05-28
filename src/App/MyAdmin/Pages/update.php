@@ -1,7 +1,7 @@
 <?php
 
 $this->noRobots();
-//todo update this page with new method
+
 $this->container['users']->hideIfNotLogged();
 
 if(!$this->container['users']->currentUserHasPermission("update_cms"))
@@ -15,7 +15,7 @@ if (!$this->container['theme']->thereIsNewUpdate()) {
 
 
 define('PAGE_ID', 'admin_update_page');
-define('PAGE_NAME', $this->container['languages']->ea('page_update_page_name', '1'));
+define('PAGE_NAME', $this->container['languages']->ta('page_update_page_name', true));
 
 $this->getFileAdmin('header');
 
@@ -137,12 +137,12 @@ function remove_for_update($src = B_PATH_S)
     }
 }
 
-function download_update()
+function download_update($container)
 {
     $filename_cms = '';
     $filename_db = '';
 
-    $info = $this->container['theme']->thereIsNewUpdate(false);
+    $info = $container['theme']->thereIsNewUpdate(false);
     if ($info[2] != '' && $info[3] != '') {
         if ($info[1] == 'all_update') {
             $filename_cms = "my_cms_" . $info[2];
@@ -252,7 +252,7 @@ if (isset($_POST['update_button'])) {
     /* <script>alert("<?php $this->container['languages']->ea('page_update_alert') ?>");</script> */
     $download_mode = true;
     back_up_cms_folder(); //Make backup
-    download_update(); //download update
+    download_update($this->container); //download update
     sleep(2);
     echo '<meta http-equiv="refresh" content="5;url=' . HOST . '/my-admin/home"> ';
 }

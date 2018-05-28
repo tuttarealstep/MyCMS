@@ -386,4 +386,5 @@ textarea
 .table-responsive
 {
     border: none;
+    overflow-x: scroll;
 }

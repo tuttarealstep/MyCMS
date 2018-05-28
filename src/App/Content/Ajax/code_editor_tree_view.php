@@ -1,6 +1,6 @@
 <?php
 /*                     *\
-|	MYCMS - TProgram    |
+|	MyCMS    |
 \*                     */
 define('MY_CMS_PATH', true);
 define("LOADER_LOAD_PAGE", false);

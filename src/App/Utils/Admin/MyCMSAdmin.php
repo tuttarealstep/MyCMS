@@ -511,6 +511,7 @@ class MyCMSAdmin
         $this->container['plugins']->applyEvent('addSubMenuPermission', "admin_xml_command", "manage_options");
 
         $this->container['plugins']->applyEvent('addMenuPermission', "admin_upload", "upload_files");
+        $this->container['plugins']->applyEvent('addMenuPermission', "admin_plugins", "manage_plugins");
 
     }
 }

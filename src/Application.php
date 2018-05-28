@@ -53,6 +53,7 @@ class Application
     {
         $this->container['my_cms_version'] = '0.0.6.1';
         $this->container['my_cms_db_version'] = '0.0.1';
+
         $this->initialize();
     }
 
@@ -246,7 +247,7 @@ class Application
             }
         }
 
-        if (isset($_SESSION["staff"]["id"])) {
+        if (isset($_SESSION["user"]["id"])) {
             if (isset($_SESSION['customizerLastAction']) && isset($_GET["customizerTHEME"])) {
                 if (!defined('MY_THEME')) {
                     define('MY_THEME', $_GET["customizerTHEME"]);
@@ -361,92 +362,6 @@ class Application
     function initRoles()
     {
         $this->container['roles'] = new MyCMSRoles($this->container);
-
-        //todo remove this add in schema
-        $this->container['roles']->addRole("user", "User",  [
-            "read" => true
-        ]);
-        $this->container['roles']->addRole("author", "Author",  [
-            "read" => true,
-            "edit_posts" => true,
-            "delete_posts" => true,
-            "publish_posts" => true,
-            "upload_files" => true,
-            "edit_published_posts" => true,
-            "delete_published_posts" => true,
-        ]);
-        $this->container['roles']->addRole("editor", "Editor",  [
-            "read" => true,
-            "edit_posts" => true,
-            "delete_posts" => true,
-            "publish_posts" => true,
-            "upload_files" => true,
-            "edit_published_posts" => true,
-            "delete_published_posts" => true,
-            "read_private_posts" => true,
-            "read_private_pages" => true,
-            "publish_pages" => true,
-            "moderate_comments" => true,
-            "manage_links" => true,
-            "manage_categories" => true,
-            "edit_published_pages" => true,
-            "edit_private_posts" => true,
-            "edit_private_pages" => true,
-            "edit_pages" => true,
-            "edit_others_posts" => true,
-            "edit_others_pages" => true,
-            "delete_published_pages" => true,
-            "delete_private_pages" => true,
-            "delete_private_posts" => true,
-            "delete_pages" => true,
-            "delete_others_posts" => true
-        ]);
-
-        $this->container['roles']->addRole("administrator", "Administrator",  [
-            "read" => true,
-            "edit_posts" => true,
-            "delete_posts" => true,
-            "publish_posts" => true,
-            "upload_files" => true,
-            "edit_published_posts" => true,
-            "delete_published_posts" => true,
-            "unfiltered_html" => true,
-            "read_private_posts" => true,
-            "read_private_pages" => true,
-            "publish_pages" => true,
-            "moderate_comments" => true,
-            "manage_links" => true,
-            "manage_categories" => true,
-            "edit_published_pages" => true,
-            "edit_private_posts" => true,
-            "edit_private_pages" => true,
-            "edit_pages" => true,
-            "edit_others_posts" => true,
-            "delete_published_pages" => true,
-            "delete_private_pages" => true,
-            "delete_private_posts" => true,
-            "delete_pages" => true,
-            "delete_others_posts" => true,
-            "create_users" => true,
-            "edit_users" => true,
-            "edit_files" => true,
-            "edit_themes" => true,
-            "delete_themes" => true,
-            "upload_themes" => true,
-            "install_themes" => true,
-            "update_themes" => true,
-            "update_cms" => true,
-            "customize" => true,
-            "switch_themes" => true,
-            "promote_users" => true,
-            "manage_options" => true,
-            "list_users" => true,
-            "import" => true,
-            "export" => true,
-            "use_cmd" => true,
-            "show_user_menu" => true,
-            "manage_plugins" => true
-        ]);
     }
 
     /**
