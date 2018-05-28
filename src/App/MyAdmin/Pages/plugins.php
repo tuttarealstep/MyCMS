@@ -2,7 +2,7 @@
 $this->container['users']->hideIfNotLogged();
 
 define('PAGE_ID', 'admin_plugins');
-define('PAGE_NAME', $this->container['languages']->ta('page_plugins_title', true));
+define('PAGE_NAME', $this->container['languages']->ta('page_plugins_header', true));
 
 if(!$this->container['users']->currentUserHasPermission("manage_plugins"))
 {
