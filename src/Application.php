@@ -51,7 +51,7 @@ class Application
      */
     function __construct()
     {
-        $this->container['my_cms_version'] = '0.0.6.1';
+        $this->container['my_cms_version'] = '0.0.6.2';
         $this->container['my_cms_db_version'] = '0.0.1';
 
         $this->initialize();
