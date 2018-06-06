@@ -19,7 +19,7 @@
                     {% set max = 10 %}
                     {% for post in container.blog.getPosts(max) %}
                         <article class="defaultPost" {% if counter == max - 10 %} id="last" {% endif %}>
-                            <span class="date">{{ container.blog.getInfo('date', postId)|date("d/m/Y") }}</span>
+                            <span class="date">{{ container.blog.getInfo('date', post.postId)|date("d/m/Y") }}</span>
                             <h2 class="title"><a href="{{ container.blog.getInfo('fullPermalink', post.postId) }}">{{ post.postTitle }}</a></h2>
                         </article>
                         {% set counter = counter + 1 %}
