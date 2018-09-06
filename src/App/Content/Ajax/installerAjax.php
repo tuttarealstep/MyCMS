@@ -40,10 +40,12 @@ if (!file_exists(dirname(__FILE__) . "/../../Configuration/my_config.php"))
                 echo "false";
                 return;
             } else {
+                $connection->exec($schema->dropDatabaseTables());
                 $connection->exec($schema->databaseSchema());
             }
         } catch (Exception $e)
         {
+            echo $e;
             echo "false";
             return;
         }

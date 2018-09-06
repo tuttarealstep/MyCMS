@@ -365,4 +365,22 @@ class MyCMSSchema
 
         return substr(bin2hex($random), 0, $length);
     }
+
+    function dropDatabaseTables()
+    {
+        $sql = "DROP TABLE IF EXISTS my_blog;";
+        $sql .= "DROP TABLE IF EXISTS my_blog_category;";
+        $sql .= "DROP TABLE IF EXISTS my_blog_category_relationships;";
+        $sql .= "DROP TABLE IF EXISTS my_blog_post_comments;";
+        $sql .= "DROP TABLE IF EXISTS my_cms_settings;";
+        $sql .= "DROP TABLE IF EXISTS my_language;";
+        $sql .= "DROP TABLE IF EXISTS my_media;";
+        $sql .= "DROP TABLE IF EXISTS my_menu;";
+        $sql .= "DROP TABLE IF EXISTS my_page;";
+        $sql .= "DROP TABLE IF EXISTS my_security_cookie;";
+        $sql .= "DROP TABLE IF EXISTS my_style;";
+        $sql .= "DROP TABLE IF EXISTS my_users;";
+        $sql .= "DROP TABLE IF EXISTS my_users_banned;";
+        return $sql;
+    }
 }
