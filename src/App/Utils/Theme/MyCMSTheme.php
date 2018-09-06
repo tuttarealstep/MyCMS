@@ -69,6 +69,25 @@ class MyCMSTheme
     {
         $this->container['plugins']->addEvent("getMenu", [$this, "getMenu"]);
         $this->container['plugins']->addEvent('adminFooter', '');
+
+    }
+
+    function parsePage($pageContent)
+    {
+        $pageContent = $this->container['plugins']->applyEvent('pageContentBeforeParse', $pageContent);
+        $this->container['plugins']->addEvent('parsePageContent', function ($pageContent)
+        {
+            $pageContent = $this->parseNoTag($pageContent);
+            $pageContent = $this->setTagFunctions($pageContent);
+
+            return $pageContent;
+        });
+
+        $pageContent = $this->container['plugins']->applyEvent('parsePageContent', $pageContent);
+
+        $pageContent = $this->container['plugins']->applyEvent('pageContentAfterParse', $pageContent);
+
+        return $pageContent;
     }
 
     public function setContainer($container)
@@ -281,16 +300,14 @@ class MyCMSTheme
                     $page_loaded = ob_get_contents();
                     ob_end_clean();
 
-                    $page_loaded = $this->parseNoTag($page_loaded);
-                    $page_loaded = $this->setTagFunctions($page_loaded);
+                    $page_loaded = $this->parsePage($page_loaded);
 
                     $twig_template = $twig->createTemplate($page_loaded);
                     $page_loaded = $twig_template->render($page_array);
                 } else {
                     $page_loaded = $twig->render($file . $file_found_ext, $page_array);
 
-                    $page_loaded = $this->parseNoTag($page_loaded);
-                    $page_loaded = $this->setTagFunctions($page_loaded);
+                    $page_loaded = $this->parsePage($page_loaded);
                 }
 
                 echo $page_loaded;
@@ -345,7 +362,7 @@ class MyCMSTheme
                 if ($this->small_page == true) {
                     $page_loaded = $this->removeSpace($page_loaded);
                 }
-                $this->setPage($page_loaded);
+                $this->setPage($page_loaded, false);
             } else {
                 $styleInfo = $this->styleInfo(MY_THEME);
                 if ($file == $styleInfo["style_error_page"]) {
@@ -538,11 +555,17 @@ class MyCMSTheme
 
     //todo add to plugin system
 
-    function setPage($page)
+    function setPage($page, $isAdmin)
     {
         $timer_start = microtime(true);
-        $page = $this->parseNoTag($page);
-        $page = $this->setTagFunctions($page);
+
+        if(!$isAdmin)
+        {
+            $page = $this->parsePage($page);
+        } else {
+            $page = $this->parseNoTag($page);
+            $page = $this->setTagFunctions($page);
+        }
 
         /* if ($admin == false) {
          }*/
@@ -1154,7 +1177,7 @@ class MyCMSTheme
             include $my_admin_path . "/" . $file_name . '.php';
             $page_loaded = ob_get_contents();
             ob_end_clean();
-            $this->setPage($page_loaded);
+            $this->setPage($page_loaded, true);
         } else {
             header('Location: ' . HOST . '/404');
 
