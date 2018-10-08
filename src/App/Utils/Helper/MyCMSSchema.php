@@ -299,6 +299,19 @@ class MyCMSSchema
         ]);
     }
 
+    /**
+     * Remove roles and add
+     */
+    function resetRoles()
+    {
+        $this->container['roles']->removeRole("administrator");
+        $this->container['roles']->removeRole("editor");
+        $this->container['roles']->removeRole("author");
+        $this->container['roles']->removeRole("role");
+
+        $this->setRoles();
+    }
+
     function writeConfig($config_host = "", $config_user = "", $config_password = "", $config_database = "")
     {
         $configFile = "<?php

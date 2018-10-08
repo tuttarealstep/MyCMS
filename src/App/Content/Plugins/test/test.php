@@ -18,6 +18,13 @@ $this->container['plugins']->addEvent('admin_notice', function () use ($test)
     }
 });
 
+$this->container['plugins']->addEvent('admin_notifications', function () use ($test)
+{
+        ?>
+    <div class="alert alert-success" role="alert">test attivo!</div>
+        <?php
+});
+
 $this->container['plugins']->addEvent('my_page_after_header', function () use ($test)
 {
         ?>

@@ -218,7 +218,7 @@ function uploadMedia(fileObj)
             success: function(result) {
                 $("#containerUploadInfo").append(result)
 
-                if (MEDIA_ADDON_PAGE)
+                if (typeof MEDIA_ADDON_PAGE !== 'undefined' && MEDIA_ADDON_PAGE)
                 {
                     $("#editMediaLink").remove()
                 }

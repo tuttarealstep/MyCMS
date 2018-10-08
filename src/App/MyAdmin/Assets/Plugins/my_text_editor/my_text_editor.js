@@ -164,6 +164,10 @@ function loadFile(editor, file) {
                 case 'twig':
                     changeMode(editor, "twig");
                     break;
+                case 'png':
+                    editorShowImage("/src/App/Content/Theme/" + file);
+                    changeMode(editor, "png");
+                    break;
                 default:
                     alert(file_ext)
                     changeMode(editor, "application/x-httpd-php");
@@ -171,6 +175,13 @@ function loadFile(editor, file) {
             }
         });
     }
+}
+
+function editorShowImage(src) {
+    var img = document.createElement("img");
+    img.src = src;
+
+    document.body.appendChild(img);
 }
 
 $("#file_manager").on('click', 'LI A', function () { /* monitor the click event on links */
@@ -198,6 +209,11 @@ $("#file_manager").on('click', 'LI A', function () { /* monitor the click event 
     }
     return false;
 });
+
+function getFileExt(file)
+{
+    return (/[.]/.exec(file)) ? /[^.]+$/.exec(file)[0] : undefined;
+}
 
 div_code_mirror.on('cursorActivity', function (e) {
     var line = e.doc.getCursor().line;
