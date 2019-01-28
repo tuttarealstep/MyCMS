@@ -148,6 +148,8 @@ function loadFile(editor, file) {
             cont_bck = data;
             c_file_path = file;
             editor.getDoc().setValue(Base64.decode(data));
+
+            document.getElementById("imageViewer").classList.add("hidden");
             switch (file_ext) {
                 case 'xml':
                     changeMode(editor, "xml");
@@ -165,8 +167,11 @@ function loadFile(editor, file) {
                     changeMode(editor, "twig");
                     break;
                 case 'png':
+                case 'jpg':
+                case 'gif':
                     editorShowImage("/src/App/Content/Theme/" + file);
-                    changeMode(editor, "png");
+                    changeMode(editor, file_ext);
+                    editor.getDoc().setValue("");
                     break;
                 default:
                     alert(file_ext)
@@ -178,10 +183,12 @@ function loadFile(editor, file) {
 }
 
 function editorShowImage(src) {
-    var img = document.createElement("img");
+    let img = document.getElementById("imageViewer");
     img.src = src;
 
-    document.body.appendChild(img);
+  //  let el = document.body.appendChild(img);
+    document.getElementById("imageViewer").classList.remove("hidden");
+    console.log(img)
 }
 
 $("#file_manager").on('click', 'LI A', function () { /* monitor the click event on links */

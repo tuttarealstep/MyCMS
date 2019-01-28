@@ -268,3 +268,20 @@
 .filetree > li:hover {
     /*background-color: rgba(255, 255, 255, 0.3);*/
 }
+
+#imageViewer
+{
+    position: fixed;
+    top: 25px;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    width: 50%;
+    left: 200px;
+    z-index: 1005;
+}
+
+.hidden
+{
+    display: none;
+}

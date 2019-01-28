@@ -157,10 +157,18 @@ class MyCMSSchema
   PRIMARY KEY (id)
 ) DEFAULT CHARSET=utf8;";
 
+        $usersDataTable = "CREATE TABLE my_users_data (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  user_id int(11) NOT NULL,
+  data_key varchar(255) NOT NULL,
+  data_value text NOT NULL,
+  PRIMARY KEY (id)
+) DEFAULT CHARSET=utf8;";
+
 
         $blogTables = $blogTable . $blogCategoryTable . $blogCategoryRelationship . $blogPostComments;
         $generalTables = $settingsTable . $languageTable . $mediaTable . $menuTable . $pageTable . $styleTable;
-        $usersTable = $securityCookieTable . $usersTable . $usersBannedTable;
+        $usersTable = $securityCookieTable . $usersTable . $usersBannedTable . $usersDataTable;
 
         switch ($type) {
             case "blog":
@@ -168,6 +176,9 @@ class MyCMSSchema
                 break;
             case "general":
                 return $generalTables;
+                break;
+            case "users":
+                return $usersTable;
                 break;
             case "all":
             default:
@@ -394,6 +405,7 @@ class MyCMSSchema
         $sql .= "DROP TABLE IF EXISTS my_style;";
         $sql .= "DROP TABLE IF EXISTS my_users;";
         $sql .= "DROP TABLE IF EXISTS my_users_banned;";
+        $sql .= "DROP TABLE IF EXISTS my_users_data;";
         return $sql;
     }
 }

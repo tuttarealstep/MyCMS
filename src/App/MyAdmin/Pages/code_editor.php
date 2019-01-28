@@ -81,6 +81,7 @@ if (isset($_GET['theme'])) {
 <link rel="stylesheet" href="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/perfect-scrollbar.min.css">
 <link rel="stylesheet" href="{@MY_ADMIN_TEMPLATE_PATH@}/Assets/Plugins/my_text_editor/my_text_editor.css">
 <div class="container">
+    <img id="imageViewer" src="#" >
     <br>
     <div class="row">
         <div class="col-lg-10">

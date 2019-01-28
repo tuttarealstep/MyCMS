@@ -19,6 +19,7 @@ use MyCMS\App\Utils\Database\MyCMSDatabase;
 use MyCMS\App\Utils\Exceptions\MyCMSException;
 use MyCMS\App\Utils\Facilities\MyCMSFunctions;
 use MyCMS\App\Utils\Facilities\MyCMSThemeFunctions;
+use MyCMS\App\Utils\Helper\MyCMSCron;
 use MyCMS\App\Utils\Languages\MyCMSLanguage;
 use MyCMS\App\Utils\Management\MyCMSCache;
 use MyCMS\App\Utils\Users\MyCMSRoles;
@@ -51,7 +52,7 @@ class Application
      */
     function __construct()
     {
-        $this->container['my_cms_version'] = '0.0.6.2';
+        $this->container['my_cms_version'] = '0.0.6.5';
         $this->container['my_cms_db_version'] = '0.0.1';
 
         $this->initialize();
@@ -134,6 +135,8 @@ class Application
         $this->initPageLoader();
 
         $this->initApi();
+
+        $this->initScheduler();
 
         $this->updatePluginContainer();
 
@@ -460,6 +463,16 @@ class Application
     function initApi()
     {
         $this->container['api'] = new MyCMSApi($this->container);
+    }
+
+    /**
+     * Load cron class
+     *
+     * todo call update time
+     */
+    function initScheduler()
+    {
+        $this->container['cron'] = new MyCMSCron($this->container);
     }
 
     function initMedia()

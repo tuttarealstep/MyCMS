@@ -604,4 +604,59 @@ class MyCMSUsers
 
         return false;
     }
+
+    /**
+     * getData is used for retrieve user custom information from the database.
+     *
+     * $key is the user id
+     * $string is a field in the user table
+     *
+     * @param $user_id
+     * @param $key
+     * @return bool
+     */
+    public function getData($user_id, $key)
+    {
+        $filter_id_user = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+        $filter_string = filter_var($key, FILTER_SANITIZE_STRING);
+        if (filter_var($filter_id_user, FILTER_VALIDATE_INT))
+        {
+            $sql = $this->container['database']->single("SELECT data_value FROM my_users_data WHERE user_id = :user_id AND data_key = :data_key LIMIT 1", ["user_id" => $filter_id_user, "data_key" => $filter_string]);
+            return $sql;
+        }
+
+        return false;
+    }
+
+    /**
+     * Change user info
+     *
+     * @param $user_id
+     * @param $key
+     * @param $value
+     * @return bool
+     */
+    public function setData($user_id, $key, $value)
+    {
+        $filter_id_user = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
+        $filter_key = filter_var($key, FILTER_SANITIZE_STRING);
+        $filter_value = filter_var($value, FILTER_SANITIZE_STRING);
+
+        if($this->container['database']->single("SELECT data_key FROM my_users_data WHERE user_id = :user_id AND data_key = :data_key LIMIT 1", ["user_id" => $filter_id_user, "data_key" => $filter_key]))
+        {
+            if (filter_var($filter_id_user, FILTER_VALIDATE_INT)) {
+                $this->container['database']->query("UPDATE my_users_data SET data_value = :data_value WHERE user_id = :user_id AND data_key = :data_key  LIMIT 1", ["user_id" => $filter_id_user, "data_value" => $filter_value, "data_key" => $filter_key]);
+
+                return true;
+            }
+        } else {
+            if (filter_var($filter_id_user, FILTER_VALIDATE_INT)) {
+                $this->container['database']->query("INSERT INTO my_users_data (user_id, data_key, data_value) VALUES (:user_id, :data_key, :data_value)", ["user_id" => $filter_id_user, "data_value" => $filter_value, "data_key" => $filter_key]);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
