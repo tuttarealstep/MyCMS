@@ -21,7 +21,38 @@ if(!defined('MY_CMS_PATH'))
     include 'Bootstrap.php';
 }
 
-//todo finish cron runner
-/*
-print_r($app);
-*/
+$cronArray = $app->container['cron']->getCronArray();
+
+foreach ($cronArray as $hook => $cronJob)
+{
+    if(isset($cronJob['running']) && $cronJob['running'] == true)
+    {
+        if(!$app->container['cron']->parseCronExpression(time(), $cronJob['cronTime']))
+            $cronArray[$hook]['running'] = false;
+        continue;
+    }
+
+    if($cronJob['startFrom'] != null)
+    {
+        if(time() < $cronJob['startFrom'])
+        {
+            continue;
+        }
+    }
+
+    if($app->container['cron']->parseCronExpression(time(), $cronJob['cronTime']))
+    {
+        $app->container['plugins']->applyEvent($hook);
+
+        if($cronJob['runOnce'])
+        {
+            $app->container['cron']->removeScheduledEvent($hook);
+        } else {
+            $cronArray[$hook]['running'] = true;
+        }
+    } else {
+        $cronArray[$hook]['running'] = false;
+    }
+}
+$app->container['cron']->cronArray = $cronArray;
+$app->container['cron']->saveCron();
