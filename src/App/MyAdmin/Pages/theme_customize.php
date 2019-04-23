@@ -7,16 +7,6 @@ if(!$this->container['users']->currentUserHasPermission("customize"))
     throw new MyCMS\App\Utils\Exceptions\MyCMSException("You do not have permission to access this page!", "Permission denied");
 }
 
-$_SESSION["customizer"] = true;
-$_SESSION['customizerLastAction'] = time();
-
-define('PAGE_ID', 'admin_theme_customize');
-define('PAGE_NAME', $this->container['languages']->ea('page_admin_theme_customize_page_name', '1'));
-define('NO_VIEWPORT', true);
-
-$this->getFileAdmin('header');
-$this->getPageAdmin('topbar');
-
 if (isset($_GET['theme']) && !empty($_GET['theme'])) {
     if ($this->container['theme']->themeExist($_GET['theme'])) {
         $theme = $_GET['theme'];
@@ -26,6 +16,18 @@ if (isset($_GET['theme']) && !empty($_GET['theme'])) {
 } else {
     $theme = "default";
 }
+
+$_SESSION["customizer"] = true;
+$_SESSION['customizerLastAction'] = time() - 1;
+$_SESSION['customizerTHEME'] = $theme;
+
+define('PAGE_ID', 'admin_theme_customize');
+define('PAGE_NAME', $this->container['languages']->ea('page_admin_theme_customize_page_name', '1'));
+define('NO_VIEWPORT', true);
+
+
+$this->getFileAdmin('header');
+$this->getPageAdmin('topbar');
 ?>
 <script>
     var theme_var = "<?php echo $theme; ?>";
@@ -82,6 +84,14 @@ if (isset($_GET['theme']) && !empty($_GET['theme'])) {
 
             </iframe>
         </div>
+
+        <?php
+        if(MY_THEME != $theme)
+        {
+            echo '<script>reloadCustomizer(); setTimeout(function() { location.reload(); }, 150)</script>';
+        }
+        ?>
+
     </div>
 </form>
 </body>

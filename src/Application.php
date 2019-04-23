@@ -400,7 +400,8 @@ class Application
         //todo finish or delete(deprecated)
         $this->container['theme']->addTag('my_mysql_version', '5.5'); //<-- this
         $this->container['theme']->addTag('siteURL', $this->container['settings']->getSettingsValue('site_url'));
-        $this->container['theme']->addTag('siteTEMPLATE', $this->container['theme']->fixTheme($this->container['settings']->getSettingsValue('site_template')));
+        $this->container['theme']->addTag('siteTEMPLATE', $this->container['theme']->fixTheme(MY_THEME));
+        //$this->container['theme']->addTag('siteTEMPLATE', $this->container['theme']->fixTheme($this->container['settings']->getSettingsValue('site_template')));
         $this->container['theme']->addTag('MY_ADMIN_TEMPLATE_PATH', $this->container['settings']->getSettingsValue('site_url') . MY_ADMIN_TEMPLATE_PATH);
         $this->container['theme']->addTag('MY_PLUGINS_PATH', $this->container['settings']->getSettingsValue('site_url') . MY_PLUGINS_PATH);
         $this->container['theme']->addTag('siteTIMEZONE', $this->container['settings']->getSettingsValue('site_timezone'));

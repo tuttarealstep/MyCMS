@@ -12,7 +12,7 @@ class MyCMSDefaultCustomizer extends MyCMSContainer
         $this->container['plugins']->addEvent('customizerRegister', [$this, 'setCustomizer']);
     }
 
-    function setCustomizer(\MyCMS\App\Utils\Theme\MyCMSThemeCustomizer $customizer)
+    function setCustomizer(\MyCMS\App\Utils\Theme\MyCMSThemeCustomizer $customizer = null)
     {
         $this->customizer = $customizer;
 
