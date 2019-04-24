@@ -85,15 +85,17 @@ if (isset($_POST['newtheme'])) {
     }
 }
 
-if (isset($_POST['uploadTheme'])) {
+if (isset($_POST['uploadTheme']) && $_FILES['themeFile']["size"] > 0) {
     if ($this->container['users']->userLoggedIn()) {
         if ($this->container['users']->currentUserHasPermission("upload_themes"))
         {
             $info = $this->container['theme']->installTheme($_FILES['themeFile']);
+
             if ($info == true) {
                 $info = null;
             } else {
-                $this->container['functions']->removeDir("." . MY_BASE_PATH . "/tmp/");
+                if(file_exists("." . MY_BASE_PATH . "/tmp/"))
+                    $this->container['functions']->removeDir("." . MY_BASE_PATH . "/tmp/");
             }
         } else {
             define("INDEX_ERROR", $this->container['languages']->ea('error_admin_permissions', '1'));
