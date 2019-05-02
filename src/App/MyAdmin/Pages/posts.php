@@ -17,9 +17,9 @@ $this->getPageAdmin('topbar');
 
 $info = "";
 
-function deletePost($id)
+function deletePost($id, $container)
 {
-    $this->container['database']->query('DELETE FROM my_blog WHERE postId = :select', ['select' => $id]);
+    $container['database']->query('DELETE FROM my_blog WHERE postId = :select', ['select' => $id]);
 }
 
 if (isset($_POST['execute'])) {
@@ -29,24 +29,24 @@ if (isset($_POST['execute'])) {
                 {
                     if ($this->container['users']->currentUserHasPermission("delete_posts"))
                     {
-                        deletePost($select);
+                        deletePost($select, $this->container);
                         $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ta('page_posts_delete_successfull', true) . '</div>';
                     } else {
                         if ($this->container['database']->single('SELECT postAuthor FROM my_blog WHERE postId = :select', ['select' => $select]) == $_SESSION['user']['id']) {
                             if ($this->container['database']->single('SELECT postStatus FROM my_blog WHERE postId = :select', ['select' => $select]) == "publish") {
                                 if ($this->container['users']->currentUserHasPermission("delete_published_posts")) {
-                                    deletePost($select);
+                                    deletePost($select, $this->container);
                                     $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ta('page_posts_delete_successfull', true) . '</div>';
                                 }
                             } else {
                                 if ($this->container['users']->currentUserHasPermission("delete_private_posts")) {
-                                    deletePost($select);
+                                    deletePost($select, $this->container);
                                     $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ta('page_posts_delete_successfull', true) . '</div>';
                                 }
                             }
                         } else {
                             if ($this->container['users']->currentUserHasPermission("delete_others_posts")) {
-                                deletePost($select);
+                                deletePost($select, $this->container);
                                 $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ta('page_posts_delete_successfull', true) . '</div>';
                             }
                         }
