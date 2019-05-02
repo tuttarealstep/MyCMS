@@ -248,7 +248,7 @@ $language = [
     'page_settings_xml_command_text'             => 'Insert:',
 
     //USERS BAN
-    'page_users_bans_page_name'                  => 'Bans users',
+    'page_users_bans_page_name'                  => 'Banned users',
     'page_ban_user_title'                        => 'Ban a user',
     'page_ban_user_email'                        => 'User Email:',
     'page_ban_or_ip'                             => 'Or ip:',
