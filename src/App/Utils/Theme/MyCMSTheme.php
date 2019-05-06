@@ -195,6 +195,12 @@ class MyCMSTheme
 
     function loadTheme($file, $param)
     {
+        $this->container['plugins']->applyEvent('startLoadingTheme', $file, $param);
+
+        if($this->container['plugins']->applyEvent('disableLoadingTheme', false))
+        {
+            return;
+        }
 
         $theme_path = $this->getThemePath();
 
