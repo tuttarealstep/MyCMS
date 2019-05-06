@@ -62,6 +62,7 @@ if (isset($_POST['pages_new_create'])) {
 }
 $this->getStyleScriptAdmin('script');
 ?>
+<?php $this->container['plugins']->applyEvent('myPageNewEditAfterHeader'); ?>
 <script type="text/javascript">
     tinymce.init({
         selector: "textarea",
@@ -103,7 +104,7 @@ if (defined("INDEX_ERROR")) {
     <?php
 }
 ?>
-<div class="container">
+<div class="container" id="containerElements">
     <div class="row">
         <div class="col-lg-12">
             <?php if (!empty($info)) {
