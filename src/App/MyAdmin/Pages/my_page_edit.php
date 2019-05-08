@@ -26,10 +26,12 @@ if (isset($_GET['id'])) {
     if (is_numeric($_GET['id'])) {
         if ($this->container['database']->single("SELECT count(*) FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1") > 0) {
             $pageid = $this->container['security']->mySqlSecure($_GET['id']);
+            $pages['id'] = $pageid;
             $pages['title'] = $this->container['functions']->removeSpace($this->container['database']->single("SELECT pageTitle FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1"));
             $pages['content'] = $this->container['database']->single("SELECT pageHtml FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1");
             $pages['URL'] = $this->container['database']->single("SELECT pageUrl FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1");
             $pagePublic = $this->container['database']->single("SELECT pagePublic FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1");
+            $pages['customCSS'] = $this->container['database']->single("SELECT pageCustomCss FROM my_page WHERE pageId = '" . $_GET['id'] . "' LIMIT 1");
 
             if($pagePublic == "1")
             {
@@ -84,6 +86,8 @@ if (isset($_POST['pages_new_create'])) {
         $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_edit_success_created', '1') . ' <a href="' . $pages['URL'] . '">' . $this->container['languages']->ea('page_pages_edit_success_show', '1') . '</a></div>';
         $pages['title'] = $_POST['pages_title'];
         $pages['content'] = $this->container['plugins']->applyEvent('parseMyPageContent', $_POST['pages_content']);
+
+        $this->container['plugins']->applyEvent('myPageEditSaveSuccess', $pages, $_POST);
     } else {
         $pagePublic = addslashes($_POST['pagePublic']);
         $pagePublicLabel = ($pagePublic == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
@@ -95,6 +99,7 @@ if (isset($_POST['pages_new_create'])) {
 }
 $this->getStyleScriptAdmin('script');
 ?>
+<?php $this->container['plugins']->applyEvent('myPageEditAfterHeader'); ?>
 <?php $this->container['plugins']->applyEvent('myPageNewEditAfterHeader'); ?>
 <script type="text/javascript">
     tinymce.init({
@@ -169,7 +174,7 @@ if (defined("INDEX_ERROR")) {
                         <div class="form-group">
                             {@noTAGS_start@}
                             <textarea name="pages_content"
-                                      style="height:300px;"><?php echo $pages['content']; ?></textarea>
+                                      style="height:300px;"><?php echo htmlentities($pages['content']); ?></textarea>
                             {@noTAGS_end@}
                         </div>
                     </div>
@@ -233,7 +238,8 @@ if (defined("INDEX_ERROR")) {
                     </div>
                 </div>
             </div>
-
+            <input type="hidden" id="customCSSInput" name="customCSSInput" value="<?php echo htmlentities($pages['customCSS']); ?>"/>
+            <?php $this->container['plugins']->applyEvent('myPageEditInsideForm'); ?>
         </div>
     </form>
     <!-- /.row -->

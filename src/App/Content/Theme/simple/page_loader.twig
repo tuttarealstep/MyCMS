@@ -5,7 +5,7 @@
 {% block head %}
     {{ parent() }}
     <style>
-        {{ page_custom_css }}
+        {{ page_custom_css | raw }}
     </style>
 {% endblock head %}
 

@@ -51,6 +51,7 @@ if (isset($_POST['pages_new_create'])) {
         $this->container['database']->query("INSERT INTO my_page (pageTitle,pageUrl,pagePublic,pageHtml,pageIdMenu) VALUES ('$pages_title', '$page_url', '$pagePublic', '$pages_content', '$pages_menu_id')");
         $info = '<div class="row"><div class="alert alert-success">' . $this->container['languages']->ea('page_pages_new_success_created', '1') . ' <a href="' . $page_url . '">' . $this->container['languages']->ea('page_pages_new_success_show', '1') . '</a></div>';
 
+        $this->container['plugins']->applyEvent('myPageNewSaveSuccess', $this->container['database']->lastInsertId(), $_POST);
     } else {
         $pagePublic = addslashes($_POST['pagePublic']);
         $pagePublicLabel = ($pagePublic == "1") ? $this->container['languages']->ea('page_pages_status_publish', '1') : $this->container['languages']->ea('page_pages_status_draft', '1');
@@ -62,6 +63,7 @@ if (isset($_POST['pages_new_create'])) {
 }
 $this->getStyleScriptAdmin('script');
 ?>
+<?php $this->container['plugins']->applyEvent('myPageNewAfterHeader'); ?>
 <?php $this->container['plugins']->applyEvent('myPageNewEditAfterHeader'); ?>
 <script type="text/javascript">
     tinymce.init({
@@ -200,6 +202,7 @@ if (defined("INDEX_ERROR")) {
                     </div>
                 </div>
             </div>
+            <?php $this->container['plugins']->applyEvent('myPageNewInsideForm'); ?>
 
         </div>
     </form>
