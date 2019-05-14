@@ -64,7 +64,6 @@ class Application
      */
     function initialize()
     {
-        //todo add cron
         if ($this->isInConsole()) {
             define("LOADER_LOAD_PAGE", false);
         } else {
