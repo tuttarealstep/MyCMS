@@ -20,6 +20,8 @@ class MyCMSUsers
     function __construct($container)
     {
         $this->container = $container;
+
+        $this->setEvents();
     }
 
     /**
@@ -555,6 +557,16 @@ class MyCMSUsers
      */
     public function getUserName($id)
     {
+        return $this->container['plugins']->applyEvent('getUserName', $id);
+    }
+
+    /**
+     * Hook function
+     * @param $id
+     * @return string
+     */
+    private function getUserNameEvent($id)
+    {
         return $this->getInfo($id, "name") . " " . $this->getInfo($id, "surname");
     }
 
@@ -585,11 +597,16 @@ class MyCMSUsers
         return $this->currentUserHasPermission($permission);
     }
 
+    public function currentUserHasPermission($permission)
+    {
+        return $this->container['plugins']->applyEvent('currentUserHasPermissionEvent', $permission);
+    }
+
     /**
      * @param $permission
      * @return bool
      */
-    public function currentUserHasPermission($permission)
+    public function currentUserHasPermissionEvent($permission)
     {
         //todo map permissions for other check for editors ecc
         if($this->userLoggedIn())
@@ -616,6 +633,21 @@ class MyCMSUsers
      * @return bool
      */
     public function getData($user_id, $key)
+    {
+        return $this->container['plugins']->applyEvent('getUserData', $user_id, $key);
+    }
+
+    /**
+     * getData is used for retrieve user custom information from the database.
+     *
+     * $key is the user id
+     * $string is a field in the user table
+     *
+     * @param $user_id
+     * @param $key
+     * @return bool
+     */
+    public function getDataEvent($user_id, $key)
     {
         $filter_id_user = filter_var($user_id, FILTER_SANITIZE_NUMBER_INT);
         $filter_string = filter_var($key, FILTER_SANITIZE_STRING);
@@ -658,5 +690,13 @@ class MyCMSUsers
         }
 
         return false;
+    }
+
+    public function setEvents()
+    {
+        $this->container['plugins']->addEvent('currentUserHasPermission', [$this, 'currentUserHasPermissionEvent']);
+        $this->container['plugins']->addEvent('getUserData', [$this, 'getDataEvent'], 1, 2);
+
+        $this->container['plugins']->addEvent('getUserName', [$this, 'getUsernameEvent']);
     }
 }

@@ -94,6 +94,8 @@ $this->getPageAdmin('topbar');
             <!-- <div class="well well-lg b_panel" style="background-color: #ffffff">...</div>
              <div class="well well-lg b_panel" style="background-color: #ffffff">...</div>-->
         </div>
+
+        <?php $this->container['plugins']->applyEvent('myAdminHomePageWidget'); ?>
         <!--<div class="col-lg-4 col-md-4">
                    <div class="alert alert-info"><?php $this->container['languages']->ea('page_home_danger_info'); ?></div>
                 </div>-->

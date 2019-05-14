@@ -17,6 +17,8 @@ class MyCMSPlugins
     private $container;
     private $events = [];
 
+    public $applyHooks = [];
+
     private $activePlugins = [];
 
     /**
@@ -320,5 +322,9 @@ class MyCMSPlugins
         return false;
     }
 
+    function getEvents()
+    {
+        return $this->events;
+    }
     //todo make plugin page in admin panel to download plugin and activate them or install ...
 }
