@@ -1,5 +1,7 @@
 <?php
 if (isset($_POST['admin-login'])) {
+    $app->container['plugins']->applyEvent('userBeforeLogin');
+
     $mail = htmlentities($app->container['security']->mySqlSecure($_POST['email']));
     $password = htmlentities($app->container['security']->mySqlSecure($_POST['password']));
 
@@ -12,6 +14,8 @@ if (isset($_POST['admin-login'])) {
     if ($remember == "remember_t") {
         $login = $app->container['users']->login($mail, $password, true, true);
         if ($login["login"] == 1) {
+            $app->container['plugins']->applyEvent('userAfterLogin');
+
             header("location: " . HOST . "/my-admin/index");
             exit;
         } else {
@@ -20,6 +24,8 @@ if (isset($_POST['admin-login'])) {
     } else {
         $login = $app->container['users']->login($mail, $password, false, true);
         if ($login["login"] == 1) {
+            $app->container['plugins']->applyEvent('userAfterLogin');
+
             header("location: " . HOST . "/my-admin/index");
             exit;
         } else {
@@ -29,6 +35,9 @@ if (isset($_POST['admin-login'])) {
 }
 
 if (isset($_POST['login'])) {
+
+    $app->container['plugins']->applyEvent('userBeforeLogin');
+
     $mail = htmlentities($app->container['security']->mySqlSecure($_POST['mail']));
     $password = htmlentities($app->container['security']->mySqlSecure($_POST['password']));
     if (isset($_POST['remember'])) {
@@ -42,6 +51,8 @@ if (isset($_POST['login'])) {
         $login = $app->container['users']->login($mail, $password, true);
 
         if ($login["login"] == 1) {
+            $app->container['plugins']->applyEvent('userAfterLogin');
+
             header("location: " . HOST . "/index");
             exit;
         } else {
@@ -51,6 +62,8 @@ if (isset($_POST['login'])) {
     } else {
         $login = $app->container['users']->login($mail, $password, false);
         if ($login["login"] == 1) {
+            $app->container['plugins']->applyEvent('userAfterLogin');
+
             header("location: " . HOST . "/index");
             exit;
         } else {

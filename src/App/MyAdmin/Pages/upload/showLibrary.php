@@ -168,7 +168,7 @@ if(!$this->container['users']->currentUserHasPermission("upload_files"))
 
                 var image = '<i class="fa fa-file fa-4x"></i>'
 
-                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name)[1], ['jpg', 'jpeg', 'jpe', 'gif', 'png']) >= 0)
+                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name.toLowerCase())[1], ['jpg', 'jpeg', 'jpe', 'gif', 'png']) >= 0)
                 {
                     var date = new Date(element.date)
                     var url = '{@siteURL@}/src/App/Content/Storage/Upload/' + date.getFullYear() + '/' + ("0" + (parseInt(date.getMonth()) + 1)).slice(-2) + '/' + element.name;
@@ -176,13 +176,13 @@ if(!$this->container['users']->currentUserHasPermission("upload_files"))
                     image = '<img src="'+ url +'" />';
                 }
 
-                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name)[1], ['mp3', 'ogg', 'm4a', 'wav']) >= 0)
+                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name.toLowerCase())[1], ['mp3', 'ogg', 'm4a', 'wav']) >= 0)
                 {
                     image = '<i class="fa fa-file-audio-o fa-4x"></i>';
                 }
 
 
-                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name)[1], ['mp4', 'm4v', 'webm', 'ogv', 'flv']) >= 0)
+                if($.inArray(/(?:\.([^.]+))?$/.exec(element.name.toLowerCase())[1], ['mp4', 'm4v', 'webm', 'ogv', 'flv']) >= 0)
                 {
                     image = '<i class="fa fa-file-video-o fa-4x"></i>';
                 }
