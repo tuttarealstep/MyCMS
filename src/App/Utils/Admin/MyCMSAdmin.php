@@ -448,6 +448,16 @@ class MyCMSAdmin
 
         $this->container['plugins']->addEvent('addAdminPage', [$this, 'addAdminPage'], 1, 2);
 
+
+        $tmpContainer = $this->container;
+        $this->container['plugins']->addEvent('custom_headers', function () use ($tmpContainer)
+        {
+            if(isset($tmpContainer['router']->match()['target'] ) && $tmpContainer['router']->match()['target'] == "{-@my-admin@-}settings_general")
+            {
+                header('Cache-Control: no cache');
+            }
+        });
+
     }
 
     function addDefaultMenu()

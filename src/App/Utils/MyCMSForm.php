@@ -333,6 +333,27 @@ if (isset($_POST['page_settings_user_save_button'])) {
 }
 
 if (isset($_POST['clear_all_caches_settings_general'])) {
-    $app->container['cache']->clearAll();
+
+    $result = $app->container['cache']->clearAll();
+
+    if(!$result[0])
+    {
+        $tmpContainer = $app->container;
+        $app->container['plugins']->addEvent('admin_notice', function () use ($tmpContainer, $result)
+        {
+            if(isset($tmpContainer['router']->match()['target'] ) && $tmpContainer['router']->match()['target'] == "{-@my-admin@-}settings_general")
+            {
+                ?>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-danger" role="alert"><?php echo $result[1]; ?></div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        });
+    }
 
 }

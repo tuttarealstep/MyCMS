@@ -531,6 +531,7 @@ class Application
                 $match['target'] = $styleInfo["style_error_page"];
             }
 
+
             $this->container['plugins']->applyEvent('custom_headers');
 
             if ($this->container['theme']->isAdminUrl($match['target']) == false) {

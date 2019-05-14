@@ -83,10 +83,22 @@ class MyCMSCache
      */
     function clearAll()
     {
-        foreach (new DirectoryIterator(C_PATH . "/Storage/Cache/") as $fileInfo) {
-            if (!$fileInfo->isDot()) {
-                unlink($fileInfo->getPathname());
+        try {
+            foreach (new DirectoryIterator(C_PATH . "/Storage/Cache/") as $fileInfo) {
+                if (!$fileInfo->isDot()) {
+                    if($fileInfo->getFilename() == ".tmp")
+                    {
+                        continue;
+                    }
+
+                    unlink($fileInfo->getPathname());
+                }
             }
+
+            return [true, null];
+        } catch (\Exception $exception)
+        {
+            return [false, $exception];
         }
     }
 }
