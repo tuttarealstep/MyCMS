@@ -70,6 +70,12 @@ class MyCMSTheme
         $this->container['plugins']->addEvent("getMenu", [$this, "getMenu"]);
         $this->container['plugins']->addEvent('adminFooter', '');
 
+
+        $this->container['plugins']->addEvent('afterSetPage', function ($page)
+        {
+            return $page;
+        });
+
     }
 
     function parsePage($pageContent)
@@ -316,12 +322,17 @@ class MyCMSTheme
                     $page_loaded = $this->parsePage($page_loaded);
                 }
 
-                echo $page_loaded;
+                //echo $page_loaded;
 
                 $finished = number_format(microtime(true) - $timer_start, 6);
                 if (defined("MY_M_DEBUG") && MY_M_DEBUG == true) {
-                    echo "\n<!-- MyCMS Page Loader - Page loaded in " . $finished . " sec. -->";
+                    $page_loaded .= "\n<!-- MyCMS Page Loader - Page loaded in " . $finished . " sec. -->";
                 }
+
+                $page_loaded = $this->container['plugins']->applyEvent('afterSetPage', $page_loaded);
+
+                echo $page_loaded;
+
             } else {
                 $styleInfo = $this->styleInfo(MY_THEME);
                 if ($file == $styleInfo["style_error_page"]) {
@@ -581,8 +592,11 @@ class MyCMSTheme
             if (defined("MY_M_DEBUG") && MY_M_DEBUG == true) {
                 $page = $page . "\n<!-- MyCMS Page Loader - Page loaded in " . $finished . " sec. -->";
             }
-
         }
+
+
+        $page = $this->container['plugins']->applyEvent('afterSetPage', $page);
+
         echo $page;
     }
 

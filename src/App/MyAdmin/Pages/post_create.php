@@ -241,6 +241,12 @@ $this->container['plugins']->addEvent('parsePostContent', function ($content) {
     return $content;
 });
 
+$this->container['plugins']->addEvent('beforePrintParsePostContent', function ($content) {
+    return $content;
+});
+
+$postContent = $this->container['plugins']->applyEvent('beforePrintParsePostContent', $postContent);
+
 $this->getStyleScriptAdmin('script');
 ?>
 <script type="text/javascript">

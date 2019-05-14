@@ -60,24 +60,24 @@ if ($app->container['users']->userLoggedIn()) {
                 if(!isset($_POST['id']) && !empty($_POST['id']))
                     return;
 
-                if($this->container['blog']->getInfo('authorID', $_POST['id']) == $_SESSION['user']['id'] && !$this->container['users']->currentUserHasPermission("edit_posts"))
+                if($app->container['blog']->getInfo('authorID', $_POST['id']) == $_SESSION['user']['id'] && !$app->container['users']->currentUserHasPermission("edit_posts"))
                 {
-                    if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
-                        if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                    if($app->container['blog']->getInfo('postStatus', $postId) == "publish") {
+                        if (!$app->container['users']->currentUserHasPermission("edit_published_posts")) {
                             return;
                         }
                     } else {
-                        if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                        if (!$app->container['users']->currentUserHasPermission("edit_private_posts")) {
                             return;
                         }
                     }
                 } else {
-                    if($this->container['blog']->getInfo('postStatus', $postId) == "publish") {
-                        if (!$this->container['users']->currentUserHasPermission("edit_published_posts")) {
+                    if($app->container['blog']->getInfo('postStatus', $postId) == "publish") {
+                        if (!$app->container['users']->currentUserHasPermission("edit_published_posts")) {
                             return;
                         }
                     } else {
-                        if (!$this->container['users']->currentUserHasPermission("edit_private_posts")) {
+                        if (!$app->container['users']->currentUserHasPermission("edit_private_posts")) {
                             return;
                         }
                     }
