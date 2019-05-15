@@ -520,24 +520,13 @@ class MyCMSTheme
             return $page;
         }
 
-        $matches_f_f = [];
-        $found = [];
-
         for ($i = 0; $i <= count($this->functions_tag) - 1; $i++) {
             if (preg_match("/" . $this->functions_tag[ $i ]["start"] . "(.*)" . $this->functions_tag[ $i ]["end"] . "/s", $page)) {
                 preg_match("/" . $this->functions_tag[ $i ]["start"] . "(.*)" . $this->functions_tag[ $i ]["end"] . "/s", $page, $matches);
-                $matches_f_f[] = $matches[1];
-                if (!empty($this->functions_tag[ $i ]["param"])) {
-                    $user_func = call_user_func($this->functions_tag[ $i ]["function"], $this->functions_tag[ $i ]["param"]);
-                } else {
-                    $user_func = call_user_func($this->functions_tag[ $i ]["function"]);
-                }
-                $found = array_merge($found, [["value" => $matches_f_f[ $i ], "function_return" => $user_func]]);
-                if ($found[ $i ]["function_return"] == true) {
 
-                } else {
-                    $page = str_ireplace($found[ $i ]["value"], "", $page);
-                }
+                $functionResult = call_user_func($this->functions_tag[ $i ]["function"], $matches[1]);
+
+                $page = str_ireplace($matches[1], $functionResult, $page);
             }
         }
 

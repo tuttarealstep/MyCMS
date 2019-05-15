@@ -373,13 +373,56 @@ class Application
     function initUsers()
     {
         $users = new MyCMSUsers($this->container);
-        //todo finish the functions tag function and enable these functions // make support for the new plugin system
+
         /*
-                    $this->container['theme']->addFunctionsTag("{@userLoggedIn=start@}", "{@userLoggedIn=end@}", "userLoggedIn");
-                    $this->container['theme']->addFunctionsTag("{@userNotLoggedIn=start@}", "{@userNotLoggedIn=end@}", "userNotLoggedIn");
-                    $this->container['theme']->addFunctionsTag("{@hideIfLogged=start@}", "{@hideIfLogged=end@}", "hideIfLogged");
-                    $this->container['theme']->addFunctionsTag("{@hideIfNotLogged=start@}", "{@hideIfNotLogged=end@}", "hideIfNotLogged");
-        */
+         * Support for HTML Themes (Conditional functions)
+         *
+         *
+         * Example of use:
+         * {@userLoggedIn=start@}
+         *      Logged in
+         * {@userLoggedIn=end@}
+         *
+         * {@userNotLoggedIn=start@}
+         *      Logged out
+         * {@userNotLoggedIn=end@}
+         */
+        $this->container['theme']->addFunctionsTag("{@userLoggedIn=start@}", "{@userLoggedIn=end@}", function ($content) use ($users)
+        {
+            if($users->userLoggedIn())
+            {
+                return $content;
+            }
+
+            return "";
+        });
+
+        $this->container['theme']->addFunctionsTag("{@userNotLoggedIn=start@}", "{@userNotLoggedIn=end@}", function ($content) use ($users)
+        {
+            if($users->userNotLoggedIn())
+            {
+                return $content;
+            }
+
+            return "";
+        });
+
+        /*
+         * Support for HTML Themes (Conditional functions)
+         *
+         * Hide page with {@hidePageIfLogged@} if logged in
+         * Hide page with {@hidePageIfNotLogged@} if not logged in
+         */
+        $this->container['theme']->addCallBackTag("hidePageIfLogged", function () use ($users)
+        {
+            $users->hideIfLogged();
+        });
+
+        $this->container['theme']->addCallBackTag("hidePageIfNotLogged", function () use ($users)
+        {
+            $users->hideIfNotLogged();
+        });
+
 
         $users->controlBan();
         $users->controlSession();
