@@ -76,6 +76,12 @@ class MyCMSTheme
             return $page;
         });
 
+
+        $this->addCallBackTag("redirectTo", function ($data) {
+            header("Location: " . $data['url']);
+            exit;
+        });
+
     }
 
     function parsePage($pageContent)
@@ -83,8 +89,8 @@ class MyCMSTheme
         $pageContent = $this->container['plugins']->applyEvent('pageContentBeforeParse', $pageContent);
         $this->container['plugins']->addEvent('parsePageContent', function ($pageContent)
         {
+           // $pageContent = $this->setTagFunctions($pageContent);
             $pageContent = $this->parseNoTag($pageContent);
-            $pageContent = $this->setTagFunctions($pageContent);
 
             return $pageContent;
         });
@@ -447,6 +453,8 @@ class MyCMSTheme
 
     public function setTag($page)
     {
+        $page = $this->setTagFunctions($page);
+
         if (defined('INDEX_ERROR')) {
             $errors = ['INDEX_ERROR' => $this->indexErrorStyle_array["start_tag"] . INDEX_ERROR . $this->indexErrorStyle_array["finish_tag"]];
         } else {
@@ -570,7 +578,6 @@ class MyCMSTheme
             $page = $this->parsePage($page);
         } else {
             $page = $this->parseNoTag($page);
-            $page = $this->setTagFunctions($page);
         }
 
         /* if ($admin == false) {
