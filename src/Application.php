@@ -427,6 +427,7 @@ class Application
         $users->controlBan();
         $users->controlSession();
         $users->setUserTag();
+        $users->setEvents();
 
         $this->container['users'] = $users;
     }

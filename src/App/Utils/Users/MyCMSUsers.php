@@ -20,8 +20,6 @@ class MyCMSUsers
     function __construct($container)
     {
         $this->container = $container;
-
-        $this->setEvents();
     }
 
     /**
@@ -61,11 +59,6 @@ class MyCMSUsers
             return ["login" => 0, "error" => "error_email_password"];
         }
 
-        if($adminPanel && $this->currentUserHasPermission("read"))
-        {
-            return ["login" => 0, "error" => "error_email_password"];
-        }
-
         $validate_cookie = $this->addSession($user_id, $remember);
 
         if ($validate_cookie["valid"] == false) {
@@ -85,6 +78,7 @@ class MyCMSUsers
 
         }
 
+
         $data_last_access = date("Y-m-d H:i:s", time());
         $user_ip = $this->userIp();
 
@@ -92,6 +86,11 @@ class MyCMSUsers
         $this->container['database']->query("UPDATE my_users SET last_access = :last_access WHERE id = :k", ["last_access" => $data_last_access, "k" => $user_id]);
 
         $this->setUserTag();
+
+        if($adminPanel && $this->currentUserHasPermission("read"))
+        {
+            return ["login" => 0, "error" => "error_admin_permissions"];
+        }
 
         return ["login" => 1, "error" => ""];
     }
@@ -597,16 +596,20 @@ class MyCMSUsers
         return $this->currentUserHasPermission($permission);
     }
 
+ /*
+    //todo bug check event
     public function currentUserHasPermission($permission)
     {
+        var_dump($this->container['plugins']->applyEvent('currentUserHasPermissionEvent', $permission));
+        die("sda ");
         return $this->container['plugins']->applyEvent('currentUserHasPermissionEvent', $permission);
-    }
+    }*/
 
     /**
      * @param $permission
      * @return bool
      */
-    public function currentUserHasPermissionEvent($permission)
+    public function currentUserHasPermission($permission)
     {
         //todo map permissions for other check for editors ecc
         if($this->userLoggedIn())
@@ -694,7 +697,6 @@ class MyCMSUsers
 
     public function setEvents()
     {
-        $this->container['plugins']->addEvent('currentUserHasPermission', [$this, 'currentUserHasPermissionEvent']);
         $this->container['plugins']->addEvent('getUserData', [$this, 'getDataEvent'], 1, 2);
 
         $this->container['plugins']->addEvent('getUserName', [$this, 'getUsernameEvent']);
